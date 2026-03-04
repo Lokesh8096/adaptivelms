@@ -1,0 +1,262 @@
+'use client'
+
+import { Fragment, useMemo } from 'react'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import LearningPathNav from '@/components/learning-path-nav'
+import { normalizeStringArray, parseDayNumber } from '@/lib/helpers'
+import { recapContent } from '@/lib/recapContent'
+import { supabase } from '@/lib/supabase'
+import { useDayCache } from '@/lib/dayCache'
+
+type RecapTopic = {
+  id: string
+  title: string
+  explanation: string
+  examples?: RecapExample[]
+}
+
+type RecapExample = {
+  language?: string
+  code?: string
+  explanation?: string
+}
+
+type RecapSection = {
+  id: string
+  title: string
+  topics: RecapTopic[]
+}
+
+const parseMultiline = (value: string | null | undefined): string[] => {
+  if (value == null) return []
+  const str = typeof value === 'string' ? value : String(value)
+  return str
+    .replace(/\\r\\n/g, '\n')
+    .replace(/\\n/g, '\n')
+    .replace(/\r\n|\r/g, '\n')
+    .split('\n')
+}
+
+export default function RecapPage() {
+  const params = useParams<{ dayNumber: string }>()
+  const dayNumber = useMemo(() => parseDayNumber(params.dayNumber), [params.dayNumber])
+
+  // ── Shared cache (no additional API call) ────────────────────────────────────
+  const { access, progress, patchProgress } = useDayCache()
+
+  const recapByDay = useMemo(() => recapContent as Record<number, RecapSection[]>, [])
+  const sections = useMemo(
+    () => ((dayNumber === null ? [] : recapByDay[dayNumber]) || []) as RecapSection[],
+    [dayNumber, recapByDay]
+  )
+  const totalTopics = useMemo(
+    () => sections.reduce((count, section) => count + section.topics.length, 0),
+    [sections]
+  )
+
+  // Parse checked topics from cached progress
+  const checked = useMemo(
+    () => normalizeStringArray(progress?.recap_checked),
+    [progress?.recap_checked]
+  )
+
+  // ── Handlers ─────────────────────────────────────────────────────────────────
+  const toggle = async (topicId: string) => {
+    if (access.isAdmin || !access.userId || dayNumber === null) return
+
+    const updated = checked.includes(topicId)
+      ? checked.filter((id) => id !== topicId)
+      : [...checked, topicId]
+
+    const allDone = totalTopics > 0 && updated.length === totalTopics
+
+    // Optimistic update — instant UI, no loading state needed
+    patchProgress({ recap_checked: updated, ...(allDone ? { recap_completed: true } : {}) })
+
+    const upsertPayload: Record<string, unknown> = {
+      student_id: access.userId,
+      day_number: dayNumber,
+      recap_checked: updated,
+    }
+    if (allDone) {
+      upsertPayload.recap_completed = true
+    }
+
+    const { error } = await supabase
+      .from('student_day_progress')
+      .upsert(upsertPayload, { onConflict: 'student_id,day_number' })
+
+    if (error) {
+      console.error('Failed to save recap progress', error)
+      // Rollback on error
+      patchProgress({ recap_checked: checked })
+    }
+  }
+
+  // ── Derived state for nav ─────────────────────────────────────────────────────
+  const recapCompletedByCheckbox = totalTopics > 0 && checked.length >= totalTopics
+  const recapCompletedByDownstream =
+    Boolean(progress?.interview_completed) ||
+    Boolean(progress?.scenario_completed) ||
+    Boolean(progress?.quiz_completed)
+  const recapCompleted =
+    access.isAdmin || recapCompletedByCheckbox || recapCompletedByDownstream || Boolean(progress?.recap_completed)
+
+  // ── Early returns ─────────────────────────────────────────────────────────────
+  if (dayNumber === null) return <p>Invalid day number.</p>
+
+  if (access.loading) return <p>Loading recap...</p>
+
+  if (sections.length === 0) {
+    return <p>No recap content available for Day {dayNumber}.</p>
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="surface-card p-5 md:p-6">
+        <h1 className="text-2xl font-bold md:text-3xl">Recap - Day {dayNumber}</h1>
+        <p className="mt-2 text-sm muted-text">
+          Mark all topics complete to unlock interview.
+        </p>
+        {access.isAdmin && (
+          <p className="mt-2 rounded-xl bg-[var(--bg-soft)] px-3 py-2 text-xs font-semibold text-[var(--primary)]">
+            Admin preview mode: content unlocked and progress editing disabled.
+          </p>
+        )}
+      </div>
+
+      <LearningPathNav
+        dayNumber={dayNumber}
+        currentSection="recap"
+        progress={{
+          recapCompleted,
+          interviewCompleted: Boolean(progress?.interview_completed),
+          scenarioCompleted: Boolean(progress?.scenario_completed),
+          quizCompleted: Boolean(progress?.quiz_completed),
+        }}
+      />
+
+      <p className="text-sm muted-text">
+        Completed {checked.length} of {totalTopics}
+      </p>
+
+      {sections.map((section) => (
+        <div key={section.id} className="space-y-4">
+          <h2 className="text-xl font-semibold">{section.title}</h2>
+
+          {section.topics.map((topic) => {
+            const isChecked = checked.includes(topic.id)
+            return (
+              <div
+                key={topic.id}
+                className={`surface-card p-4 relative overflow-hidden transition-all duration-200 ${isChecked
+                  ? 'border-green-500 shadow-[0_0_0_1.5px_rgba(16,185,129,0.35),var(--shadow-soft)]'
+                  : ''
+                  }`}
+              >
+                {/* Left green accent bar — visible only when checked */}
+                <span
+                  className={`absolute left-0 top-0 h-full w-1 rounded-l-xl transition-all duration-200 ${isChecked ? 'bg-green-500' : 'bg-transparent'
+                    }`}
+                />
+
+                <h3 className="font-medium pl-1">{topic.title}</h3>
+                <p className="mt-2 muted-text pl-1">
+                  {parseMultiline(topic.explanation).map((line, index, lines) => (
+                    <Fragment key={`${topic.id}-line-${index}`}>
+                      {line}
+                      {index < lines.length - 1 && <br />}
+                    </Fragment>
+                  ))}
+                </p>
+
+                {Array.isArray(topic.examples) && topic.examples.length > 0 && (
+                  <div className="mt-4 space-y-4">
+                    {topic.examples.map((example, exampleIndex) => {
+                      const language =
+                        typeof example.language === 'string' ? example.language.trim() : ''
+                      const code =
+                        typeof example.code === 'string'
+                          ? parseMultiline(example.code).join('\n')
+                          : ''
+                      const exampleExplanation =
+                        typeof example.explanation === 'string' ? example.explanation : ''
+
+                      if (!code && !exampleExplanation) return null
+
+                      return (
+                        <div
+                          key={`${topic.id}-example-${exampleIndex}`}
+                          className="rounded-xl border border-[var(--border)] bg-[var(--card-strong)] p-3"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="text-sm font-semibold">Example {exampleIndex + 1}</p>
+                            {language && (
+                              <span className="rounded-full bg-[var(--bg-soft)] px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">
+                                {language}
+                              </span>
+                            )}
+                          </div>
+
+                          {code && (
+                            <pre className="mt-2 overflow-x-auto rounded-lg bg-gray-900 p-3 text-xs text-white md:text-sm">
+                              <code>{code}</code>
+                            </pre>
+                          )}
+
+                          {exampleExplanation && (
+                            <p className="mt-2 text-sm font-semibold">
+                              {parseMultiline(
+                                exampleExplanation
+                                  .replace(/^"|"$/g, '')
+                                  .replace(/^'|'$/g, '')
+                                  .trim()
+                              ).map((line, index, lines) => (
+                                <Fragment key={`${topic.id}-example-${exampleIndex}-line-${index}`}>
+                                  {line}
+                                  {index < lines.length - 1 && <br />}
+                                </Fragment>
+                              ))}
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+
+                <label className="mt-3 inline-flex items-center gap-2 cursor-pointer group pl-1">
+                  <input
+                    type="checkbox"
+                    className="hover-checkbox"
+                    checked={isChecked}
+                    onChange={() => toggle(topic.id)}
+                    disabled={access.isAdmin}
+                  />
+                  <span className="group-hover:text-[var(--primary)] transition-colors duration-150 flex items-center gap-1">
+                    Topic Nailed
+                    {/* Tick appears only when THIS container is checked */}
+                    {isChecked && (
+                      <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 text-green-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="2.5,8.5 6,12 13.5,4" />
+                      </svg>
+                    )}
+                  </span>
+                </label>
+              </div>
+            )
+          })}
+        </div>
+      ))}
+
+      <Link
+        href={`/dashboard/day/${dayNumber}/interview`}
+        className={`inline-block rounded-xl px-4 py-2 font-semibold text-white ${recapCompleted ? 'bg-blue-600 hover:opacity-95' : 'bg-gray-400 pointer-events-none'
+          }`}
+      >
+        Continue to Interview
+      </Link>
+    </div>
+  )
+}
