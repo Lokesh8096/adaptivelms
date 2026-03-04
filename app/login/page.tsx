@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [showForgotHelp, setShowForgotHelp] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -46,6 +47,7 @@ export default function LoginPage() {
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setErrorMessage(null)
+    setShowForgotHelp(false)
 
     const normalizedEmail = normalizeEmail(email)
     if (!normalizedEmail) {
@@ -140,13 +142,32 @@ export default function LoginPage() {
           <Link href="/register" className="nav-btn">
             Register
           </Link>
-          <Link href="/change-password" className="nav-btn">
-            Change Password
-          </Link>
+          <button
+            type="button"
+            onClick={() => setShowForgotHelp((prev) => !prev)}
+            className="nav-btn"
+          >
+            Forgot Password
+          </button>
           <Link href="/" className="nav-btn">
             Home
           </Link>
         </div>
+
+        {showForgotHelp && (
+          <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-soft)] p-3 text-xs">
+            <p className="font-semibold text-[var(--text)]">Forgot password?</p>
+            <p className="mt-1 muted-text">
+              Please contact the admin to reset your password.
+            </p>
+            <a
+              href="mailto:support-intensive@nxtwave.tech"
+              className="mt-2 inline-flex font-semibold text-[var(--text)] transition hover:text-[var(--primary)]"
+            >
+              support-intensive@nxtwave.tech
+            </a>
+          </div>
+        )}
       </form>
     </div>
   )
