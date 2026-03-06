@@ -1823,7 +1823,7 @@ export const recapContent = {
         {
           "id": "sc_day_35_t1",
           "title": "Margin and Padding Variants",
-          "explanation": "• Margin and Padding can be applied to all sides at once or individually for fine-tuned spacing.\n• **Directional Properties**: Use `-top`, `-right`, `-bottom`, and `-left` to target specific sides.\n• **Horizontal Centering**: Setting `margin-left: auto;` and `margin-right: auto;` on a block element with a fixed width will center it within its parent container.",
+          "explanation": "• Margin and Padding can be applied to all sides at once or individually for fine-tuned spacing.\n• Directional Properties: Use `-top`, `-right`, `-bottom`, and `-left` to target specific sides.\n• Horizontal Centering: Setting `margin-left: auto;` and `margin-right: auto;` on a block element with a fixed width will center it within its parent container.",
           "examples": [
             {
               "language": "css",
@@ -1835,7 +1835,7 @@ export const recapContent = {
         {
           "id": "sc_day_35_t2",
           "title": "Relative Units: Percentages",
-          "explanation": "• Percentages (`%`) define sizes relative to the parent element.\n• This is a core concept of **Responsive Web Design**, allowing elements to shrink or grow as the browser window changes size.",
+          "explanation": "• Percentages (`%`) define sizes relative to the parent element.\n• This is a core concept of Responsive Web Design, allowing elements to shrink or grow as the browser window changes size.",
           "examples": [
             {
               "language": "css",
@@ -1847,7 +1847,7 @@ export const recapContent = {
         {
           "id": "sc_day_35_t3",
           "title": "Block vs. Inline Elements",
-          "explanation": "• **Block-level**: Always starts on a new line and takes up the full width available (e.g., `<div>`, `<h1>`, `<p>`).\n• **Inline**: Takes up only as much width as necessary and stays on the same line (e.g., `<span>`, `<a>`, `<img>`).\n• **The <span> Tag**: A generic inline container used to target specific words or phrases within a block-level element for styling.",
+          "explanation": "• Block-level: Always starts on a new line and takes up the full width available (e.g., `<div>`, `<h1>`, `<p>`).\n• Inline: Takes up only as much width as necessary and stays on the same line (e.g., `<span>`, `<a>`, `<img>`).\n• The <span> Tag: A generic inline container used to target specific words or phrases within a block-level element for styling.",
           "examples": [
             {
               "language": "html",
@@ -1859,7 +1859,7 @@ export const recapContent = {
         {
           "id": "sc_day_35_t4",
           "title": "CSS Gradients",
-          "explanation": "• Gradients are smooth transitions between two or more colors, treated as `background-image`.\n• **Linear Gradient**: Colors transition along a straight line. You can specify directions like `to right` or `to bottom right`.\n• **Radial Gradient**: Colors transition outward from a central point (the center of the element by default).",
+          "explanation": "• Gradients are smooth transitions between two or more colors, treated as `background-image`.\n• Linear Gradient: Colors transition along a straight line. You can specify directions like `to right` or `to bottom right`.\n• Radial Gradient: Colors transition outward from a central point (the center of the element by default).",
           "examples": [
             {
               "language": "css",
@@ -1874,2787 +1874,1271 @@ export const recapContent = {
 
   36: [
     {
-      id: "sc_day_36",
-      title: "CSS Selectors",
-      topics: [
+      "id": "sc_day_36",
+      "title": "CSS Selectors & Inheritance",
+      "topics": [
         {
-          id: "sc_day_36_t1",
-          title: "Introduction to CSS Selectors",
-          explanation:
-            "• CSS Selectors are used to select HTML elements that we want to style. Different types of selectors allow us to target elements based on class, id, tag name, attributes, and more.",
-        },
-        {
-          id: "sc_day_36_t2",
-          title: "Class Selector",
-          explanation:
-            "• The class selector selects all HTML elements that have a specific class attribute. It is defined using a dot (.) followed by the class name. Multiple elements can share the same class.",
-          examples: [
+          "id": "sc_day_36_t1",
+          "title": "Mastering Simple Selectors",
+          "explanation": "• CSS Selectors are the bridge between your HTML structure and your visual design. They tell the browser exactly which elements to apply rules to.\n• Type Selector: Targets all instances of a specific HTML tag. Use this for global resets (e.g., making all `p` tags have a specific line-height).\n• Class Selector (`.`): The workhorse of CSS. It allows you to create a style once and apply it to many different elements by adding `class=\"name\"` to the HTML. \n• ID Selector (`#`): These are highly specific. An ID should be unique to one single element on a page. While powerful, they are harder to override later due to high specificity.",
+          "examples": [
             {
-              language: "html",
-              code: '<p class="paragraph">The population of India is around 138 crores.</p>',
-              explanation: "• The element has a class named paragraph.",
-            },
+              "language": "css",
+              "code": "/* Targets every <h1> on the site */\nh1 { font-family: 'serif'; }\n\n/* Targets any element with class=\"highlight\" */\n.highlight { background-color: yellow; }\n\n/* Targets ONLY the element with id=\"main-nav\" */\n#main-nav { display: flex; }",
+              "explanation": "• Notice the syntax: Type selectors have no prefix, classes use a dot, and IDs use a hash."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_36_t2",
+          "title": "The Principle of CSS Inheritance",
+          "explanation": "• Inheritance is like a 'family tree' for your code. If you apply a style to a parent element (like `<body>` or `<div>`), its children (like `<p>` or `<span>`) will often automatically take on those styles.\n• Inherited Properties: Mostly include typography and color properties. This is why you can set a `font-family` on the `<body>` tag and have it apply to the whole page automatically.\n• Non-inherited Properties: These are usually related to the 'Box Model'. For example, if you give a `<div>` a margin or a border, you wouldn't want every paragraph inside it to also have that same border and margin—so CSS treats these as unique to the parent.",
+          "examples": [
             {
-              language: "css",
-              code: ".paragraph {\n  color: blue;\n}",
-              explanation:
-                '• Selects all elements with class="paragraph" and applies blue color.',
-            },
-          ],
+              "language": "html",
+              "code": "<div style=\"color: green; padding: 20px;\">\n  <p>I am green because color is inherited.</p>\n  <p>I do NOT have 20px padding because padding is non-inherited.</p>\n</div>",
+              "explanation": "• This distinction keeps your layout from getting cluttered by unwanted repeated styles."
+            }
+          ]
         },
         {
-          id: "sc_day_36_t3",
-          title: "ID Selector",
-          explanation:
-            "• The ID selector selects an HTML element based on its id attribute. It is defined using a hash (#) followed by the ID name. IDs should be unique within a document.",
-          examples: [
+          "id": "sc_day_36_t3",
+          "title": "CSS Specificity and Priority",
+          "explanation": "• When two CSS rules conflict (e.g., one rule says text is blue and another says it is red), the browser uses a scoring system called Specificity.\n• The Hierarchy:\n  1. Inline Styles: (Directly in the HTML tag) - Score: 1000\n  2. IDs: Score: 100\n  3. Classes, Attributes, and Pseudo-classes: Score: 10\n  4. Elements and Pseudo-elements: Score: 1\n• If two rules have the exact same score, the Cascade takes over: the rule written lower down in the CSS file wins.",
+          "examples": [
             {
-              language: "html",
-              code: '<p id="populationParagraph">The population of India is around 138 crores.</p>',
-              explanation: "• The element has a unique id.",
-            },
-            {
-              language: "css",
-              code: "#populationParagraph {\n  color: blue;\n}",
-              explanation:
-                '• Selects the element with id="populationParagraph".',
-            },
-          ],
-        },
-        {
-          id: "sc_day_36_t4",
-          title: "Type (Tag) Selector",
-          explanation:
-            "• The type selector selects all elements based on their tag name such as h1, p, div, etc.",
-          examples: [
-            {
-              language: "css",
-              code: "p {\n  color: blue;\n}",
-              explanation: "• Selects all paragraph elements.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_36_t5",
-          title: "Fundamental Concepts of CSS",
-          explanation:
-            "• CSS styling behavior depends on three core concepts: Inheritance, Specificity, and Cascade.",
-        },
-        {
-          id: "sc_day_36_t6",
-          title: "CSS Inheritance",
-          explanation:
-            "• Inheritance is the mechanism where certain CSS properties applied to a parent element are passed down to its child elements.",
-        },
-        {
-          id: "sc_day_36_t7",
-          title: "Parent and Child Elements",
-          explanation:
-            "• If HTML elements are placed inside another element, the outer element is the parent, and the inner elements are its children.",
-          examples: [
-            {
-              language: "html",
-              code: '<div>\n  <h1>The seven wonders of the world</h1>\n  <p>\n    The <a href="#">Taj Mahal</a>\n    is one of the seven wonders of the world.\n  </p>\n</div>',
-              explanation:
-                "• div is the parent of h1 and p. p is the parent of a.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_36_t8",
-          title: "Inherited Properties",
-          explanation:
-            "• Inherited properties automatically pass from parent to child. These usually include text-related and list-related properties.",
-          examples: [
-            {
-              language: "text",
-              code: "Inherited Properties:\n- font-family\n- font-style\n- font-weight\n- text-align\n- color\n- list-style-type",
-              explanation:
-                "• These properties are inherited by child elements.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_36_t9",
-          title: "Non-Inherited Properties",
-          explanation:
-            "• Non-inherited properties do not pass from parent to child. These typically include box model and background properties.",
-          examples: [
-            {
-              language: "text",
-              code: "Non-Inherited Properties:\n- width\n- height\n- margin\n- padding\n- border-style\n- border-width\n- border-color\n- border-radius\n- background-color\n- background-image\n- background-size",
-              explanation:
-                "• These properties must be explicitly applied to each element.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_36_t10",
-          title: "Specificity and Cascade",
-          explanation:
-            "• Specificity determines which CSS rule is applied when multiple rules target the same element. ID selectors have higher specificity than class selectors, and class selectors have higher specificity than type selectors. Cascade means the last declared rule (with equal specificity) will be applied.",
-        },
-      ],
-    },
+              "language": "css",
+              "code": "/* Score: 1 (Element) */\np { color: red; }\n\n/* Score: 10 (Class) - This wins over the element selector! */\n.description { color: blue; }",
+              "explanation": "• Even though the 'p' selector is defined, the '.description' class is more 'specific' and therefore more powerful."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   37: [
     {
-      id: "sc_day_37",
-      title: "Loop Control Statements",
-      topics: [
+      "id": "sc_day_37",
+      "title": "Loop Control Statements",
+      "topics": [
         {
-          id: "sc_day_37_t1",
-          title: "Introduction to Loop Control Statements",
-          explanation:
-            "• Loop control statements allow us to modify the normal flow of loop execution. They help us stop a loop early or skip specific iterations when certain conditions are met. The two primary loop control statements in JavaScript are break and continue.",
-        },
-        {
-          id: "sc_day_37_t2",
-          title: "Break Statement",
-          explanation:
-            "• The break statement immediately exits the loop when a specified condition is satisfied. Control moves to the first statement after the loop.",
-          examples: [
+          "id": "sc_day_37_t1",
+          "title": "The Break Statement",
+          "explanation": "• The `break` statement acts as an 'emergency exit' for loops.\n• When the interpreter hits a `break`, it immediately stops the loop, skips any remaining iterations, and moves to the first line of code following the loop block.\n• It is commonly used when you have found what you were looking for (e.g., searching for a specific item in a list) and don't need to check the rest.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'for (let i = 0; i < 10; i++) {\n  if (i === 2) {\n    break;\n  }\n  console.log(i);\n}\n\nconsole.log("End");',
-              explanation:
-                "• The loop stops when i becomes 2. Output: 0 1 End.",
-            },
-          ],
+              "language": "javascript",
+              "code": "for (let i = 1; i <= 10; i++) {\n  if (i === 4) break;\n  console.log(i);\n}\n// Output: 1, 2, 3",
+              "explanation": "• The loop is designed to run 10 times, but the `break` forces it to shut down as soon as `i` reaches 4."
+            }
+          ]
         },
         {
-          id: "sc_day_37_t3",
-          title: "Break in Nested Loops",
-          explanation:
-            "• When used inside nested loops, break only exits the innermost loop in which it is placed. The outer loop continues executing.",
-          examples: [
+          "id": "sc_day_37_t2",
+          "title": "The Continue Statement",
+          "explanation": "• The `continue` statement is like a 'skip' button.\n• It doesn't stop the whole loop; it only stops the **current** iteration. The code inside the loop that follows the `continue` is ignored, and the loop jumps straight to the next update and condition check.\n• Use this when you want to filter out certain values but keep the rest of the loop running.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'for (let a = 0; a < 2; a++) {\n  console.log("outer : " + a);\n\n  for (let b = 0; b < 4; b++) {\n    if (b === 1) {\n      break;\n    }\n    console.log(" inner : " + b);\n  }\n}',
-              explanation:
-                "• The inner loop exits when b becomes 1, but the outer loop continues.",
-            },
-          ],
+              "language": "javascript",
+              "code": "for (let i = 1; i <= 5; i++) {\n  if (i === 3) continue;\n  console.log(i);\n}\n// Output: 1, 2, 4, 5",
+              "explanation": "• When `i` is 3, the `continue` statement skips the `console.log` and moves immediately to `i = 4`."
+            }
+          ]
         },
         {
-          id: "sc_day_37_t4",
-          title: "Continue Statement",
-          explanation:
-            "• The continue statement skips the remaining code in the current iteration and immediately proceeds to the next iteration of the loop.",
-          examples: [
+          "id": "sc_day_37_t3",
+          "title": "Control Statements in Nested Loops",
+          "explanation": "• In nested loops, `break` and `continue` only affect the innermost loop they are placed in.\n• A `break` inside an inner loop will stop that inner loop and return control to the outer loop for its next iteration.\n• It does not terminate the outer loop unless the control statement is explicitly placed there.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'for (let a = 0; a < 3; a++) {\n  if (a === 1) {\n    continue;\n  }\n  console.log(a);\n}\n\nconsole.log("End");',
-              explanation:
-                "• The iteration where a equals 1 is skipped. Output: 0 2 End.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_37_t5",
-          title: "When to Use break and continue",
-          explanation:
-            "• Use break when you need to stop the loop completely once a condition is met. Use continue when you want to skip certain iterations but allow the loop to continue executing.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "for (let i = 0; i < 2; i++) {\n  for (let j = 0; j < 10; j++) {\n    if (j === 2) break; // Only stops the 'j' loop\n    console.log(i, j);\n  }\n}",
+              "explanation": "• The inner loop stops at `j=2`, but the outer loop `i` continues to its next round and restarts the inner loop."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   38: [
     {
-      id: "sc_day_38",
-      title: "More CSS Selectors",
-      topics: [
+      "id": "sc_day_38",
+      "title": "More CSS Selectors",
+      "topics": [
         {
-          id: "sc_day_38_t1",
-          title: "Introduction to Advanced Selectors",
-          explanation:
-            "• CSS selectors are used to target HTML elements for styling. In this unit, we focus on advanced selectors including pseudo-classes, pseudo-elements, combinators, and attribute selectors. These selectors allow more precise and dynamic styling based on state, position, and relationships.",
+          "id": "sc_day_38_t1",
+          "title": "Precise Spacing with Margin and Padding",
+          "explanation": "• Individual Side Control: Instead of applying uniform spacing, you can use directional properties like `margin-top` or `padding-left` to target specific sides of an element.\n• The Power of Auto: Setting `margin-left: auto;` and `margin-right: auto;` is the standard way to horizontally center a block-level element within its parent, provided it has a defined width.\n• Responsive Percentages: Using `%` for widths allows elements to scale fluidly based on the size of their parent container, which is essential for mobile-friendly designs.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".centered-card {\n  width: 80%;\n  margin: 20px auto; /* 20px top/bottom, auto left/right */\n  padding-top: 15px;\n}",
+              "explanation": "• This creates a responsive card that stays centered and has specific internal spacing at the top."
+            }
+          ]
         },
         {
-          id: "sc_day_38_t2",
-          title: "Pseudo-classes",
-          explanation:
-            "• Pseudo-classes allow us to style elements based on their special state such as hover, visited, focus, or position inside a parent element.",
-          examples: [
+          "id": "sc_day_38_t2",
+          "title": "Block vs. Inline Elements",
+          "explanation": "• Block-level Elements: These act like 'bricks'. They always start on a new line and stretch to fill the full width of the parent (e.g., `<div>`, `<h1>`, `<p>`).\n• Inline Elements: These act like 'fabric'. They only take up as much space as their content needs and don't break the flow of a line (e.g., `<span>`, `<a>`, `<img>`).\n• The <span> Element: A specialized inline container used to wrap small snippets of text for styling without affecting the layout structure.",
+          "examples": [
             {
-              language: "css",
-              code: "button:hover {\n  background-color: darkviolet;\n  color: white;\n}",
-              explanation: "• Styles the button when the user hovers over it.",
-            },
-            {
-              language: "css",
-              code: "a:visited {\n  color: brown;\n}",
-              explanation: "• Styles links that have already been visited.",
-            },
-            {
-              language: "css",
-              code: "li:first-child {\n  color: green;\n}",
-              explanation: "• Selects the first child li element.",
-            },
-            {
-              language: "css",
-              code: "li:last-child {\n  color: green;\n}",
-              explanation: "• Selects the last child li element.",
-            },
-            {
-              language: "css",
-              code: "li:nth-child(2n) {\n  color: green;\n}",
-              explanation: "• Selects every 2nd list item.",
-            },
-            {
-              language: "css",
-              code: "p:empty {\n  height: 20px;\n  background-color: #f0f0f0;\n}",
-              explanation: "• Styles paragraph elements that have no content.",
-            },
-          ],
+              "language": "html",
+              "code": "<p>Standard text with a <span style=\"color: blue; font-weight: bold;\">styled highlight</span> inside.</p>",
+              "explanation": "• The <span> allows us to change the color of a specific phrase while keeping it inside the paragraph block."
+            }
+          ]
         },
         {
-          id: "sc_day_38_t3",
-          title: "Pseudo-elements",
-          explanation:
-            "• Pseudo-elements allow us to style specific parts of an element such as the first letter, first line, or insert content before or after an element.",
-          examples: [
+          "id": "sc_day_38_t3",
+          "title": "Visual Transitions with Gradients",
+          "explanation": "• Gradients are smooth color transitions used as `background-image`.\n• Linear Gradients: Move in a straight line. You can control the direction (e.g., `to right`, `to bottom left`) or use degrees.\n• Radial Gradients: Radiate from a central point outward, creating a circular or elliptical pattern.",
+          "examples": [
             {
-              language: "css",
-              code: "p::first-letter {\n  color: orange;\n  font-size: 36px;\n}",
-              explanation: "• Styles the first letter of a paragraph.",
-            },
-            {
-              language: "css",
-              code: "p::first-line {\n  color: blue;\n}",
-              explanation: "• Styles only the first line of a paragraph.",
-            },
-            {
-              language: "css",
-              code: 'li::before {\n  content: "* ";\n  color: darkviolet;\n}',
-              explanation: "• Inserts content before list items.",
-            },
-            {
-              language: "css",
-              code: '.main-heading::after {\n  content: " (ML)";\n  color: darkviolet;\n}',
-              explanation: "• Adds content after an element.",
-            },
-            {
-              language: "css",
-              code: "li::marker {\n  color: orange;\n}",
-              explanation: "• Styles list bullet or number markers.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_38_t4",
-          title: "Combinators",
-          explanation:
-            "• Combinators define relationships between selectors. They help target elements based on hierarchy or sibling relationships.",
-          examples: [
-            {
-              language: "css",
-              code: "div p {\n  color: orange;\n}",
-              explanation:
-                "• Descendant combinator: selects all p elements inside div.",
-            },
-            {
-              language: "css",
-              code: "div > p {\n  color: orange;\n}",
-              explanation:
-                "• Child combinator: selects direct p children of div.",
-            },
-            {
-              language: "css",
-              code: "h1 + p {\n  color: orange;\n}",
-              explanation:
-                "• Adjacent sibling combinator: selects the next p after h1.",
-            },
-            {
-              language: "css",
-              code: "h1 ~ p {\n  color: orange;\n}",
-              explanation:
-                "• General sibling combinator: selects all p siblings after h1.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_38_t5",
-          title: "Attribute Selectors",
-          explanation:
-            "• Attribute selectors allow selecting elements based on attribute presence or specific attribute values.",
-          examples: [
-            {
-              language: "css",
-              code: "a[target] {\n  background-color: yellow;\n}",
-              explanation:
-                "• Selects all anchor elements with a target attribute.",
-            },
-            {
-              language: "css",
-              code: 'h1[class="section-heading"] {\n  color: blue;\n}',
-              explanation:
-                "• Selects h1 elements with class value 'section-heading'.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "css",
+              "code": "/* Linear: Top-Left to Bottom-Right */\n.hero-bg {\n  background-image: linear-gradient(to bottom right, #ff7e5f, #feb47b);\n}\n\n/* Radial: Center Outward */\n.spotlight {\n  background-image: radial-gradient(white, grey);\n}",
+              "explanation": "• Gradients add depth and modern aesthetics to UI components like buttons and backgrounds."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   39: [
     {
-      id: "sc_day_39",
-      title: "Introduction to Functions",
-      topics: [
+      "id": "sc_day_39",
+      "title": "Mastering JavaScript Functions",
+      "topics": [
         {
-          id: "sc_day_39_t1",
-          title: "What is a Function?",
-          explanation:
-            "• A function is a reusable block of code that performs a specific task. It runs only when it is called. Functions help in organizing code, reducing repetition, and improving readability.",
+          "id": "sc_day_39_t1",
+          "title": "Understanding Functions",
+          "explanation": "• A function is a self-contained block of code designed to perform a particular task.\n• Reusability: Instead of writing the same code multiple times, you define it once in a function and 'call' it whenever needed.\n• Naming: Functions are identified by a unique name, followed by parentheses `()`.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "function sayHi() {\n  console.log(\"Hi there!\");\n}\nsayHi(); // Calling the function",
+              "explanation": "• Defining a function doesn't run the code; calling the function name with parentheses is what triggers the execution."
+            }
+          ]
         },
         {
-          id: "sc_day_39_t2",
-          title: "Function Definition and Calling",
-          explanation:
-            "• A function must first be defined using the function keyword. After defining it, we call it using its name followed by parentheses.",
-          examples: [
+          "id": "sc_day_39_t2",
+          "title": "Parameters vs. Arguments",
+          "explanation": "• Parameters: These are placeholders or local variables defined in the function signature. They act as 'inputs' for the logic inside.\n• Arguments: These are the actual values you pass into the function when you call it.\n• Think of a parameter as a 'label' on a box, and the argument as the 'item' you put inside that box.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'function greet() {\n  console.log("Hello");\n}\n\ngreet();',
-              explanation:
-                "• The function greet is defined and then called. Output: Hello.",
-            },
-          ],
+              "language": "javascript",
+              "code": "function welcomeUser(name) { // 'name' is the parameter\n  console.log(`Welcome, ${name}`);\n}\nwelcomeUser(\"Arjun\"); // \"Arjun\" is the argument",
+              "explanation": "• The value \"Arjun\" replaces the parameter 'name' inside the function scope."
+            }
+          ]
         },
         {
-          id: "sc_day_39_t3",
-          title: "Arguments and Parameters",
-          explanation:
-            "• Parameters are variables defined in the function definition. Arguments are actual values passed to the function when calling it.",
-          examples: [
+          "id": "sc_day_39_t3",
+          "title": "The Return Statement",
+          "explanation": "• The `return` statement sends a value back to the place where the function was called.\n• Exit Point: When a function hits a `return`, it stops immediately. Any code written after the `return` line inside that function will never run.\n• You can store the returned value in a variable to use it later in your program.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'function greet(word) {\n  let msg = "Hello " + word;\n  console.log(msg);\n}\n\ngreet("Rahul");',
-              explanation:
-                "• Here, 'word' is a parameter and 'Rahul' is the argument. Output: Hello Rahul.",
-            },
-          ],
+              "language": "javascript",
+              "code": "function multiply(a, b) {\n  return a * b;\n  console.log(\"This will never run\");\n}\nlet product = multiply(5, 4);\nconsole.log(product); // Output: 20",
+              "explanation": "• The `return` statement allows functions to act as data processors that produce a result."
+            }
+          ]
         },
         {
-          id: "sc_day_39_t4",
-          title: "Returning Values from Functions",
-          explanation:
-            "• The return statement sends a value back to the place where the function was called. Once return executes, the function stops running.",
-          examples: [
+          "id": "sc_day_39_t4",
+          "title": "Function Combinations",
+          "explanation": "• Functions vary based on their input (arguments) and output (return values):\n  - Type 1: No args, no return (useful for simple logging).\n  - Type 2: Args, no return (useful for updating something external).\n  - Type 3: No args, with return (useful for getting a fixed value or state).\n  - Type 4: Args and return (The most common type—calculates an output based on inputs).",
+          "examples": [
             {
-              language: "javascript",
-              code: 'function greet(word) {\n  let msg = "Hello " + word;\n  return msg;\n}\n\nlet greeting = greet("Rahul");\nconsole.log(greeting);',
-              explanation:
-                "• The function returns a value instead of printing it directly. Output: Hello Rahul.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_39_t5",
-          title: "Types of Functions Based on Arguments and Return Values",
-          explanation:
-            "• Functions can be categorized based on whether they accept arguments and whether they return values.",
-          examples: [
-            {
-              language: "javascript",
-              code: "function add() {\n  let a = 10;\n  let b = 20;\n  console.log(a + b);\n}\n\nadd();",
-              explanation:
-                "• Function without arguments and without return value.",
-            },
-            {
-              language: "javascript",
-              code: "function add(a, b) {\n  console.log(a + b);\n}\n\nadd(10, 20);",
-              explanation:
-                "• Function with arguments and without return value.",
-            },
-            {
-              language: "javascript",
-              code: "function add() {\n  let a = 10;\n  let b = 20;\n  return a + b;\n}\n\nlet result = add();\nconsole.log(result);",
-              explanation:
-                "• Function without arguments and with return value.",
-            },
-            {
-              language: "javascript",
-              code: "function add(a, b) {\n  return a + b;\n}\n\nlet result = add(10, 20);\nconsole.log(result);",
-              explanation: "• Function with arguments and with return value.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_39_t6",
-          title: "Built-in Functions",
-          explanation:
-            "• JavaScript provides built-in functions that are ready to use, such as console.log() for printing output, Number() for converting values to numbers, and String() for converting values to strings.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "function getFullYear() {\n  return 2026; // No arguments, fixed return value\n}",
+              "explanation": "• Different combinations are used depending on whether the function needs external data or needs to communicate a result back."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   40: [
     {
-      id: "sc_day_40",
-      title: "CSS Specificity, Inline Styles & Cascade",
-      topics: [
+      "id": "sc_day_40",
+      "title": "CSS Specificity & Cascade",
+      "topics": [
         {
-          id: "sc_day_40_t1",
-          title: "Understanding Specificity",
-          explanation:
-            "• Specificity determines which CSS rule is applied when multiple rules target the same HTML element. The browser calculates specificity and applies the most specific rule.",
-        },
-        {
-          id: "sc_day_40_t2",
-          title: "Specificity Order (Lowest to Highest)",
-          explanation:
-            "• CSS selectors are ranked in the following order of specificity: Type Selector < Class Selector < ID Selector < Inline Styles.",
-          examples: [
+          "id": "sc_day_40_t1",
+          "title": "Understanding CSS Specificity",
+          "explanation": "• Specificity is the 'weighting' system browsers use to decide which CSS rule wins when multiple rules target the same element.\n• The Hierarchy (Low to High):\n  1. Type Selector: Targets the tag (e.g., `h1`). Least specific.\n  2. Class Selector: Targets a group (e.g., `.heading`). More specific because classes are intentional attributes.\n  3. ID Selector: Targets a unique element (e.g., `#main-title`). Most specific among standard selectors because IDs are unique to one element.",
+          "examples": [
             {
-              language: "css",
-              code: "h1 {\n  color: blue;\n}\n\n.heading {\n  color: green;\n}",
-              explanation:
-                "• Class selector (.heading) overrides type selector (h1) because it has higher specificity.",
-            },
-            {
-              language: "css",
-              code: ".heading {\n  color: green;\n}\n\n#heading5 {\n  color: red;\n}",
-              explanation:
-                "• ID selector (#heading5) overrides class selector because it is more specific.",
-            },
-          ],
+              "language": "css",
+              "code": "/* Specificity: 0,0,1 */\nh1 { color: grey; }\n\n/* Specificity: 0,1,0 (Wins over h1) */\n.heading { color: blue; }\n\n/* Specificity: 1,0,0 (Wins over both) */\n#heading5 { color: green; }",
+              "explanation": "• Even if the `h1` rule is written later in the file, the ID selector will always win because it has a higher specificity 'score'."
+            }
+          ]
         },
         {
-          id: "sc_day_40_t3",
-          title: "Inline Styles",
-          explanation:
-            "• Inline styles are written directly inside the HTML element using the style attribute. They have higher specificity than type, class, and ID selectors.",
-          examples: [
+          "id": "sc_day_40_t2",
+          "title": "Inline Styles and !important",
+          "explanation": "• Inline Styles: Styles written directly inside the HTML tag using `style=\"...\"`. These have a higher priority than any selector in an external or internal stylesheet.\n• The !important Rule: This is a 'nuclear option'. Adding `!important` to a property forces it to override everything else, including inline styles and ID selectors.\n• Best Practice: Avoid both whenever possible. Use classes to keep your code maintainable and readable.",
+          "examples": [
             {
-              language: "html",
-              code: '<h1 style="color: white; background-color: orange;">Heading</h1>',
-              explanation:
-                "• Inline styles override any external or internal CSS rules.",
-            },
-          ],
+              "language": "html",
+              "code": "\n<h1 style=\"color: orange;\">Hello World</h1>",
+              "explanation": "• Inline styles make debugging difficult because they are scattered throughout the HTML rather than centralized in CSS."
+            }
+          ]
         },
         {
-          id: "sc_day_40_t4",
-          title: "CSS Cascade (Source Order)",
-          explanation:
-            "• When two selectors have equal specificity, the rule that appears later in the CSS file is applied. This is known as the Cascade.",
-          examples: [
+          "id": "sc_day_40_t3",
+          "title": "The CSS Cascade",
+          "explanation": "• If two selectors have the **exact same specificity**, the browser looks at the source order.\n• The rule that is defined **last** (at the bottom of the CSS file) is the one that gets applied.\n• Note: The order of class names in the HTML attribute (`class=\"style-2 style-1\"`) does not matter; only the order in the CSS file matters.",
+          "examples": [
             {
-              language: "css",
-              code: ".style-1 {\n  color: green;\n}\n\n.style-1 {\n  color: blue;\n}",
-              explanation:
-                "• Since both have equal specificity, the second rule (blue) is applied.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_40_t5",
-          title: "The !important Rule",
-          explanation:
-            "• The !important declaration overrides all other specificity rules except another !important with higher specificity or later source order. It should be used carefully.",
-          examples: [
-            {
-              language: "css",
-              code: ".style-1 {\n  color: green;\n}\n\nh1 {\n  color: orange !important;\n}",
-              explanation:
-                "• The !important rule forces the h1 color to be orange, overriding other rules.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_40_t6",
-          title: "Best Practices",
-          explanation:
-            "• Avoid overusing !important. Prefer solving conflicts using proper selector specificity and clean CSS structure. Inline styles are not recommended for scalable projects because they are not reusable and reduce maintainability.",
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".style-1 { color: green; }\n.style-2 { color: orange; }\n\n/* Any element with BOTH classes will be orange because .style-2 is defined later. */",
+              "explanation": "• This is why we call it 'Cascading' Style Sheets—the styles flow down, and the final one sticks."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   41: [
     {
-      id: "sc_day_41",
-      title: "Sizing Elements and handling overflow",
-      topics: [
+      "id": "sc_day_42",
+      "title": "Arrow Functions, Scope, and Hoisting",
+      "topics": [
         {
-          id: "sc_day_41_t1",
-          title: "Intrinsic and Extrinsic Size",
-          explanation:
-            "• Intrinsic size refers to the natural size an element takes by default (for example, images or paragraphs). Extrinsic size refers to a size explicitly defined using CSS properties such as width and height.",
+          "id": "sc_day_42_t1",
+          "title": "Arrow Functions: Modern Syntax",
+          "explanation": "• Arrow functions provide a sleek, shorter way to write functions compared to traditional function expressions.\n• Implicit Return: If your function consists of only one expression, you can omit the `return` keyword and the curly braces `{}`. The result of that expression is returned automatically.\n• Parameter Flexibility: If you have exactly one parameter, you can skip the parentheses `()`. If you have zero or multiple parameters, parentheses are mandatory.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "// Traditional\nconst double = function(n) { return n * 2; };\n\n// Arrow Function (Concise)\nconst double = n => n * 2;",
+              "explanation": "• The arrow function version is much cleaner, especially for simple mathematical operations or data transformations."
+            }
+          ]
         },
         {
-          id: "sc_day_41_t2",
-          title: "Intrinsic Size Example",
-          explanation:
-            "• Some elements automatically take a default size based on content or browser behavior.",
-          examples: [
+          "id": "sc_day_42_t2",
+          "title": "Understanding Scope & Scope Chaining",
+          "explanation": "• Scope determines the accessibility (visibility) of variables.\n• Global Scope: Variables defined outside any function or block—available everywhere.\n• Function Scope: Variables defined inside a function—invisible outside that function.\n• Block Scope: Introduced with `let` and `const`. Variables inside `{}` (like `if` or `for`) cannot be accessed outside those braces.\n• Scope Chaining: If JavaScript can't find a variable in the local scope, it looks 'up' to the outer parent scope, continuing until it hits the Global scope. It never looks 'down' into child scopes.",
+          "examples": [
             {
-              language: "html",
-              code: '<img src="image.jpg" />\n<p>Once upon a time, there was a tortoise and a hare</p>',
-              explanation:
-                "• The image and paragraph take their natural default size.",
-            },
-          ],
+              "language": "javascript",
+              "code": "let globalVar = \"I am global\";\n\nfunction outer() {\n  let outerVar = \"I am outer\";\n  if (true) {\n    let blockVar = \"I am block\";\n    console.log(globalVar); // Success (Chain to global)\n  }\n  console.log(blockVar); // Error (blockVar is trapped in the 'if' block)\n}",
+              "explanation": "• Variables flow 'outward' but not 'inward'. Parent scopes cannot see child variables."
+            }
+          ]
         },
         {
-          id: "sc_day_41_t3",
-          title: "Extrinsic Size Example",
-          explanation:
-            "• We can override intrinsic size by explicitly defining width and height.",
-          examples: [
+          "id": "sc_day_42_t3",
+          "title": "Hoisting: JavaScript's Pre-processing",
+          "explanation": "• Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before the code runs.\n• Variable Hoisting: \n  - `var` is hoisted and initialized as `undefined`. \n  - `let` and `const` are hoisted into a 'Temporal Dead Zone'—they exist but cannot be accessed until the actual line of code where they are defined.\n• Function Hoisting: \n  - Declarations are fully hoisted (you can call them before they appear in the code).\n  - Expressions and Arrow Functions are not fully hoisted because they are treated as variables assigned to a function.",
+          "examples": [
             {
-              language: "css",
-              code: ".image {\n  width: 300px;\n  height: 200px;\n}",
-              explanation: "• The image size is now controlled by CSS.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_41_t4",
-          title: "Handling Overflow",
-          explanation:
-            "• Overflow occurs when content exceeds the size of its container. The CSS overflow property controls how extra content is handled.",
-        },
-        {
-          id: "sc_day_41_t5",
-          title: "Overflow Property Values",
-          examples: [
-            {
-              language: "css",
-              code: ".box {\n  height: 100px;\n  overflow: visible;\n}",
-              explanation: "• visible (default): Extra content spills outside.",
-            },
-            {
-              language: "css",
-              code: ".box {\n  height: 100px;\n  overflow: hidden;\n}",
-              explanation: "• hidden: Extra content is clipped.",
-            },
-            {
-              language: "css",
-              code: ".box {\n  height: 100px;\n  overflow: scroll;\n}",
-              explanation: "• scroll: Always shows scrollbars.",
-            },
-            {
-              language: "css",
-              code: ".box {\n  height: 100px;\n  overflow: auto;\n}",
-              explanation: "• auto: Adds scrollbars only when needed.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_41_t6",
-          title: "Overflow-X and Overflow-Y",
-          explanation:
-            "• overflow-x handles horizontal overflow, and overflow-y handles vertical overflow.",
-          examples: [
-            {
-              language: "css",
-              code: ".box {\n  overflow-x: hidden;\n  overflow-y: scroll;\n}",
-              explanation: "• Controls overflow direction separately.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_41_t7",
-          title: "Min and Max Sizes",
-          explanation:
-            "• Min and Max properties restrict how small or large an element can grow.",
-        },
-        {
-          id: "sc_day_41_t8",
-          title: "Min Size Example",
-          examples: [
-            {
-              language: "css",
-              code: ".paragraph {\n  min-height: 150px;\n}",
-              explanation:
-                "• Ensures the element height never goes below 150px.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_41_t9",
-          title: "Max Size Example",
-          examples: [
-            {
-              language: "css",
-              code: ".paragraph {\n  max-height: 180px;\n  overflow: auto;\n}",
-              explanation:
-                "• Restricts maximum height and enables scroll if content exceeds limit.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_41_t10",
-          title: "Viewport Meta Tag",
-          explanation:
-            "• The viewport meta element ensures proper responsive scaling on mobile devices.",
-          examples: [
-            {
-              language: "html",
-              code: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
-              explanation:
-                "• Ensures proper rendering and touch zooming on mobile devices.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "sayHi(); // Works! (Declaration)\nfunction sayHi() { console.log(\"Hi!\"); }\n\nsayBye(); // Error! (Arrow function/Expression)\nconst sayBye = () => console.log(\"Bye!\");",
+              "explanation": "• Standard declarations are moved to the top, but variable-based functions must be defined before they are used."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   42: [
     {
-      id: "sc_day_42",
-      title: "Arrow Functions, Scope & Hoisting",
-      topics: [
+      "id": "sc_day_42",
+      "title": "Arrow Functions, Scope, and Hoisting",
+      "topics": [
         {
-          id: "sc_day_42_t1",
-          title: "Arrow Functions",
-          explanation:
-            "• Arrow functions provide a shorter and cleaner syntax for writing functions in JavaScript. They are an alternative to traditional function expressions.",
+          "id": "sc_day_42_t1",
+          "title": "Arrow Functions: Modern Syntax",
+          "explanation": "• Arrow functions provide a sleek, shorter way to write functions compared to traditional function expressions.\n• Implicit Return: If your function consists of only one expression, you can omit the `return` keyword and the curly braces `{}`. The result of that expression is returned automatically.\n• Parameter Flexibility: If you have exactly one parameter, you can skip the parentheses `()`. If you have zero or multiple parameters, parentheses are mandatory.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "// Traditional\nconst double = function(n) { return n * 2; };\n\n// Arrow Function (Concise)\nconst double = n => n * 2;",
+              "explanation": "• The arrow function version is much cleaner, especially for simple mathematical operations or data transformations."
+            }
+          ]
         },
         {
-          id: "sc_day_42_t2",
-          title: "Arrow Function Syntax Variations",
-          examples: [
+          "id": "sc_day_42_t2",
+          "title": "Understanding Scope & Scope Chaining",
+          "explanation": "• **Scope** determines the accessibility (visibility) of variables.\n• **Global Scope**: Variables defined outside any function or block—available everywhere.\n• **Function Scope**: Variables defined inside a function—invisible outside that function.\n• **Block Scope**: Introduced with `let` and `const`. Variables inside `{}` (like `if` or `for`) cannot be accessed outside those braces.\n• **Scope Chaining**: If JavaScript can't find a variable in the local scope, it looks 'up' to the outer parent scope, continuing until it hits the Global scope. It never looks 'down' into child scopes.",
+          "examples": [
             {
-              language: "javascript",
-              code: "const sum = (a, b) => {\n  return a + b;\n};\n\nconsole.log(sum(4, 3));",
-              explanation:
-                "• Basic arrow function with parameters and return statement.",
-            },
-            {
-              language: "javascript",
-              code: "const sum = (a, b) => a + b;\n\nconsole.log(sum(4, 3));",
-              explanation:
-                "• For single expressions, return and curly braces are not required.",
-            },
-            {
-              language: "javascript",
-              code: 'const greet = name => `Hi ${name}!`;\n\nconsole.log(greet("Rahul"));',
-              explanation:
-                "• Parentheses are optional when there is only one parameter.",
-            },
-            {
-              language: "javascript",
-              code: 'const sayHi = () => "Hello!";\n\nconsole.log(sayHi());',
-              explanation:
-                "• Empty parentheses are required when there are no parameters.",
-            },
-          ],
+              "language": "javascript",
+              "code": "let globalVar = \"I am global\";\n\nfunction outer() {\n  let outerVar = \"I am outer\";\n  if (true) {\n    let blockVar = \"I am block\";\n    console.log(globalVar); // Success (Chain to global)\n  }\n  console.log(blockVar); // Error (blockVar is trapped in the 'if' block)\n}",
+              "explanation": "• Variables flow 'outward' but not 'inward'. Parent scopes cannot see child variables."
+            }
+          ]
         },
         {
-          id: "sc_day_42_t3",
-          title: "Scope in JavaScript",
-          explanation:
-            "• Scope determines where variables can be accessed in a program. JavaScript has Global Scope, Function Scope, and Block Scope.",
-        },
-        {
-          id: "sc_day_42_t4",
-          title: "Global Scope",
-          examples: [
+          "id": "sc_day_42_t3",
+          "title": "Hoisting: JavaScript's Pre-processing",
+          "explanation": "• Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before the code runs.\n• **Variable Hoisting**: \n  - `var` is hoisted and initialized as `undefined`. \n  - `let` and `const` are hoisted into a 'Temporal Dead Zone'—they exist but cannot be accessed until the actual line of code where they are defined.\n• **Function Hoisting**: \n  - **Declarations** are fully hoisted (you can call them before they appear in the code).\n  - **Expressions and Arrow Functions** are not fully hoisted because they are treated as variables assigned to a function.",
+          "examples": [
             {
-              language: "javascript",
-              code: "let x = 30;\n\nfunction calci() {\n  if (x > 18) {\n    console.log(x);\n  }\n}\n\ncalci();\nconsole.log(x);",
-              explanation:
-                "• Global variables are accessible everywhere in the program.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_42_t5",
-          title: "Block Scope",
-          examples: [
-            {
-              language: "javascript",
-              code: "let age = 27;\n\nif (age > 18) {\n  let x = 0;\n  console.log(x);\n}\n\nconsole.log(x);",
-              explanation:
-                "• Variables declared with let or const inside a block are accessible only within that block.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_42_t6",
-          title: "Function Scope",
-          examples: [
-            {
-              language: "javascript",
-              code: "function calci() {\n  let x = 30;\n  console.log(x);\n}\n\ncalci();\nconsole.log(x);",
-              explanation:
-                "• Variables declared inside a function are accessible only within that function.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_42_t7",
-          title: "Scope Chaining",
-          examples: [
-            {
-              language: "javascript",
-              code: "let x = 10;\n\nfunction calci() {\n  let y = 20;\n  if (true) {\n    console.log(x);\n  }\n}\n\ncalci();",
-              explanation:
-                "• JavaScript searches for variables in the current scope and then moves outward to parent scopes.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_42_t8",
-          title: "Hoisting",
-          explanation:
-            "• Hoisting is JavaScript's behavior of moving declarations to the top of their scope before execution.",
-        },
-        {
-          id: "sc_day_42_t9",
-          title: "Variable Hoisting",
-          examples: [
-            {
-              language: "javascript",
-              code: "console.log(a);\nvar a = 10;",
-              explanation: "• var is hoisted and initialized with undefined.",
-            },
-            {
-              language: "javascript",
-              code: "console.log(b);\nlet b = 20;",
-              explanation:
-                "• let is hoisted but not initialized. Accessing before declaration causes ReferenceError.",
-            },
-            {
-              language: "javascript",
-              code: "console.log(c);\nconst c = 30;",
-              explanation: "• const behaves like let regarding hoisting.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_42_t10",
-          title: "Function Hoisting",
-          examples: [
-            {
-              language: "javascript",
-              code: 'greet();\n\nfunction greet() {\n  console.log("Hello");\n}',
-              explanation: "• Function declarations are fully hoisted.",
-            },
-            {
-              language: "javascript",
-              code: 'sayHi();\n\nconst sayHi = function() {\n  console.log("Hi");\n};',
-              explanation: "• Function expressions are not fully hoisted.",
-            },
-            {
-              language: "javascript",
-              code: 'sayHello();\n\nconst sayHello = () => {\n  console.log("Hello");\n};',
-              explanation: "• Arrow functions are not fully hoisted.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "sayHi(); // Works! (Declaration)\nfunction sayHi() { console.log(\"Hi!\"); }\n\nsayBye(); // Error! (Arrow function/Expression)\nconst sayBye = () => console.log(\"Bye!\");",
+              "explanation": "• Standard declarations are moved to the top, but variable-based functions must be defined before they are used."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   43: [
     {
-      id: "sc_day_43",
-      title: "Box Sizing",
-      topics: [
+      "id": "sc_day_43",
+      "title": "Box Sizing",
+      "topics": [
         {
-          id: "sc_day_43_t1",
-          title: "Introduction to Box Sizing",
-          explanation:
-            "• Every HTML element is represented as a rectangular box. In the default CSS box model, the width and height you assign to an element apply only to its content. Padding and border are added outside the specified width and height, which increases the total size of the element.",
-        },
-        {
-          id: "sc_day_43_t2",
-          title: "The box-sizing Property",
-          explanation:
-            "• The box-sizing property defines how the total width and height of an element are calculated. It controls whether padding and border are included inside or outside the specified width and height.",
-          examples: [
+          "id": "sc_day_43_t1",
+          "title": "The CSS Box Sizing Property",
+          "explanation": "• By default, the CSS Box Model applies the `width` and `height` only to the content area. Adding padding or borders makes the element's actual visual size larger than the dimensions you set.\n• The `box-sizing` property allows you to change how this calculation works, making it much easier to build predictable layouts.\n• content-box (default): `Final Width = width + padding + border`. The box grows as you add padding or borders.\n• border-box: `Final Width = width`. The padding and border are pushed *inside* the box, so the total width remains exactly what you specified.",
+          "examples": [
             {
-              language: "css",
-              code: "box-sizing: content-box;\nbox-sizing: border-box;",
-              explanation:
-                "• content-box is the default value. border-box includes padding and border within the width and height.",
-            },
-          ],
+              "language": "css",
+              "code": ".container {\n  width: 300px;\n  padding: 20px;\n  border: 5px solid black;\n  box-sizing: border-box; /* Total width is still 300px */\n}",
+              "explanation": "• With `border-box`, the content area automatically shrinks to 250px (300 - 40 - 10) to accommodate the extra space."
+            }
+          ]
         },
         {
-          id: "sc_day_43_t3",
-          title: "content-box (Default)",
-          explanation:
-            "• In content-box, width and height apply only to the content area. Padding and border are added outside, increasing the total element size.",
-          examples: [
+          "id": "sc_day_43_t2",
+          "title": "Why Use Border-Box?",
+          "explanation": "• Managing mathematical calculations for every div is tedious. `border-box` is the industry standard (used by Bootstrap and Tailwind) because it prevents elements from breaking their containers when you add a simple border or some internal spacing.\n• It is highly recommended to set this globally at the start of every project.",
+          "examples": [
             {
-              language: "css",
-              code: ".box {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n  box-sizing: content-box;\n}",
-              explanation:
-                "• Total width = 200 + 40 (padding) + 10 (border) = 250px.",
-            },
-          ],
+              "language": "css",
+              "code": "/* The Global Reset */\n* {\n  box-sizing: border-box;\n}",
+              "explanation": "• This ensures every element on your page behaves consistently from the beginning."
+            }
+          ]
         },
         {
-          id: "sc_day_43_t4",
-          title: "border-box",
-          explanation:
-            "• In border-box, width and height include content, padding, and border. This makes layout calculations easier and prevents unexpected overflow.",
-          examples: [
+          "id": "sc_day_43_t3",
+          "title": "The Universal Selector (*)",
+          "explanation": "• The `*` selector targets every single HTML element in the document (body, div, p, span, etc.).\n• Low Specificity: It has the lowest possible specificity. Any other selector (Type, Class, or ID) will easily override styles set here.\n• Best Use Case: It is primarily used for 'resets'—removing default browser margins/padding or setting the global `box-sizing`.",
+          "examples": [
             {
-              language: "css",
-              code: ".box {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n  box-sizing: border-box;\n}",
-              explanation:
-                "• Total width remains 200px. Padding and border are included inside.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_43_t5",
-          title: "Why border-box is Recommended",
-          explanation:
-            "• Using box-sizing: border-box; makes layout design predictable and easier to manage. Frameworks like Bootstrap apply border-box to all elements by default because it simplifies responsive design and prevents size miscalculations.",
-        },
-        {
-          id: "sc_day_43_t6",
-          title: "Universal Selector (*)",
-          explanation:
-            "• The universal selector (*) selects all HTML elements in a document. It is commonly used to apply global styles such as box-sizing or margin reset.",
-          examples: [
-            {
-              language: "css",
-              code: "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}",
-              explanation:
-                "• Applies the styles to all elements in the document.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_43_t7",
-          title: "Specificity Note",
-          explanation:
-            "• Styles applied using the universal selector have the lowest specificity. This means they can be easily overridden by more specific selectors like class, id, or element selectors.",
-        },
-      ],
-    },
+              "language": "css",
+              "code": "* {\n  margin: 0;\n  padding: 0;\n  font-family: 'Arial', sans-serif;\n}",
+              "explanation": "• This clears the default 'gutters' browsers add, giving you a blank canvas to work with."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   44: [
     {
-      id: "sc_day_44",
-      title: "Introduction to Recursion",
-      topics: [
+      "id": "sc_day_44",
+      "title": "Introduction to Recursion",
+      "topics": [
         {
-          id: "sc_day_44_t1",
-          title: "Stack (LIFO Concept)",
-          explanation:
-            "• A stack is a data structure that follows the Last-In/First-Out (LIFO) principle. The last item added to the stack is the first one removed. It is similar to a stack of books where the last book placed on top is removed first.",
-        },
-        {
-          id: "sc_day_44_t2",
-          title: "Calling a Function Inside Another Function",
-          explanation:
-            "• In JavaScript, a function can call another function to perform tasks. This helps organize code into reusable blocks.",
-          examples: [
+          "id": "sc_day_44_t1",
+          "title": "The Function Call Stack",
+          "explanation": "• To understand recursion, you must first understand the Call Stack. It is a mechanism the JavaScript engine uses to keep track of its place in a script that calls multiple functions.\n• LIFO Principle: It works like a stack of plates. When a function is called, it is pushed onto the top of the stack. When it finishes, it is popped off.\n• If a function calls another function, the first one stays on the stack (paused) while the second one is pushed on top and executed.",
+          "examples": [
             {
-              language: "javascript",
-              code: "function function_1() {\n  // function body\n}\n\nfunction function_2() {\n  function_1();\n}",
-              explanation: "• function_2 calls function_1 inside it.",
-            },
+              "language": "javascript",
+              "code": "function first() {\n  second();\n  console.log(\"First done\");\n}\nfunction second() {\n  console.log(\"Second done\");\n}\nfirst();",
+              "explanation": "• The stack order: `first()` enters → `second()` enters on top → `second()` finishes and pops → `first()` finishes and pops."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_44_t2",
+          "title": "What is Recursion?",
+          "explanation": "• Recursion is a programming technique where a function calls itself.\n• It is used to solve complex problems by breaking them down into simpler, identical sub-problems.\n• A recursive solution always has two parts:\n  1. The Recursive Step: The part where the function calls itself with a slightly different input (moving closer to the end).\n  2. The Base Case: The 'stop' condition that prevents the function from calling itself forever.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'function checkCredentials(user, pass) {\n  return user === "admin" && pass === "123";\n}\n\nfunction loginUser(user, pass) {\n  const isValid = checkCredentials(user, pass);\n  console.log(isValid ? "Success" : "failed");\n}\n\nloginUser("admin", "123");',
-              explanation:
-                "• loginUser calls checkCredentials to validate login details.",
-            },
-          ],
+              "language": "javascript",
+              "code": "function countDown(n) {\n  if (n <= 0) return; // Base Case\n  console.log(n);\n  countDown(n - 1);  // Recursive Step\n}\ncountDown(3); // Prints 3, 2, 1",
+              "explanation": "• Without the base case `n <= 0`, the function would try to count down into negative numbers forever."
+            }
+          ]
         },
         {
-          id: "sc_day_44_t3",
-          title: "Function Call Stack",
-          explanation:
-            "• The call stack keeps track of active function calls. When a function is called, it is pushed onto the stack. When the function finishes execution, it is popped off the stack. The stack ensures proper execution order.",
-          examples: [
+          "id": "sc_day_44_t3",
+          "title": "Factorials and Stack Overflows",
+          "explanation": "• Calculating a factorial ($n!$) is the classic example of recursion. For example, $5! = 5 \times 4 \times 3 \times 2 \times 1$.\n• In code, we say $factorial(n) = n \times factorial(n-1)$.\n• Stack Overflow: If you forget a base case or the problem is too large, the Call Stack fills up completely. JavaScript will throw a `RangeError: Maximum call stack size exceeded`.",
+          "examples": [
             {
-              language: "text",
-              code: 'Call Flow for loginUser("admin", "123"):\n\n1. loginUser is pushed to the stack.\n2. checkCredentials is called and pushed.\n3. checkCredentials finishes and is popped.\n4. loginUser finishes and is popped.',
-              explanation: "• Functions are executed in LIFO order.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_44_t4",
-          title: "Introduction to Recursion",
-          explanation:
-            "• Recursion is a process where a function calls itself to solve a problem. The problem is broken into smaller instances of the same problem until a stopping condition (base case) is reached.",
-        },
-        {
-          id: "sc_day_44_t5",
-          title: "Factorial Example Using Recursion",
-          explanation:
-            "• The factorial of a number is calculated by multiplying the number by all positive integers below it. Recursion repeatedly calls the function with (n - 1) until it reaches the base case.",
-          examples: [
-            {
-              language: "javascript",
-              code: "function factorial(n) {\n  if (n == 1) return 1;  // Base case\n  return n * factorial(n - 1);\n}",
-              explanation:
-                "• The base case prevents infinite recursion. For factorial(5), it calculates 5 * 4 * 3 * 2 * 1.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_44_t6",
-          title: "Step-by-Step Execution of Recursion",
-          explanation:
-            "• Each recursive call is added to the call stack until the base case is reached. Once the base case returns a value, each function call resolves in reverse order (LIFO) and gets removed from the stack.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'function greet(count) {\n  if (count === 2) return;\n  console.log("Hello World");\n  greet(count + 1);\n}\n\nlet count = 0;\ngreet(count);',
-              explanation:
-                '• Execution Flow: greet(0) → greet(1) → greet(2) → stops. Prints "Hello World" twice.',
-            },
-          ],
-        },
-        {
-          id: "sc_day_44_t7",
-          title: "Base Case in Recursion",
-          explanation:
-            "• A base case is the stopping condition in recursion. Without a base case, the function will call itself infinitely, causing a stack overflow error.",
-        },
-        {
-          id: "sc_day_44_t8",
-          title: "Interview Questions",
-          explanation:
-            "• Recursion is a technique where a function calls itself to solve smaller instances of the same problem. A base case is the condition that stops the recursive calls. In the factorial example, recursion works by multiplying n with factorial(n-1) until n becomes 1.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "function factorial(n) {\n  if (n === 1) return 1; // Base case\n  return n * factorial(n - 1);\n}\nconsole.log(factorial(5)); // 120",
+              "explanation": "• The computer calculates this as: $5 \times (4 \times (3 \times (2 \times 1)))$. It waits for the smallest result ($1$) before multiplying its way back up."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   45: [
     {
-      id: "sc_day_45",
-      title: "Introduction to Arrays",
-      topics: [
+      "id": "sc_day_45",
+      "title": "Introduction to Arrays",
+      "topics": [
         {
-          id: "sc_day_45_t1",
-          title: "Why Do We Need Arrays?",
-          explanation:
-            "• Arrays are used to store multiple values under a single variable name. Without arrays, storing large collections of data like marks of 50 students would require creating many separate variables, which is inefficient and difficult to manage.",
-          examples: [
+          "id": "sc_day_45_t1",
+          "title": "Understanding Arrays as Containers",
+          "explanation": "• An array is a high-level, list-like object used to store multiple values in a single variable. Instead of declaring `student1`, `student2`, etc., you store them all in one `students` array.\n• **Zero-Based Indexing**: This is the most critical rule in programming. The count starts at **0**, not 1. If an array has 5 items, their 'addresses' are 0, 1, 2, 3, and 4.\n• **Dynamic & Mixed**: JavaScript arrays are flexible; they can grow in size automatically and hold a mix of strings, numbers, and booleans all at once.",
+          "examples": [
             {
-              language: "javascript",
-              code: "const mark1 = 85;\nconst mark2 = 90;\nconst mark3 = 78;",
-              explanation: "• Without arrays, multiple variables are needed.",
-            },
-            {
-              language: "javascript",
-              code: "const marks = [85, 90, 78, 92, 88];",
-              explanation:
-                "• Using an array stores all marks in a single variable.",
-            },
-          ],
+              "language": "javascript",
+              "code": "const profile = [\"User123\", 25, true];\nconsole.log(profile[0]); // Output: User123",
+              "explanation": "• Even though the values are different types, the array keeps them organized by their index."
+            }
+          ]
         },
         {
-          id: "sc_day_45_t2",
-          title: "What is an Array?",
-          explanation:
-            "• An array is a special non-primitive data type that can store multiple values in an ordered collection. Each value is stored in a numbered position starting from index 0.",
+          "id": "sc_day_45_t2",
+          "title": "Accessing and Modifying Elements",
+          "explanation": "• Accessing: Use square brackets `[]` with the index number to 'grab' a specific value.\n• The Length Property: `array.length` tells you how many items are inside. Since the index starts at 0, the last item is always at `length - 1`.\n• Invalid Access: If you ask for an index that doesn't exist (like `index 99` in a 3-item array), JavaScript won't crash; it simply returns `undefined`.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "const cars = [\"Tesla\", \"BMW\", \"Ford\"];\nconsole.log(cars[cars.length - 1]); // Output: Ford\nconsole.log(cars[5]); // Output: undefined",
+              "explanation": "• Using length - 1 is the safest way to get the last element regardless of how many items are added or removed."
+            }
+          ]
         },
         {
-          id: "sc_day_45_t3",
-          title: "Array Characteristics",
-          explanation:
-            "• Arrays are ordered collections, use zero-based indexing, are dynamic in size, can store mixed data types, and are mutable.",
-        },
-        {
-          id: "sc_day_45_t4",
-          title: "Primitive vs Array Variable",
-          examples: [
+          "id": "sc_day_45_t3",
+          "title": "Mutability: Arrays vs. Strings",
+          "explanation": "• Mutable (Arrays): You can change, add, or delete individual items within an array without creating a brand new array. This makes them very efficient for handling data lists.\n• Immutable (Strings): You cannot change a single character in a string directly. If you try `str[0] = 'X'`, it will fail silently. To change a string, you must replace the entire variable value.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'const studentName = "John";',
-              explanation: "• Primitive variable stores a single value.",
-            },
-            {
-              language: "javascript",
-              code: 'const studentNames = ["John", "Alice", "Bob", "Emma"];',
-              explanation: "• Array stores multiple values under one name.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t5",
-          title: "Creating Arrays (Array Literal)",
-          explanation:
-            "• The most common way to create arrays is using square brackets with comma-separated values.",
-          examples: [
-            {
-              language: "javascript",
-              code: "const numbers = [10, 20, 30, 40, 50];",
-              explanation: "• Square brackets define the array.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t6",
-          title: "Different Types of Arrays",
-          examples: [
-            {
-              language: "javascript",
-              code: "const ages = [25, 30, 35, 40];",
-              explanation: "• Array of numbers.",
-            },
-            {
-              language: "javascript",
-              code: 'const cities = ["Mumbai", "Delhi", "Bangalore", "Chennai"];',
-              explanation: "• Array of strings.",
-            },
-            {
-              language: "javascript",
-              code: "const flags = [true, false, true];",
-              explanation: "• Array of boolean values.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t7",
-          title: "Mixed Data Type Array",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const studentInfo = ["Ravi", 20, true, 8.5, "Computer Science"];',
-              explanation: "• Arrays can store mixed data types.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t8",
-          title: "Empty Array",
-          examples: [
-            {
-              language: "javascript",
-              code: "const shoppingCart = [];",
-              explanation: "• Creates an empty array.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t9",
-          title: "Array Constructor",
-          examples: [
-            {
-              language: "javascript",
-              code: "const numbers = new Array(10, 20, 30);",
-              explanation: "• Alternative way to create an array.",
-            },
-            {
-              language: "javascript",
-              code: "const arr = new Array(5);\nconsole.log(arr);",
-              explanation:
-                "• Creates an array with 5 empty slots (undefined values).",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t10",
-          title: "Array Indexing and Accessing Elements",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const fruits = ["Apple", "Banana", "Mango"];\nconsole.log(fruits[0]);\nconsole.log(fruits[1]);\nconsole.log(fruits[2]);',
-              explanation: "• Access elements using zero-based index.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t11",
-          title: "Accessing Last Element Dynamically",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const colors = ["Red", "Green", "Blue", "Yellow"];\nconst lastColor = colors[colors.length - 1];\nconsole.log(lastColor);',
-              explanation:
-                "• Use length - 1 to access last element dynamically.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t12",
-          title: "Invalid Index Access",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const fruits = ["Apple", "Banana", "Mango"];\nconsole.log(fruits[5]);',
-              explanation: "• Accessing an invalid index returns undefined.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t13",
-          title: "Mutability of Arrays",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const colors = ["Red", "Green", "Blue"];\ncolors[0] = "Yellow";\nconsole.log(colors);',
-              explanation: "• Arrays are mutable; elements can be modified.",
-            },
-            {
-              language: "javascript",
-              code: 'const name = "John";\nname[0] = "D";\nconsole.log(name);',
-              explanation: "• Strings are immutable; they cannot be modified.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_45_t14",
-          title: "Interview Question",
-          explanation:
-            "• Arrays in JavaScript are special non-primitive variables that store multiple values in an ordered collection. Each value is accessed using an index starting from 0.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "let myArr = [1, 2, 3];\nmyArr[0] = 10; // myArr is now [10, 2, 3]\n\nlet myStr = \"Hello\";\nmyStr[0] = \"Y\"; // myStr remains \"Hello\"",
+              "explanation": "• This distinction is a common interview topic. Arrays allow 'in-place' updates, while strings do not."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   46: [
     {
-      id: "sc_day_46",
-      title: "Introduction to CSS Flexbox",
-      topics: [
+      "id": "sc_day_46",
+      "title": "Introduction to CSS Flexbox",
+      "topics": [
         {
-          id: "sc_day_46_t1",
-          title: "Introduction to Layout",
-          explanation:
-            "• A layout is a structured pattern used to arrange elements and organize content on a webpage. Layout determines how elements are positioned and aligned to create a visually structured design.",
-        },
-        {
-          id: "sc_day_46_t2",
-          title: "Methods to Design Layout",
-          explanation:
-            "• There are mainly two modern CSS layout methods: Flexbox and CSS Grid. Flexbox is stable and widely used for one-dimensional layouts (row or column). CSS Grid is more advanced and powerful for two-dimensional layouts but is comparatively more complex.",
-        },
-        {
-          id: "sc_day_46_t3",
-          title: "Introduction to Flexbox",
-          explanation:
-            "• Flexbox is a one-dimensional layout system that arranges elements in rows (horizontal) or columns (vertical). It simplifies alignment, spacing, and responsiveness.",
-        },
-        {
-          id: "sc_day_46_t4",
-          title: "Display Property in Flexbox",
-          explanation:
-            "• To enable Flexbox, set display: flex; on a container element. The container becomes a Flex Container, and its direct children become Flex Items.",
-          examples: [
+          "id": "sc_day_46_t1",
+          "title": "The Flex Container and Items",
+          "explanation": "• Flexbox starts with the `display: flex;` property. Applying this to a parent element turns it into a **Flex Container**.\n• Its direct children automatically become **Flex Items**.\n• Unlike traditional block layouts where elements stack vertically by default, Flexbox defaults to a row, putting items side-by-side without needing `float` or `inline-block` hacks.",
+          "examples": [
             {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n}",
-              explanation: "• Converts the element into a Flex Container.",
-            },
-          ],
+              "language": "css",
+              "code": ".parent {\n  display: flex; /* Activation */\n}",
+              "explanation": "• Once activated, you gain control over the alignment, direction, and size of all child elements."
+            }
+          ]
         },
         {
-          id: "sc_day_46_t5",
-          title: "Flex Direction",
-          explanation:
-            "• The flex-direction property defines the main axis direction. The main axis can be horizontal (row) or vertical (column). The cross axis runs perpendicular to the main axis.",
-          examples: [
+          "id": "sc_day_46_t2",
+          "title": "The Dual Axis System",
+          "explanation": "• To master Flexbox, you must understand the two axes:\n  1. **Main Axis**: Defined by `flex-direction`. If direction is `row` (default), the main axis is horizontal. If `column`, it is vertical.\n  2. **Cross Axis**: The axis that runs perpendicular to the main axis.\n• `justify-content` controls the **Main Axis**.\n• `align-items` controls the **Cross Axis**.",
+          "examples": [
             {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  flex-direction: row;\n}",
-              explanation: "• Arranges items horizontally.",
-            },
-            {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  flex-direction: column;\n}",
-              explanation: "• Arranges items vertically.",
-            },
-          ],
+              "language": "css",
+              "code": ".container {\n  display: flex;\n  flex-direction: row; /* Main = Horizontal */\n  justify-content: center; /* Centers horizontally */\n  align-items: center;    /* Centers vertically */\n}",
+              "explanation": "• This is the most famous Flexbox 'trick' for perfectly centering content both ways."
+            }
+          ]
         },
         {
-          id: "sc_day_46_t6",
-          title: "Justify Content",
-          explanation:
-            "• The justify-content property aligns flex items along the main axis.",
-          examples: [
+          "id": "sc_day_46_t3",
+          "title": "Alignment and Spacing",
+          "explanation": "• justify-content:\n  - `flex-start / flex-end`: Push items to the edges.\n  - `space-between`: Items touch the edges, space is in the middle.\n  - `space-around`: Equal space around each item (items have individual margins).\n  - `space-evenly`: All gaps (including edges) are exactly the same.\n• **align-items**:\n  - `stretch`: (Default) Items grow to fill the container height.\n  - `center`: Items align to the middle of the cross-axis.",
+          "examples": [
             {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  justify-content: center;\n}",
-              explanation: "• Aligns items at the center of the main axis.",
-            },
-            {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  justify-content: space-between;\n}",
-              explanation: "• Distributes space evenly between items.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_46_t7",
-          title: "Align Items",
-          explanation:
-            "• The align-items property aligns flex items along the cross axis.",
-          examples: [
-            {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  align-items: center;\n}",
-              explanation:
-                "• Centers items vertically (if flex-direction is row).",
-            },
-            {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  align-items: flex-end;\n}",
-              explanation: "• Aligns items to the end of the cross axis.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_46_t8",
-          title: "Other Important Flex Properties",
-          explanation:
-            "• Additional Flexbox properties include flex-wrap (wrap items to next line), flex-grow (allow item to grow), flex-shrink (allow item to shrink), flex-basis (initial size), order (change visual order), align-self (override align-items for specific item), and align-content (align multiple rows).",
-        },
-        {
-          id: "sc_day_46_t9",
-          title: "Music Section Example (Concept)",
-          explanation:
-            "• Flexbox can be used to center content vertically and horizontally, align buttons, and create responsive sections like a music landing page layout.",
-          examples: [
-            {
-              language: "css",
-              code: ".bg-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}",
-              explanation:
-                "• Centers all content vertically and horizontally inside the viewport.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".nav-bar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}",
+              "explanation": "• Perfect for a header where the logo is on the left and the menu is on the right."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   47: [
     {
-      id: "sc_day_47",
-      title: "CSS Flex Wrap & Nested Flex Containers",
-      topics: [
+      "id": "sc_day_47",
+      "title": "Introduction to CSS Flexbox | Part 2",
+      "topics": [
         {
-          id: "sc_day_47_t1",
-          title: "Introduction to flex-wrap",
-          explanation:
-            "• The flex-wrap property controls whether flex items should wrap onto multiple lines or stay in a single line. By default, flex items try to fit into one line, which may cause overflow if there is not enough space.",
-        },
-        {
-          id: "sc_day_47_t2",
-          title: "Values of flex-wrap",
-          explanation:
-            "• The flex-wrap property has the following values: nowrap (default) keeps items in a single line, wrap moves items to the next line when needed, and wrap-reverse wraps items in reverse order.",
-          examples: [
+          "id": "sc_day_47_t1",
+          "title": "Understanding Flex Wrap",
+          "explanation": "• By default, flex items try to fit onto one single line (`nowrap`). This can cause items to shrink or overflow the container if they are too wide.\n• The `flex-wrap` property allows items to break onto new lines, creating a multi-line layout that is essential for responsive grids.\n• **Values**:\n  - `nowrap`: (Default) Items stay on one line.\n  - `wrap`: Items wrap onto multiple lines from top to bottom.\n  - `wrap-reverse`: Items wrap onto multiple lines from bottom to top.",
+          "examples": [
             {
-              language: "css",
-              code: ".container {\n  display: flex;\n  flex-wrap: nowrap;\n}",
-              explanation: "• All items stay in one line (default behavior).",
-            },
+              "language": "css",
+              "code": ".container {\n  display: flex;\n  flex-wrap: wrap; /* Allows items to move to the next row */\n}",
+              "explanation": "• This is the secret to creating card galleries where cards automatically stack as the screen gets smaller."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_47_t2",
+          "title": "Nested Flexbox (Containers as Items)",
+          "explanation": "• Flexbox is highly modular. An element can be a **Flex Item** (relative to its parent) and a **Flex Container** (relative to its children) at the same time.\n• This nesting allows for complex UI structures. For example, a page container centers a card section, and that card section (now a container) arranges individual cards in a row.",
+          "examples": [
             {
-              language: "css",
-              code: ".container {\n  display: flex;\n  flex-wrap: wrap;\n}",
-              explanation:
-                "• Items move to the next line when space is insufficient.",
-            },
+              "language": "html",
+              "code": "<div class=\"grandparent-flex\">\n  <div class=\"parent-flex-item-and-container\">\n    <div class=\"child-flex-item\">Content</div>\n  </div>\n</div>",
+              "explanation": "• The middle `div` uses Flexbox to align itself inside the grandparent, and also uses Flexbox to align the child inside itself."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_47_t3",
+          "title": "Practical Application: Card Footers & Badges",
+          "explanation": "• Flexbox is perfect for micro-layouts inside components.\n• **Badges**: Use `display: flex` with `justify-content: flex-end` on a background container to position a 'Trending' badge at the corner.\n• **Footers**: Use `justify-content: space-between` to push a Price to the left and a Shopping Cart icon to the right automatically.",
+          "examples": [
             {
-              language: "css",
-              code: ".container {\n  display: flex;\n  flex-wrap: wrap-reverse;\n}",
-              explanation: "• Items wrap but in reverse direction.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_47_t3",
-          title: "Flex Wrap with Flex Direction",
-          explanation:
-            "• The behavior of flex-wrap depends on the flex-direction. If flex-direction is row, wrapping happens horizontally. If flex-direction is column, wrapping happens vertically.",
-        },
-        {
-          id: "sc_day_47_t4",
-          title: "Nested Flex Containers",
-          explanation:
-            "• A flex item can also act as a flex container. This allows complex layouts where parent containers manage overall structure and child containers manage internal alignment.",
-          examples: [
-            {
-              language: "css",
-              code: ".bg-container {\n  display: flex;\n}\n\n.cards-container {\n  display: flex;\n  flex-wrap: wrap;\n}",
-              explanation:
-                "• bg-container acts as a flex container. cards-container is a flex item inside bg-container, but also a flex container for its child cards.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_47_t5",
-          title: "Frontend Developer Section Example",
-          explanation:
-            "• In this layout, the main container uses flexbox to arrange content. The cards-container acts as a flex item inside the main container and also as a flex container for the individual cards. Using flex-wrap ensures that cards adjust responsively across different screen sizes.",
-        },
-        {
-          id: "sc_day_47_t6",
-          title: "Shoes Shopping Section Example",
-          explanation:
-            "• In shopping layouts, flex-wrap helps product cards adjust responsively. When the screen width reduces, cards automatically move to the next row. Nested flex containers allow structured layouts such as headings, icons, and content blocks aligned properly.",
-        },
-        {
-          id: "sc_day_47_t7",
-          title: "Why flex-wrap is Important",
-          explanation:
-            "• Without flex-wrap, items may overflow or shrink too much. Using flex-wrap makes layouts responsive and adaptable. It ensures better user experience across different devices and screen sizes.",
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".card-footer {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}",
+              "explanation": "• This ensures your layout remains consistent even if the price or the icon size changes."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   48: [
     {
-      id: "sc_day_48",
-      title: "Array Methods and Array Iteration in JavaScript",
-      topics: [
+      "id": "sc_day_48",
+      "title": "Array Methods and Iteration",
+      "topics": [
         {
-          id: "sc_day_48_t1",
-          title: "Introduction to Array Methods",
-          explanation:
-            "• Array methods are built-in functions provided by JavaScript to perform operations like adding, removing, searching, sorting, and modifying elements in arrays. They help write clean, readable, and efficient code.",
+          "id": "sc_day_48_t1",
+          "title": "Finding and Searching Elements",
+          "explanation": "• Finding data in an array is a daily task for developers. \n• Equality Checks: `includes()` and `indexOf()` use strict equality ($===$). Use these when searching for simple values like strings or numbers.\n• Condition-Based Searching: Use `find()` when you need to look for something complex, like an object with a specific ID. It takes a **callback function** that acts as a set of instructions for the search.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "const users = [{id: 1, name: 'A'}, {id: 2, name: 'B'}];\nconst user = users.find(u => u.id === 2);\nconsole.log(user.name); // Output: B",
+              "explanation": "• `find()` is powerful because it stops as soon as it finds a match, making it efficient for large datasets."
+            }
+          ]
         },
         {
-          id: "sc_day_48_t2",
-          title: "Finding Elements in Arrays",
-          explanation:
-            "• JavaScript provides methods to check if an element exists, find its index, or retrieve an element based on a condition.",
-          examples: [
+          "id": "sc_day_48_t2",
+          "title": "Modifying the Array (Adding/Removing)",
+          "explanation": "• Arrays can be manipulated from both ends:\n  - The End: `push()` (add) and `pop()` (remove). These are very fast operations.\n  - The Beginning: `unshift()` (add) and `shift()` (remove). These are slower because the computer has to re-index every other item in the array.\n• The Middle: `splice()` is the 'Swiss Army Knife' of arrays. It can delete, insert, or replace items at any specific index.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'const fruits = ["apple", "banana", "orange"];\nconsole.log(fruits.includes("banana"));',
-              explanation: "• includes() returns true if the value exists.",
-            },
-            {
-              language: "javascript",
-              code: "const arr = [1, 2, 8, 9, 10];\nconsole.log(arr.indexOf(8));",
-              explanation:
-                "• indexOf() returns the first index of the element.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange", "Apple", "Mango", "Apple"];\nconsole.log(fruits.lastIndexOf("Apple"));',
-              explanation:
-                "• lastIndexOf() returns the last index of the element.",
-            },
-            {
-              language: "javascript",
-              code: "const numbers = [5, 12, 8, 130, 44];\nconst found = numbers.find(num => num > 10);\nconsole.log(found);",
-              explanation:
-                "• find() returns the first element that satisfies the condition.",
-            },
-          ],
+              "language": "javascript",
+              "code": "const colors = ['red', 'blue'];\ncolors.splice(1, 0, 'green'); // At index 1, delete 0, add 'green'\nconsole.log(colors); // ['red', 'green', 'blue']",
+              "explanation": "• Remember: `splice()` modifies the original array (mutates it), while methods like `concat()` return a brand new one."
+            }
+          ]
         },
         {
-          id: "sc_day_48_t3",
-          title: "Adding Elements to Arrays",
-          explanation:
-            "• Elements can be added either at the end or at the beginning of an array.",
-          examples: [
+          "id": "sc_day_48_t3",
+          "title": "Modern Iteration with for-of",
+          "explanation": "• While the traditional `for(let i=0; i<arr.length; i++)` loop works, the `for...of` loop is the modern standard for reading array data.\n• It is cleaner, less prone to 'off-by-one' errors, and immediately gives you the element value rather than just the index.\n• **Note**: You cannot use `for...of` if you need to modify the array's values at specific indices; for that, you still need the index.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'const fruits = ["Apple", "Banana"];\nfruits.push("Mango");\nconsole.log(fruits);',
-              explanation: "• push() adds element at the end.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange"];\nfruits.unshift("Apple");\nconsole.log(fruits);',
-              explanation: "• unshift() adds element at the beginning.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_48_t4",
-          title: "Removing Elements from Arrays",
-          explanation:
-            "• Elements can be removed from the beginning, end, or any specific position.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const fruits = ["Apple", "Banana", "Mango"];\nfruits.pop();\nconsole.log(fruits);',
-              explanation: "• pop() removes the last element.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange", "Apple"];\nfruits.shift();\nconsole.log(fruits);',
-              explanation: "• shift() removes the first element.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["apple", "banana", "orange"];\nconst removed = fruits.splice(1, 1);\nconsole.log(fruits);\nconsole.log(removed);',
-              explanation: "• splice() removes elements from a specific index.",
-            },
-            {
-              language: "javascript",
-              code: 'let fruits = ["apple", "banana", "orange"];\nfruits.splice(1, 1, "mango");\nconsole.log(fruits);',
-              explanation: "• splice() can also replace elements.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_48_t5",
-          title: "Other Useful Array Methods",
-          explanation:
-            "• JavaScript provides additional methods for combining, converting, and sorting arrays.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const fruits1 = ["Banana", "Orange"];\nconst fruits2 = ["Apple", "Mango"];\nconst combined = fruits1.concat(fruits2);\nconsole.log(combined);',
-              explanation:
-                "• concat() combines arrays without modifying originals.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange", "Apple"];\nconsole.log(fruits.join(", "));',
-              explanation: "• join() converts array to string.",
-            },
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange", "Apple"];\nfruits.sort();\nconsole.log(fruits);',
-              explanation: "• sort() sorts elements alphabetically by default.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_48_t6",
-          title: "Array Iteration - for-of Loop",
-          explanation:
-            "• Array iteration allows us to loop through elements. The for-of loop provides direct access to array values without needing index positions.",
-          examples: [
-            {
-              language: "javascript",
-              code: "let numbers = [1, 2, 3, 4];\nfor (let num of numbers) {\n  console.log(num);\n}",
-              explanation: "• Prints each value in the array.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_48_t7",
-          title: "Interview Questions",
-          explanation:
-            "• Array methods are built-in functions that help manipulate arrays efficiently. Common methods include push(), pop(), shift(), unshift(), indexOf(), includes(), find(), sort(), and concat(). These methods simplify array operations and improve code readability.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const names = ['Alice', 'Bob'];\nfor (const name of names) {\n  console.log(`Hello ${name}`);\n}",
+              "explanation": "• This reads naturally: 'For every name of the names array, do this...'"
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   49: [
     {
-      id: "sc_day_49",
-      title: "Introduction to CSS Flexbox | Part 3",
-      topics: [
+      "id": "sc_day_49",
+      "title": "Introduction to CSS Flexbox | Part 3",
+      "topics": [
         {
-          id: "sc_day_49_t1",
-          title: "align-self Property",
-          explanation:
-            "• The align-self property is used to align individual flex items along the cross axis. It overrides the align-items property of the flex container for a specific flex item.",
-          examples: [
+          "id": "sc_day_49_t1",
+          "title": "The Align-Self Property",
+          "explanation": "• While `align-items` is set on the parent to control all children, `align-self` is applied to individual items to override that global alignment.\n• This is incredibly useful when you want one specific element to break the rules—for example, a chat bubble that needs to stick to the right while others stay on the left.\n• **Values**: `flex-start`, `center`, `flex-end`, `stretch`, and `auto` (which just follows the parent's `align-items`).",
+          "examples": [
             {
-              language: "css",
-              code: ".box {\n  align-self: flex-start;\n}",
-              explanation: "• Aligns the item to the start of the cross axis.",
-            },
+              "language": "css",
+              "code": ".chat-container {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start; /* Everyone left by default */\n}\n\n.my-message {\n  align-self: flex-end; /* Only this item moves to the right */\n}",
+              "explanation": "• This creates the classic 'incoming vs outgoing' message look seen in apps like WhatsApp or iMessage."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_49_t2",
+          "title": "The Order Property",
+          "explanation": "• The `order` property allows you to change the visual sequence of items without touching the HTML code.\n• By default, all items have an `order: 0`. \n• **Logic**: Items with lower numbers (including negatives) appear first; items with higher numbers appear last.\n• This is a powerful tool for accessibility and responsive design, allowing you to move important content to the top on mobile screens while keeping it elsewhere on desktop.",
+          "examples": [
             {
-              language: "css",
-              code: ".box {\n  align-self: center;\n}",
-              explanation: "• Aligns the item to the center of the cross axis.",
-            },
+              "language": "css",
+              "code": ".first-item { order: -1; } /* Moves to the absolute beginning */\n.last-item  { order: 1; }  /* Moves to the end */",
+              "explanation": "• If two items have the same order value, they follow their original order in the HTML source code."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_49_t3",
+          "title": "Practical Application: Building a Chat UI",
+          "explanation": "• A Chat UI is a perfect 'final boss' for Flexbox basics. It combines everything:\n  1. Main Container: `display: flex` with `flex-direction: column` to stack messages.\n  2. Alignment: Using `align-self: flex-end` for your own messages and `align-self: center` for date stamps.\n  3. Reordering: Using `order` on profile pictures to swap their side (left vs right) within the message bubble.",
+          "examples": [
             {
-              language: "css",
-              code: ".box {\n  align-self: flex-end;\n}",
-              explanation: "• Aligns the item to the end of the cross axis.",
-            },
-            {
-              language: "css",
-              code: ".box {\n  align-self: stretch;\n}",
-              explanation: "• Stretches the item to fill the cross axis.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_49_t2",
-          title: "align-self Values",
-          explanation:
-            "• The align-self property supports the following values: flex-start, center, flex-end, stretch, and auto (default). When set to auto, it inherits the align-items value from its flex container.",
-        },
-        {
-          id: "sc_day_49_t3",
-          title: "Relation with flex-direction",
-          explanation:
-            "• The behavior of align-self depends on the flex-direction. If flex-direction is row, alignment happens vertically. If flex-direction is column, alignment happens horizontally.",
-        },
-        {
-          id: "sc_day_49_t4",
-          title: "order Property",
-          explanation:
-            "• The order property defines the visual order of flex items inside a flex container. By default, all items have order: 0. Items with lower order values appear first.",
-          examples: [
-            {
-              language: "css",
-              code: ".box1 {\n  order: 2;\n}\n\n.box2 {\n  order: 1;\n}",
-              explanation:
-                "• box2 appears before box1 because it has a smaller order value.",
-            },
-            {
-              language: "css",
-              code: ".box3 {\n  order: -1;\n}",
-              explanation:
-                "• Negative values move the item before default (0) items.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_49_t5",
-          title: "Important Note on order",
-          explanation:
-            "• If two or more flex items have the same order value, they are displayed according to their source code order in the HTML.",
-        },
-        {
-          id: "sc_day_49_t6",
-          title: "Chat Screen Layout Example",
-          explanation:
-            "• In a chat screen layout, flexbox is commonly used to arrange elements such as back icons, profile images, and user information. The order property can rearrange elements visually without changing HTML structure. align-self can align individual elements like profile pictures or icons differently within the header container.",
-        },
-        {
-          id: "sc_day_49_t7",
-          title: "Why align-self and order are Important",
-          explanation:
-            "• These properties provide fine control over layout. align-self allows individual alignment adjustments without affecting other items. order allows visual rearrangement without modifying the HTML structure, which is useful in responsive design.",
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".to-msg-profile-pic {\n  order: 1; /* Moves the profile pic to the right of the text */\n}",
+              "explanation": "• This allows you to use the same HTML structure for both types of messages and just flip the appearance with CSS."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   50: [
     {
-      id: "sc_day_50",
-      title: "More Array Methods",
-      topics: [
+      "id": "sc_day_50",
+      "title": "More Array Methods",
+      "topics": [
         {
-          id: "sc_day_50_t1",
-          title: "Introduction to map(), filter(), and reduce()",
-          explanation:
-            "• map(), filter(), and reduce() are higher-order array methods in JavaScript. They iterate over arrays and take a callback function as an argument. These methods help perform transformations, filtering, and accumulation operations efficiently without modifying the original array.",
-        },
-        {
-          id: "sc_day_50_t2",
-          title: "map()",
-          explanation:
-            "• The map() method creates a new array by applying a function to each element of the original array. It transforms each element and returns a new array of the same length.",
-          examples: [
+          "id": "sc_day_50_t1",
+          "title": "Transforming Data with map()",
+          "explanation": "• The `map()` method is your go-to tool for transforming data. It takes an array, applies a transformation to every single item, and hands you a brand new array of the same length.\n• Analogy: Think of a factory assembly line where every raw material gets painted a new color. The number of items stays the same, but their appearance changes.",
+          "examples": [
             {
-              language: "javascript",
-              code: "const numbers = [1, 2, 3, 4];\nconst sqrdNumbers = numbers.map((number) => number * number);\nconsole.log(sqrdNumbers);",
-              explanation: "• Each element is squared. Output: [1, 4, 9, 16].",
-            },
-          ],
+              "language": "javascript",
+              "code": "const prices = [10, 20, 30];\nconst withTax = prices.map(price => price * 1.15);\n// Output: [11.5, 23, 34.5]",
+              "explanation": "• Original `prices` remains untouched. `withTax` is a fresh array with the calculated values."
+            }
+          ]
         },
         {
-          id: "sc_day_50_t3",
-          title: "filter()",
-          explanation:
-            "• The filter() method creates a new array containing only elements that pass a condition. The callback function must return true or false.",
-          examples: [
+          "id": "sc_day_50_t2",
+          "title": "Selecting Data with filter()",
+          "explanation": "• The `filter()` method creates a subset of your array. It checks every item against a condition (a 'test') and only keeps the ones that return `true`.\n• **Analogy**: Like a security guard at a club checking IDs—only those meeting the criteria get through the door.",
+          "examples": [
             {
-              language: "javascript",
-              code: "const numbers = [1, -2, 3, -4];\nconst positiveNumbers = numbers.filter((number) => number > 0);\nconsole.log(positiveNumbers);",
-              explanation:
-                "• Only positive numbers are returned. Output: [1, 3].",
-            },
-          ],
+              "language": "javascript",
+              "code": "const ages = [14, 21, 17, 30];\nconst adults = ages.filter(age => age >= 18);\n// Output: [21, 30]",
+              "explanation": "• The resulting array's length is often shorter than the original because 'failing' items are excluded."
+            }
+          ]
         },
         {
-          id: "sc_day_50_t4",
-          title: "reduce()",
-          explanation:
-            "• The reduce() method combines all elements of an array into a single value. It takes a callback function with accumulator and current value as parameters. It can optionally take an initial value.",
-          examples: [
+          "id": "sc_day_50_t3",
+          "title": "Consolidating Data with reduce()",
+          "explanation": "• The `reduce()` method is the most powerful and complex. It 'boils down' an entire array into a single value (a number, a string, or even an object).\n• It uses an **accumulator** (the running total) and the **current value** to step through the list.\n• **Analogy**: Adding ingredients into a single pot to make one soup.",
+          "examples": [
             {
-              language: "javascript",
-              code: "let arr = [1, 2, 3, 4];\nlet outputValue = arr.reduce((acc, currentVal) => acc + currentVal);\nconsole.log(outputValue);",
-              explanation: "• Adds all numbers together. Output: 10.",
-            },
-            {
-              language: "javascript",
-              code: "let arr = [1, 2, 3, 4];\nlet outputValue = arr.reduce((acc, currentVal) => acc + currentVal, 0);\nconsole.log(outputValue);",
-              explanation: "• Initial value is set to 0. Output: 10.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_50_t5",
-          title: "slice()",
-          explanation:
-            "• The slice() method extracts a portion of an array. The start index is included, and the end index is excluded. It returns a new array and does not modify the original.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'const fruits = ["Banana", "Orange", "Apple", "Mango"];\nlet sliced = fruits.slice(1, 3);\nconsole.log(sliced);',
-              explanation:
-                '• Extracts elements from index 1 to 2. Output: ["Orange", "Apple"].',
-            },
-          ],
-        },
-        {
-          id: "sc_day_50_t6",
-          title: "forEach()",
-          explanation:
-            "• The forEach() method iterates over each element of an array and executes a callback function. It does not return a new array.",
-          examples: [
-            {
-              language: "javascript",
-              code: "let nums = [10, 20, 30];\nnums.forEach(num => {\n  console.log(num);\n});",
-              explanation: "• Prints each element. Output: 10 20 30.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_50_t7",
-          title: "forEach() with Index",
-          explanation:
-            "• The callback function in forEach() can take both element and index as parameters.",
-          examples: [
-            {
-              language: "javascript",
-              code: "let nums = [10, 20, 30];\nnums.forEach((num, index) => {\n  console.log(index, num);\n});",
-              explanation:
-                "• Prints index and value. Output: 0 10, 1 20, 2 30.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_50_t8",
-          title: "forEach() vs for Loop",
-          explanation:
-            "• forEach() is cleaner and simpler for iteration but does not support break or continue. A for loop provides full control, including break and continue statements.",
-        },
-        {
-          id: "sc_day_50_t9",
-          title: "Limitations of forEach()",
-          explanation:
-            "• You cannot use break or continue inside forEach(). It always iterates through all elements.",
-          examples: [
-            {
-              language: "javascript",
-              code: "let nums = [10, 20, 30];\nnums.forEach(num => {\n  if (num === 20) {\n    break;\n  }\n});",
-              explanation:
-                "• This will throw a SyntaxError because break is not allowed in forEach().",
-            },
-          ],
-        },
-        {
-          id: "sc_day_50_t10",
-          title: "Interview Questions",
-          explanation:
-            "• map() creates a new array by transforming each element. filter() creates a new array containing elements that pass a condition. reduce() reduces an array to a single value. The difference between map() and forEach() is that map() returns a new array, while forEach() does not return anything.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const cart = [10, 5, 15];\nconst total = cart.reduce((acc, curr) => acc + curr, 0);\n// Output: 30",
+              "explanation": "• The `0` at the end is the 'initial value'. The accumulator starts here and adds each item as it loops."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   51: [
     {
-      id: "sc_day_51",
-      title: "Introduction of Objects",
-      topics: [
+      "id": "sc_day_51",
+      "title": "Introduction to Objects",
+      "topics": [
         {
-          id: "sc_day_51_t1",
-          title: "Introduction to Objects",
-          explanation:
-            "• An Object is a collection of properties. A property is an association between a key (name) and a value. Objects are used to store related data together. For example, a person can have properties like firstName, lastName, age, and city.",
-        },
-        {
-          id: "sc_day_51_t2",
-          title: "Creating an Object",
-          explanation:
-            "• Objects are created using curly braces {} and key-value pairs separated by commas.",
-          examples: [
+          "id": "sc_day_51_t1",
+          "title": "The Structure of an Object",
+          "explanation": "• An object is a non-primitive data type that stores data in **Key-Value pairs**. While arrays use numeric indices (0, 1, 2), objects use descriptive keys (strings).\n• **Keys (Identifiers)**: These are the names of the properties. If a key has spaces or starts with a number, it must be wrapped in quotes.\n• **Values**: Can be anything—numbers, strings, arrays, other objects, or even functions.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = {\n  firstName: "Rahul",\n  lastName: "Attuluri",\n  age: 28\n};\n\nconsole.log(person);',
-              explanation: "• Creates an object with three properties.",
-            },
-          ],
+              "language": "javascript",
+              "code": "const smartphone = {\n  brand: \"Apple\",\n  \"model name\": \"iPhone 15\", // Quote needed for space\n  specs: { ram: \"8GB\", storage: \"128GB\" }\n};",
+              "explanation": "• Objects allow us to model real-world entities much more effectively than simple lists."
+            }
+          ]
         },
         {
-          id: "sc_day_51_t3",
-          title: "Identifiers in Objects",
-          explanation:
-            "• A valid identifier can contain letters, numbers, underscore (_) and dollar sign ($), but cannot start with a number.",
-          examples: [
+          "id": "sc_day_51_t2",
+          "title": "Dot vs. Bracket Notation",
+          "explanation": "• Dot Notation (`obj.key`): The most common way. It is clean and readable but only works with valid identifiers (no spaces, no starting with numbers).\n• Bracket Notation (`obj[\"key\"]`): The 'power user' method. It is required when:\n  1. The key name is stored in a **variable**.\n  2. The key contains **spaces** or special characters.\n  3. The key starts with a **number**.",
+          "examples": [
             {
-              language: "javascript",
-              code: "firstName;\n$firstName;\n_firstName;\nfirstName12;",
-              explanation: "• These are valid identifiers.",
-            },
-            {
-              language: "javascript",
-              code: 'let person = {\n  "1": "value1",\n  "my choice": "value2"\n};',
-              explanation:
-                "• Invalid identifiers must be written inside quotes.",
-            },
-          ],
+              "language": "javascript",
+              "code": "const user = { name: \"Rahul\", age: 25 };\nconst propertyToAccess = \"age\";\n\nconsole.log(user.name);            // Dot: Easy\nconsole.log(user[propertyToAccess]); // Bracket: Dynamic access using variable",
+              "explanation": "• Using `user.propertyToAccess` would look for a key literally named 'propertyToAccess' and return `undefined`."
+            }
+          ]
         },
         {
-          id: "sc_day_51_t4",
-          title: "Accessing Object Properties",
-          explanation:
-            "• Object properties can be accessed using Dot Notation or Bracket Notation.",
-        },
-        {
-          id: "sc_day_51_t5",
-          title: "Dot Notation",
-          examples: [
+          "id": "sc_day_51_t3",
+          "title": "Methods and Nested Data",
+          "explanation": "• Methods: When a function is stored as a property of an object, it's called a method. It represents an 'action' the object can take.\n• Nesting: Objects within objects (or arrays within objects) allow for complex data hierarchies. You can access these deep values by chaining notations together (e.g., `person.address.city`).",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = {\n  firstName: "Rahul",\n  age: 28\n};\n\nconsole.log(person.firstName);',
-              explanation: "• Used when key is a valid identifier.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t6",
-          title: "Bracket Notation",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = {\n  firstName: "Rahul",\n  age: 28\n};\n\nconsole.log(person["firstName"]);',
-              explanation:
-                "• Useful when key has spaces or is stored in a variable.",
-            },
-            {
-              language: "javascript",
-              code: 'let key = "firstName";\nconsole.log(person[key]);',
-              explanation: "• Accessing property using variable.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t7",
-          title: "Accessing Non-Existent Properties",
-          examples: [
-            {
-              language: "javascript",
-              code: "console.log(person.gender);",
-              explanation: "• Returns undefined if property does not exist.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t8",
-          title: "Object Destructuring",
-          explanation:
-            "• Object destructuring allows extracting properties into variables using curly braces.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = {\n  firstName: "Rahul",\n  age: 28\n};\n\nlet { age } = person;\nconsole.log(age);',
-              explanation: "• Variable name must match object key.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t9",
-          title: "Modifying Object Properties",
-          examples: [
-            {
-              language: "javascript",
-              code: 'person.firstName = "Abhi";\nconsole.log(person.firstName);',
-              explanation: "• Modifies existing property using dot notation.",
-            },
-            {
-              language: "javascript",
-              code: 'person["firstName"] = "Abhi";',
-              explanation: "• Modifies property using bracket notation.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t10",
-          title: "Adding New Properties",
-          examples: [
-            {
-              language: "javascript",
-              code: 'person.gender = "Male";\nconsole.log(person);',
-              explanation: "• Adds a new property.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t11",
-          title: "Property Values (Function, Array, Object)",
-          explanation:
-            "• Object property values can be functions, arrays, or even other objects.",
-        },
-        {
-          id: "sc_day_51_t12",
-          title: "Function as Property (Method)",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = {\n  firstName: "Rahul",\n  run: function () {\n    console.log("Start Running.");\n  }\n};\n\nperson.run();',
-              explanation:
-                "• When a function is stored inside an object, it is called a method.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t13",
-          title: "Array as Property",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = {\n  habits: ["Playing Chess", "Singing"]\n};\n\nconsole.log(person.habits[0]);',
-              explanation: "• Arrays can be stored as property values.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t14",
-          title: "Object as Property (Nested Object)",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = {\n  car: {\n    name: "Audi",\n    model: "A6",\n    color: "White"\n  }\n};\n\nconsole.log(person.car.name);',
-              explanation: "• Objects can be nested inside other objects.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_51_t15",
-          title: "Interview Questions",
-          explanation:
-            "• Objects are created using curly braces {} with key-value pairs. Properties can be accessed using dot notation or bracket notation. Object destructuring allows unpacking properties into variables in a concise way.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const calculator = {\n  add: function(a, b) { return a + b; }\n};\nconsole.log(calculator.add(5, 10)); // 15",
+              "explanation": "• Methods are the foundation of Object-Oriented Programming in JavaScript."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   52: [
     {
-      id: "sc_day_52",
-      title: "CSS Media Queries",
-      topics: [
+      "id": "sc_day_52",
+      "title": "CSS Media Queries",
+      "topics": [
         {
-          id: "sc_day_52_t1",
-          title: "Introduction to Media Queries",
-          explanation:
-            "• Media Queries are used to create responsive web layouts. They allow us to apply CSS rules based on device type and device features like width, height, and orientation. Media queries are essential for building responsive websites that adapt to mobiles, tablets, laptops, and other devices.",
+          "id": "sc_day_52_t1",
+          "title": "The Anatomy of a Media Query",
+          "explanation": "• A Media Query consists of an optional **media type** and any number of **media feature expressions**.\n• **Media Types**: \n  - `screen`: The default for most devices (phones, laptops).\n  - `print`: Only applies when a user tries to print the page (useful for hiding navigation bars on paper).\n• **Media Features**: These are the conditions (like width or orientation) that must be true for the CSS inside the curly braces to execute.",
+          "examples": [
+            {
+              "language": "css",
+              "code": "@media screen and (min-width: 768px) {\n  .sidebar { display: block; }\n}",
+              "explanation": "• This translates to: 'If the device has a screen AND the viewport is at least 768px wide, show the sidebar.'"
+            }
+          ]
         },
         {
-          id: "sc_day_52_t2",
-          title: "Media Query Syntax",
-          examples: [
+          "id": "sc_day_52_t2",
+          "title": "Min-Width vs. Max-Width (Mobile First)",
+          "explanation": "• max-width: Styles apply from 0px up to the specified width. (Desktop-First approach).\n• min-width: Styles apply from the specified width and anything larger. (Mobile-First approach).\n• Mobile-First is the modern industry standard: you write your base CSS for small screens first, then use `min-width` media queries to add complexity as the screen gets larger.",
+          "examples": [
             {
-              language: "css",
-              code: "@media media-type and (media-feature-expression) {\n  /* CSS rules go here */\n}",
-              explanation:
-                "• CSS inside the block is applied only if the condition matches.",
-            },
-          ],
+              "language": "css",
+              "code": "/* Base style (Mobile) */\n.card { width: 100%; }\n\n/* Desktop adjustment */\n@media (min-width: 1024px) {\n  .card { width: 30%; }\n}",
+              "explanation": "• This approach is cleaner because it requires less overriding of styles as you scale up."
+            }
+          ]
         },
         {
-          id: "sc_day_52_t3",
-          title: "Media Types",
-          explanation:
-            "• Media types define the category of devices for which the styles apply.",
-          examples: [
+          "id": "sc_day_52_t3",
+          "title": "Logical Operators & Complexity",
+          "explanation": "• **and**: Joins multiple conditions. (e.g., screen must be wide AND in landscape).\n• **not**: Negates a query. It must be used with a media type.\n• **comma (,)**: Acts like an 'OR'. If any of the comma-separated queries are true, the styles apply.\n• **Orientation**: `portrait` (height > width) vs `landscape` (width > height). This is vital for mobile UX to ensure buttons aren't cut off when a user rotates their phone.",
+          "examples": [
             {
-              language: "css",
-              code: "@media screen {\n  body {\n    background-color: lightblue;\n  }\n}",
-              explanation: "• Applies styles only for screen devices.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_52_t4",
-          title: "Common Media Types",
-          explanation:
-            "• screen - for mobiles, laptops, tablets. print - for printers. tv - for televisions. all - applies to all devices. If media type is not specified, it defaults to all.",
-        },
-        {
-          id: "sc_day_52_t5",
-          title: "Media Features (Width & Height)",
-          explanation:
-            "• Media features allow applying styles based on device dimensions.",
-          examples: [
-            {
-              language: "css",
-              code: "@media (max-width: 600px) {\n  body {\n    background-color: yellow;\n  }\n}",
-              explanation:
-                "• Applies styles when screen width is 600px or less.",
-            },
-            {
-              language: "css",
-              code: "@media (min-height: 800px) {\n  body {\n    font-size: 20px;\n  }\n}",
-              explanation:
-                "• Applies styles when screen height is 800px or more.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_52_t6",
-          title: "Orientation",
-          explanation:
-            "• Orientation checks whether the device is in landscape or portrait mode.",
-          examples: [
-            {
-              language: "css",
-              code: "@media (orientation: landscape) {\n  body {\n    background-color: lightgreen;\n  }\n}",
-              explanation:
-                "• Applies styles when width is greater than height.",
-            },
-            {
-              language: "css",
-              code: "@media (orientation: portrait) {\n  body {\n    background-color: lightpink;\n  }\n}",
-              explanation:
-                "• Applies styles when height is greater than width.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_52_t7",
-          title: "Combining Media Features with AND",
-          explanation:
-            "• The and operator combines multiple media features in one query.",
-          examples: [
-            {
-              language: "css",
-              code: "@media screen and (min-width: 600px) and (max-width: 900px) {\n  body {\n    background-color: orange;\n  }\n}",
-              explanation:
-                "• Applies styles when width is between 600px and 900px on screen devices.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_52_t8",
-          title: "Using NOT Operator",
-          explanation:
-            "• The not operator negates the entire media query result. It must be used with a media type.",
-          examples: [
-            {
-              language: "css",
-              code: "@media not screen and (min-width: 600px) {\n  body {\n    background-color: gray;\n  }\n}",
-              explanation:
-                "• Applies styles to devices that are NOT screen devices.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_52_t9",
-          title: "Using Comma Operator",
-          explanation:
-            "• The comma acts like a logical OR. It combines multiple media queries.",
-          examples: [
-            {
-              language: "css",
-              code: "@media (max-width: 600px), (orientation: portrait) {\n  body {\n    background-color: lightcoral;\n  }\n}",
-              explanation: "• Applies styles if either condition is true.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "css",
+              "code": "@media (min-width: 768px) and (orientation: landscape) {\n  .hero-image { height: 400px; }\n}",
+              "explanation": "• This targets tablets or laptops specifically when they are in a wide-screen orientation."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   53: [
     {
-      id: "sc_day_53",
-      title: "CSS Flexbox Sizing Properties",
-      topics: [
+      "id": "sc_day_53",
+      "title": "Flexbox Sizing",
+      "topics": [
         {
-          id: "sc_day_53_t1",
-          title: "Introduction to Flexbox Sizing",
-          explanation:
-            "• In Flexbox, flex items can grow or shrink depending on the available space inside the flex container. Flexbox sizing properties control how elements scale up or scale down when space is available or limited.",
-        },
-        {
-          id: "sc_day_53_t2",
-          title: "flex-grow",
-          explanation:
-            "• The flex-grow property defines how much a flex item should grow relative to other flex items when extra space is available. The default value is 0, meaning the item will not grow. Positive values allow the item to grow proportionally.",
-          examples: [
+          "id": "sc_day_53_t1",
+          "title": "Understanding Flex Grow",
+          "explanation": "• The `flex-grow` property tells a flex item how much of the **remaining free space** in the container it should take up.\n• **The Math**: If one item has `flex-grow: 2` and another has `flex-grow: 1`, the first item will take up twice as much of the *extra* space as the second.\n• **Default (0)**: By default, items do not grow. They only take up as much space as their content requires.",
+          "examples": [
             {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n}\n\n.box1 {\n  flex-grow: 1;\n}\n\n.box2 {\n  flex-grow: 2;\n}\n\n.box3 {\n  flex-grow: 1;\n}",
-              explanation:
-                "• Box2 grows twice as much as Box1 and Box3 when extra space is available.",
-            },
-          ],
+              "language": "css",
+              "code": ".main-content { flex-grow: 1; }\n.sidebar { flex-grow: 0; }",
+              "explanation": "• This is a classic layout trick: the sidebar stays at its base width, while the main content expands to fill the rest of the screen."
+            }
+          ]
         },
         {
-          id: "sc_day_53_t3",
-          title: "flex-shrink",
-          explanation:
-            "• The flex-shrink property defines how much a flex item should shrink relative to other flex items when there is not enough space. The default value is 1, meaning items will shrink equally. Setting it to 0 prevents shrinking.",
-          examples: [
+          "id": "sc_day_53_t2",
+          "title": "Understanding Flex Shrink",
+          "explanation": "• The `flex-shrink` property dictates how items behave when the container is **too small** to fit them at their default size.\n• **The Math**: An item with a higher shrink value will get smaller faster than items with lower values.\n• **Value 0**: Setting `flex-shrink: 0` prevents an item from shrinking at all. This is vital for icons or logos that you don't want 'squished' on small screens.\n• **Default (1)**: All flex items are allowed to shrink by default so they don't overflow the container.",
+          "examples": [
             {
-              language: "css",
-              code: ".boxes-container {\n  display: flex;\n  width: 200px;\n}\n\n.box1 {\n  flex-shrink: 1;\n}\n\n.box2 {\n  flex-shrink: 0;\n}\n\n.box3 {\n  flex-shrink: 1;\n}",
-              explanation:
-                "• Box2 will not shrink, while Box1 and Box3 shrink when space is limited.",
-            },
-          ],
+              "language": "css",
+              "code": ".fixed-icon { flex-shrink: 0; width: 50px; }",
+              "explanation": "• Even if the screen gets tiny, the icon will stay exactly 50px wide and won't compress."
+            }
+          ]
         },
         {
-          id: "sc_day_53_t4",
-          title: "Understanding Growth and Shrink Behavior",
-          explanation:
-            "• If flex-grow is used, items expand when there is extra space. If flex-shrink is used, items reduce their size when space is insufficient. These properties work along the main axis and depend on the flex-direction property.",
-        },
-      ],
-    },
+          "id": "sc_day_53_t3",
+          "title": "Flex Basis and The Flex Shorthand",
+          "explanation": "• While not explicitly in your snippet, `flex-grow` and `flex-shrink` work alongside `flex-basis` (the initial size of an item before growing or shrinking).\n• Professionals often use the `flex` shorthand: `flex: [grow] [shrink] [basis]`.\n• **Example**: `flex: 1 1 auto;` means the item can grow, can shrink, and starts at its natural size.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".box { flex: 1 0 200px; }",
+              "explanation": "• This tells the box: 'Start at 200px, grow if there is space, but never shrink smaller than 200px.'"
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   54: [
     {
-      id: "sc_day_54",
-      title: "JavaScript Object Methods & Iteration",
-      topics: [
+      "id": "sc_day_54",
+      "title": "Object Methods & Iteration",
+      "topics": [
         {
-          id: "sc_day_54_t1",
-          title: "Introduction to Object Methods",
-          explanation:
-            "• Objects in JavaScript can contain many properties, and sometimes property names are dynamic. We may need to list keys, list values, iterate over objects, merge objects, or check whether a property exists. JavaScript provides built-in object methods to handle these tasks efficiently.",
-        },
-        {
-          id: "sc_day_54_t2",
-          title: "Object.keys()",
-          explanation:
-            "• Object.keys() returns an array containing all the property names (keys) of an object. The order of keys is not guaranteed.",
-          examples: [
+          "id": "sc_day_54_t1",
+          "title": "Converting Objects to Arrays",
+          "explanation": "• Since objects are not directly iterable like arrays (you can't use `.map()` or `.filter()` on them), JavaScript provides static methods to 'convert' parts of an object into arrays.\n• `Object.keys(obj)`: Gives you an array of strings (the names).\n• `Object.values(obj)`: Gives you an array of the data stored.\n• `Object.entries(obj)`: Gives you a nested array of `[key, value]` pairs. This is the most powerful for complex transformations.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\nconsole.log(Object.keys(person));',
-              explanation: '• Output: ["name", "age", "city"].',
-            },
-          ],
+              "language": "javascript",
+              "code": "const scores = { math: 90, science: 85 };\nconst total = Object.values(scores).reduce((a, b) => a + b);\nconsole.log(total); // 175",
+              "explanation": "• By converting values to an array, we can use handy array methods like `reduce` or `forEach` on object data."
+            }
+          ]
         },
         {
-          id: "sc_day_54_t3",
-          title: "Object.values()",
-          explanation:
-            "• Object.values() returns an array of all property values in an object. It does not provide access to keys.",
-          examples: [
+          "id": "sc_day_54_t2",
+          "title": "The for...in Loop vs. in Operator",
+          "explanation": "• `for...in`: Specifically designed to walk through every enumerable property of an object. Important: Always use bracket notation (`obj[key]`) inside, because the key is a string variable.\n• `in` Operator: A quick way to check if a key exists without needing a full loop. It returns a simple `true` or `false`.\n• Safety Check: `hasOwnProperty()` is the 'gold standard' for checking keys because it ignores properties inherited from the hidden prototype chain.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\nconsole.log(Object.values(person));',
-              explanation: '• Output: ["Rahul", 28, "Delhi"].',
-            },
-          ],
+              "language": "javascript",
+              "code": "const car = { brand: 'Tesla' };\nfor (let key in car) {\n  console.log(`${key}: ${car[key]}`);\n}\nconsole.log('brand' in car); // true",
+              "explanation": "• `for...in` is great for debugging or syncing data, but use it carefully as it can be slower than array methods."
+            }
+          ]
         },
         {
-          id: "sc_day_54_t4",
-          title: "Object.entries()",
-          explanation:
-            "• Object.entries() returns an array of key-value pairs, where each pair is a two-element array. It is useful for iterating over both keys and values.",
-          examples: [
+          "id": "sc_day_54_t3",
+          "title": "Merging and Cloning with Object.assign()",
+          "explanation": "• `Object.assign(target, ...sources)`: Copies properties from one or more source objects into a target object.\n• Shallow Copy: It only copies the first level. If a property is another object, it copies the *reference*, not the actual object.\n• Best Practice: Always start with an empty object `{}` as the target to avoid accidentally changing your original data.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\nconsole.log(Object.entries(person));',
-              explanation:
-                '• Output: [["name", "Rahul"], ["age", 28], ["city", "Delhi"]].',
-            },
-          ],
-        },
-        {
-          id: "sc_day_54_t5",
-          title: "Object.assign()",
-          explanation:
-            "• Object.assign() is used to merge objects. The first argument is the target object, followed by source objects. It performs a shallow copy.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let basicInfo = { name: "Rahul", age: 28 };\nlet extraInfo = { city: "Delhi", country: "India" };\n\nlet result = Object.assign({}, basicInfo, extraInfo);\nconsole.log(result);',
-              explanation:
-                '• Output: { name: "Rahul", age: 28, city: "Delhi", country: "India" }.',
-            },
-            {
-              language: "javascript",
-              code: "let newObj = Object.assign(basicInfo, extraInfo);",
-              explanation:
-                "• This modifies basicInfo. To avoid mutation, use Object.assign({}, basicInfo, extraInfo).",
-            },
-          ],
-        },
-        {
-          id: "sc_day_54_t6",
-          title: "hasOwnProperty()",
-          explanation:
-            "• hasOwnProperty() checks whether a property exists directly on the object (not inherited from prototype).",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\n\nconsole.log(person.hasOwnProperty("name"));\nconsole.log(person.hasOwnProperty("salary"));',
-              explanation: "• Output: true, false.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_54_t7",
-          title: "for-in Loop",
-          explanation:
-            "• The for-in loop iterates over the keys of an object. Always use bracket notation inside the loop to access values.",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\n\nfor (let key in person) {\n  console.log(key, person[key]);\n}',
-              explanation: "• Iterates over keys and prints key-value pairs.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_54_t8",
-          title: "in Operator",
-          explanation:
-            "• The in operator checks whether a property exists in an object (including inherited properties).",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 28, city: "Delhi" };\n\nconsole.log("name" in person);\nconsole.log("salary" in person);',
-              explanation: "• Output: true, false.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_54_t9",
-          title: "Interview Questions",
-          explanation:
-            "• Object.keys() returns an array of property names. Object.entries() returns key-value pairs. To iterate over object keys, we use the for-in loop. Object.assign() merges objects. hasOwnProperty() checks if a property exists directly on the object.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const user = { name: 'Ali' };\nconst status = { online: true };\nconst updatedUser = Object.assign({}, user, status);\nconsole.log(updatedUser); // { name: 'Ali', online: true }",
+              "explanation": "• This is the classic way to update state or combine configurations in JavaScript applications."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   55: [
     {
-      id: "sc_day_55",
-      title: "Building Responsive Web Page | Part - 1 (Food Munch App)",
-      topics: [
+      "id": "sc_day_55",
+      "title": "Building Responsive Web Page | Part - 1",
+      "topics": [
         {
-          id: "sc_day_55_t1",
-          title: "Project Overview",
-          explanation:
-            "• This project builds a fully responsive Food Munch web page using Semantic HTML5, Pure CSS, Flexbox layouts, and Media Queries. The website includes multiple sections such as Header, Banner, Menu, Features, Payment, and Footer. Each section is independently styled and fully responsive.",
-        },
-        {
-          id: "sc_day_55_t2",
-          title: "Technology Stack",
-          explanation:
-            "• Frontend technologies used include HTML5 semantic elements, CSS, Flexbox layout system, and Media Queries for responsiveness.",
-        },
-        {
-          id: "sc_day_55_t3",
-          title: "Page Structure",
-          explanation:
-            "• The webpage consists of the following logical sections: Header & Navigation, Banner Section, Feature Section, Menu Listing Section, Two-column Content Sections, Payment Section, Social Media Section, and Footer Section.",
-        },
-        {
-          id: "sc_day_55_t4",
-          title: "Header & Navigation Section",
-          explanation:
-            "• The header is designed for quick navigation with the logo aligned to the left and navigation links aligned horizontally. Navigation remains in a single line across screen sizes.",
-        },
-        {
-          id: "sc_day_55_t5",
-          title: "Header HTML Structure",
-          examples: [
+          "id": "sc_day_55_t1",
+          "title": "Semantic Header and Navigation",
+          "explanation": "• Using semantic tags like `<header>` and `<nav>` improves SEO and accessibility, telling browsers exactly what the content is.\n• Flexbox Alignment: The `nav-container` uses `display: flex` to keep the logo and links on the same horizontal plane.\n• Responsive Shifting: On mobile, links are centered and wrap to a new line. On screens wider than 768px, the media query pushes them to the right (`margin-left: auto`) and aligns them horizontally.",
+          "examples": [
             {
-              language: "html",
-              code: '<header class="site-header">\n  <nav>\n    <div class="nav-container">\n      <a href="#">\n        <img src="food-munch-img.png" alt="Food Munch" class="food-munch-logo" />\n      </a>\n      <ul class="nav-links">\n        <li><a href="#wcuSection">Why Choose Us?</a></li>\n        <li><a href="#exploreMenuSection">Explore Menu</a></li>\n        <li><a href="#deliveryPaymentSection">Delivery & Payment</a></li>\n        <li><a href="#followUsSection">Follow Us</a></li>\n      </ul>\n    </div>\n  </nav>\n</header>',
-              explanation:
-                "• Header contains logo and navigation links inside a flex container.",
-            },
-          ],
+              "language": "css",
+              "code": ".nav-container { display: flex; align-items: center; }\n@media (min-width: 768px) {\n  .nav-links { margin-left: auto; }\n}",
+              "explanation": "• This creates a 'split' layout: logo on the left, navigation on the right, only when there's enough screen real estate."
+            }
+          ]
         },
         {
-          id: "sc_day_55_t6",
-          title: "Header CSS Layout",
-          examples: [
+          "id": "sc_day_55_t2",
+          "title": "Hero/Banner Section Mastery",
+          "explanation": "• The Banner uses `height: 100vh` to ensure it fills the entire height of the user's screen (Viewport Height).\n• Background Control: `background-size: cover` is critical—it ensures the food image fills the space without stretching or leaving white gaps.\n• **Centering**: By making the banner a flex container and using `justify-content: center` and `align-items: center`, the text stays perfectly centered regardless of screen size.",
+          "examples": [
             {
-              language: "css",
-              code: ".site-header {\n  top: 0;\n  width: 100%;\n  background: #ffffff;\n}\n\n.nav-container {\n  display: flex;\n  align-items: center;\n}\n\n.food-munch-logo {\n  width: 80px;\n  height: 70px;\n}\n\n.nav-links {\n  width: 100%;\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  padding: 0;\n  margin: 12px 0 0;\n}\n\n.nav-links li a {\n  padding: 8px 12px;\n  color: #323f4b;\n  font-size: 14px;\n}",
-              explanation:
-                "• Flexbox is used to align navigation items horizontally.",
-            },
-          ],
+              "language": "css",
+              "code": ".banner {\n  background-image: url('...');\n  background-size: cover;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}",
+              "explanation": "• Combining background images with Flexbox centering is the industry standard for creating professional 'Hero' sections."
+            }
+          ]
         },
         {
-          id: "sc_day_55_t7",
-          title: "Responsive Navigation Media Query",
-          examples: [
+          "id": "sc_day_55_t3",
+          "title": "Standardized Component Styling",
+          "explanation": "• Creating a `custom-button` class allows for consistent UI across the entire site.\n• **Solid vs Outline**: We use two variations of the same button size to create a visual hierarchy. The solid button (Primary) draws more attention than the outline button (Secondary).\n• Spacing: Using `gap` or `margin` in a flex container prevents buttons from touching on smaller screens where they might stack.",
+          "examples": [
             {
-              language: "css",
-              code: "@media (min-width: 768px) {\n  .nav-links {\n    width: auto;\n    margin-left: auto;\n    margin-top: 0;\n    justify-content: flex-end;\n  }\n}",
-              explanation:
-                "• On larger screens, navigation aligns to the right.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_55_t8",
-          title: "Banner Section Overview",
-          explanation:
-            "• The Banner section takes full viewport height with a background image. It centers headline text and buttons using Flexbox.",
-        },
-        {
-          id: "sc_day_55_t9",
-          title: "Banner HTML Structure",
-          examples: [
-            {
-              language: "html",
-              code: '<main>\n  <section class="banner">\n    <div class="banner-content">\n      <h1>Get Delicious Food Anytime</h1>\n      <p>Eat Smart & Healthy</p>\n      <div class="banner-actions">\n        <button class="custom-button">View Menu</button>\n        <button class="custom-outline-button">Order Now</button>\n      </div>\n    </div>\n  </section>\n</main>',
-              explanation:
-                "• Banner includes heading, subtitle, and action buttons.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_55_t10",
-          title: "Banner CSS Layout",
-          examples: [
-            {
-              language: "css",
-              code: '.banner {\n  height: 100vh;\n  background-image: url("foodmunch-banner-bg.png");\n  background-size: cover;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.banner-content {\n  text-align: center;\n}',
-              explanation:
-                "• Flexbox centers content vertically and horizontally.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_55_t11",
-          title: "Button Styling",
-          examples: [
-            {
-              language: "css",
-              code: ".custom-button {\n  background: #d0b200;\n  color: #ffffff;\n  border: none;\n}\n\n.custom-outline-button {\n  background: transparent;\n  color: #d0b200;\n  border: 1px solid #d0b200;\n}",
-              explanation:
-                "• Primary button has filled background. Outline button has border style.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".banner-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n}",
+              "explanation": "• `flex-wrap: wrap` is the 'safety net'—if the screen is too narrow for both buttons, the second one will simply drop to the next line instead of overflowing."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   56: [
     {
-      id: "sc_day_56",
-      title: "JavaScript Arrays of Objects",
-      topics: [
+      "id": "sc_day_56",
+      "title": "Arrays of Objects",
+      "topics": [
         {
-          id: "sc_day_56_t1",
-          title: "Introduction to Arrays of Objects",
-          explanation:
-            "• In real-world applications, data usually contains multiple related properties. To store collections like students, products, or users, we use Arrays of Objects. Each element in the array is an object containing key-value pairs.",
+          "id": "sc_day_56_t1",
+          "title": "The Industry Standard Data Format",
+          "explanation": "• In modern web development, almost all data coming from a server (via APIs) arrives as an Array of Objects. \n• Each object represents a single record (like a user or a product), and the array acts as the database or collection.\n• This structure allows you to group related information (ID, Name, Price) together while keeping the ability to sort and filter the entire list.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "const users = [\n  { id: 1, name: \"Alice\", role: \"Admin\" },\n  { id: 2, name: \"Bob\", role: \"Editor\" }\n];",
+              "explanation": "• Notice how each 'index' in the array points to a complete 'identity' (an object)."
+            }
+          ]
         },
         {
-          id: "sc_day_56_t2",
-          title: "Creating an Array of Objects",
-          examples: [
+          "id": "sc_day_56_t2",
+          "title": "Deep Access and Manipulation",
+          "explanation": "• Accessing: You must first 'reach into' the array using a number (`[0]`), then 'reach into' the object using a key (`.name`).\n• Updating: You can modify a specific property of a specific object using the same path. \n• Dynamic Keys: Just like with single objects, you can use bracket notation if the property name is stored in a variable: `products[0][someVariable]`.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let students = [\n  { name: "Rahul", age: 20 },\n  { name: "Anita", age: 22 }\n];',
-              explanation: "• Each array element is an object.",
-            },
-            {
-              language: "javascript",
-              code: 'let products = [\n  { name: "Laptop", price: 50000 },\n  { name: "Mobile", price: 20000 },\n  { name: "Tablet", price: 30000 }\n];\n\nconsole.log(products);',
-              explanation:
-                "• Used to represent collections like API or database records.",
-            },
-          ],
+              "language": "javascript",
+              "code": "const products = [{ name: \"Desk\", price: 150 }];\nproducts[0].price = 175; // Updating the first product's price\nconsole.log(products[0].price); // 175",
+              "explanation": "• This is the foundation of building shopping carts or profile editors."
+            }
+          ]
         },
         {
-          id: "sc_day_56_t3",
-          title: "Accessing Data in Array of Objects",
-          examples: [
+          "id": "sc_day_56_t3",
+          "title": "Advanced Iteration & Logic",
+          "explanation": "• filter(): Essential for search bars. It returns a new array containing only the objects that match your search query.\n• map(): Perfect for UI rendering. It can take an array of raw data objects and return an array of HTML strings or formatted strings.\n• find(): Returns the actual object reference. If you change the object returned by `find()`, it will also change inside the original array (because objects are passed by reference).",
+          "examples": [
             {
-              language: "javascript",
-              code: "console.log(products[0]);",
-              explanation: "• Access object using index.",
-            },
-            {
-              language: "javascript",
-              code: "console.log(products[0].name);\nconsole.log(products[1].price);",
-              explanation:
-                "• Use array index first, then dot notation to access properties.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t4",
-          title: "Iterating Over Array of Objects",
-          examples: [
-            {
-              language: "javascript",
-              code: "for (let i = 0; i < products.length; i++) {\n  console.log(products[i].name);\n}",
-              explanation: "• Index-based iteration using for loop.",
-            },
-            {
-              language: "javascript",
-              code: "for (let item of products) {\n  console.log(item.price);\n}",
-              explanation: "• for...of loop gives direct access to objects.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t5",
-          title: "Filtering Array of Objects",
-          examples: [
-            {
-              language: "javascript",
-              code: "let expensiveProducts = products.filter((item) => {\n  return item.price > 30000;\n});\n\nconsole.log(expensiveProducts);",
-              explanation:
-                "• filter() returns elements that satisfy the condition.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t6",
-          title: "Mapping Array of Objects",
-          examples: [
-            {
-              language: "javascript",
-              code: "let productNames = products.map((item) => item.name);\nconsole.log(productNames);",
-              explanation: "• map() extracts specific properties.",
-            },
-            {
-              language: "javascript",
-              code: "let lowerCaseNames = products.map((item) => item.name.toLowerCase());\nconsole.log(lowerCaseNames);",
-              explanation: "• map() can transform data.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t7",
-          title: "Finding in Array of Objects",
-          examples: [
-            {
-              language: "javascript",
-              code: 'let result = products.find((item) => {\n  return item.name === "Mobile";\n});\n\nconsole.log(result);',
-              explanation: "• find() returns the first matching object.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t8",
-          title: "Sorting Array of Objects",
-          examples: [
-            {
-              language: "javascript",
-              code: "products.sort((a, b) => {\n  return a.price - b.price;\n});\n\nconsole.log(products);",
-              explanation: "• Sorts objects in ascending order based on price.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_56_t9",
-          title: "Interview Questions",
-          explanation:
-            "• An array of objects stores multiple entities where each element is an object. To access properties, use array[index].property. We can iterate using for loop or for...of loop. filter() returns matching elements based on condition, while map() transforms each element into a new array.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const items = [{ id: 'a', stock: 10 }, { id: 'b', stock: 0 }];\nconst available = items.filter(i => i.stock > 0);\n// [{ id: 'a', stock: 10 }]",
+              "explanation": "• Filtering allows you to create views like 'In Stock Only' with just one line of code."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   57: [
     {
-      id: "sc_day_57",
-      title: "JavaScript Spread & Rest Operators",
-      topics: [
+      "id": "sc_day_57",
+      "title": "Spread & Rest Operators",
+      "topics": [
         {
-          id: "sc_day_57_t1",
-          title: "Spread Operator Introduction",
-          explanation:
-            "• The spread operator (...) is used to unpack iterable elements like arrays or objects into individual elements. It expands values.",
+          "id": "sc_day_57_t1",
+          "title": "The Spread Operator (...) - Unpacking Data",
+          "explanation": "• The **Spread operator** is like taking a bag of marbles (an array) and pouring them out onto the floor as individual marbles.\n• **In Arrays**: It is the modern way to copy or combine arrays without using methods like `concat()`. It creates a *shallow copy*, meaning the new array has the same values but is a different reference in memory.\n• **In Objects**: It allows you to merge properties from multiple objects into one. If two objects have the same key, the one spread *last* wins and overwrites the previous value.",
+          "examples": [
+            {
+              "language": "javascript",
+              "code": "const original = [1, 2];\nconst copy = [...original, 3]; // [1, 2, 3]\n\nconst user = { name: 'Rahul', role: 'User' };\nconst admin = { ...user, role: 'Admin' }; // role becomes 'Admin'",
+              "explanation": "• Notice how easy it is to 'update' an object property by spreading the old one and then defining the new value."
+            }
+          ]
         },
         {
-          id: "sc_day_57_t2",
-          title: "Spread Operator with Arrays",
-          examples: [
+          "id": "sc_day_57_t2",
+          "title": "The Rest Parameter (...) - Gathering Data",
+          "explanation": "• While Spread *unpacks*, **Rest** *packs* things back up. It is used in function definitions to collect multiple arguments into a single array.\n• It is the modern replacement for the old `arguments` object because it gives you a real Array that you can use with methods like `.map()` or `.reduce()`.\n• **Constraint**: You can only have one rest parameter per function, and it **must** be the very last item in the list.",
+          "examples": [
             {
-              language: "javascript",
-              code: "let myArray = [1, 2, 3];\nconsole.log(...myArray);",
-              explanation:
-                "• Spreads array elements individually. Output: 1 2 3",
-            },
-            {
-              language: "javascript",
-              code: "let arr1 = [2, 3];\nlet arr2 = [...arr1];\nconsole.log(arr2);",
-              explanation: "• Creates a shallow copy of arr1.",
-            },
-            {
-              language: "javascript",
-              code: "let arr1 = [2, 3];\nlet arr2 = [4, 5];\nlet arr3 = [...arr1, ...arr2];\nconsole.log(arr3);",
-              explanation: "• Concatenates two arrays.",
-            },
-          ],
+              "language": "javascript",
+              "code": "function collect(first, ...others) {\n  console.log(first);  // 'A'\n  console.log(others); // ['B', 'C', 'D']\n}\ncollect('A', 'B', 'C', 'D');",
+              "explanation": "• The 'rest' of the arguments that didn't fit into named parameters get collected into the `others` array."
+            }
+          ]
         },
         {
-          id: "sc_day_57_t3",
-          title: "Spread Operator with Objects",
-          examples: [
+          "id": "sc_day_57_t3",
+          "title": "Advanced Destructuring with Rest",
+          "explanation": "• You can use the rest syntax during destructuring to separate what you need from everything else.\n• **Arrays**: Extract the first few elements and keep the 'rest' in a smaller array.\n• **Objects**: This is a common pattern for 'deleting' a property without actually using the `delete` keyword. You extract the key you don't want, and the `rest` object contains everything else.",
+          "examples": [
             {
-              language: "javascript",
-              code: 'let person = { name: "Rahul", age: 27 };\nlet personDetails = { ...person };\nconsole.log(personDetails);',
-              explanation: "• Creates a shallow copy of an object.",
-            },
-            {
-              language: "javascript",
-              code: 'let address = { city: "Hyderabad", pincode: 500001 };\nlet personDetails = { ...person, ...address };\nconsole.log(personDetails);',
-              explanation: "• Merges multiple objects into one.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_57_t4",
-          title: "Spread Operator in Function Calls",
-          examples: [
-            {
-              language: "javascript",
-              code: "function add(a, b, c) {\n  return a + b + c;\n}\n\nlet numbers = [1, 2, 3];\nconsole.log(add(...numbers));",
-              explanation:
-                "• Passes array values as individual arguments. Output: 6",
-            },
-          ],
-        },
-        {
-          id: "sc_day_57_t5",
-          title: "Rest Parameter Introduction",
-          explanation:
-            "• The rest parameter (...) collects multiple function arguments into a single array. It is used when the number of arguments is unknown.",
-        },
-        {
-          id: "sc_day_57_t6",
-          title: "Rest Parameter Usage",
-          examples: [
-            {
-              language: "javascript",
-              code: "function numbers(...args) {\n  console.log(args);\n}\n\nnumbers(1, 2, 3);",
-              explanation:
-                "• Collects arguments into an array. Output: [1, 2, 3]",
-            },
-            {
-              language: "javascript",
-              code: "function numbers(a, b, ...rest) {\n  console.log(a);\n  console.log(b);\n  console.log(rest);\n}\n\nnumbers(1, 2, 3, 4, 5);",
-              explanation: "• Rest parameter must be the last parameter.",
-            },
-            {
-              language: "javascript",
-              code: "function sum(...args) {\n  let result = 0;\n  for (let arg of args) {\n    result += arg;\n  }\n  console.log(result);\n}\n\nsum(1, 2, 3);\nsum(1, 2, 3, 4, 5, 6);",
-              explanation: "• Handles indefinite number of arguments.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_57_t7",
-          title: "Destructuring with Rest Syntax",
-          examples: [
-            {
-              language: "javascript",
-              code: "let [a, b, ...rest] = [1, 2, 3, 4, 5];\nconsole.log(a);\nconsole.log(b);\nconsole.log(rest);",
-              explanation: "• Rest collects remaining array elements.",
-            },
-            {
-              language: "javascript",
-              code: 'let { firstName, ...rest } = {\n  firstName: "Rahul",\n  lastName: "Attuluri",\n  age: 27\n};\n\nconsole.log(firstName);\nconsole.log(rest);',
-              explanation: "• Rest collects remaining object properties.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_57_t8",
-          title: "Interview Questions",
-          explanation:
-            "• The spread operator expands iterable elements into individual elements. The rest parameter collects multiple arguments into an array and must be placed at the end of function parameters. Destructuring allows extraction of values from arrays or objects into separate variables.",
-        },
-      ],
-    },
+              "language": "javascript",
+              "code": "const person = { id: 101, name: 'Rahul', age: 25 };\nconst { id, ...cleanPerson } = person;\n// cleanPerson is now { name: 'Rahul', age: 25 }",
+              "explanation": "• This is a very 'clean' way to filter out sensitive data (like an ID or password) before sending an object elsewhere."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   58: [
     {
-      id: "sc_day_58",
-      title: "Building Responsive Web Page | Part - 2",
-      topics: [
+      "id": "sc_day_58",
+      "title": "Building Responsive Layouts: Features, Menus, and Content",
+      "topics": [
         {
-          id: "sc_day_58_t1",
-          title: "Feature Section (Why Choose Us)",
-          explanation:
-            "• This section displays feature cards centered on the page. Cards have equal spacing and wrap responsively using Flexbox.",
+          "id": "sc_day_58_t1",
+          "title": "Designing Why Choose Us Feature Cards",
+          "explanation": "The 'Why Choose Us' section uses a Flexbox-based grid to showcase service highlights. By setting display: flex and flex-wrap: wrap, we ensure that the cards look organized on desktop but stack neatly on smaller mobile screens. Each card acts as an independent unit with a max-width of 320px. This prevents the cards from becoming awkwardly wide on large monitors while ensuring they take up full width on small phones. Styling details like border-radius: 16px and a light background (#f9fbfe) create a modern, soft aesthetic common in professional food apps.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".features-container {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 24px;\n}",
+              "explanation": "The gap property is the most efficient way to add equal spacing between items without worrying about margin collapses."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t2",
-          title: "Feature Section Layout",
-          examples: [
+          "id": "sc_day_58_t2",
+          "title": "The Explore Menu Listing Grid",
+          "explanation": "The menu listing demonstrates a Product Grid layout. Unlike feature cards, these are smaller and more numerous, often requiring more items per row on tablets and desktops. We use justify-content: center within the flex container so that if the last row only has one or two items, they remain centered rather than floating to the far left, keeping the layout visually balanced. Using the article tag for each menu item is better for SEO and screen readers, as it signals that each item is a self-contained piece of content.",
+          "examples": [
             {
-              language: "html",
-              code: '<section class="why-choose-us" id="wcuSection">\n  <div class="wcu-section">\n    <h1>Why Choose Us?</h1>\n    <p>We use both original recipes and classic versions of famous food items.</p>\n    <div class="features-container"></div>\n  </div>\n</section>',
-              explanation: "• Main structure of feature section.",
-            },
-            {
-              language: "css",
-              code: ".features-container {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 24px;\n}",
-              explanation: "• Flexbox ensures responsive wrapping and spacing.",
-            },
-          ],
+              "language": "html",
+              "code": "<article class=\"menu-card\">\n  <img src=\"...\" alt=\"Desserts\">\n  <h3>Desserts</h3>\n  <a href=\"#\">View All →</a>\n</article>",
+              "explanation": "Using a clear 'View All' link with an arrow improves User Experience (UX) by indicating a clear path to the full menu."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t3",
-          title: "Feature Card Design",
-          examples: [
+          "id": "sc_day_58_t3",
+          "title": "Understanding Box Shadow for Depth",
+          "explanation": "The box-shadow property is used here to give the menu cards a sense of depth, making them look 'elevated' off the page. The syntax used (1px 1px 1px #00000026) creates a very subtle, soft shadow. Adding a shadow helps distinguish white cards from a light grey or white background, which is essential for maintaining high accessibility and legibility standards. Overusing heavy, high-blur shadows can sometimes impact scroll performance on older mobile devices, so keeping them subtle is a best practice.",
+          "examples": [
             {
-              language: "html",
-              code: '<article class="feature-card">\n  <img src="food-serve.png" alt="Food Service">\n  <h3>Food Service</h3>\n  <p>Experience fine dining at the comfort of your home.</p>\n</article>',
-              explanation: "• Single feature card.",
-            },
-            {
-              language: "css",
-              code: ".feature-card {\n  width: 100%;\n  max-width: 320px;\n  background: #ffffff;\n  border: 1px solid #e5eaf4;\n  border-radius: 16px;\n  padding: 24px;\n  text-align: center;\n}",
-              explanation: "• Card styling with rounded borders.",
-            },
-          ],
+              "language": "css",
+              "code": ".menu-card {\n  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);\n}",
+              "explanation": "Using rgba for shadows allows you to control the opacity, resulting in a more realistic and professional look than solid hex colors."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t4",
-          title: "Explore Menu Section",
-          explanation:
-            "• Displays product cards in rows. Cards wrap automatically and align centrally.",
+          "id": "sc_day_58_t4",
+          "title": "Adaptive Two-Column Layouts",
+          "explanation": "The 'Fresh Food' and 'Delivery & Payment' sections utilize a Two-Column Flex system. On mobile, these columns are stacked vertically using flex-direction: column. Once the screen hits the 768px breakpoint (tablets), the layout switches to flex-direction: row. This allows the text and the image to sit side-by-side, making better use of the available horizontal space. This toggle between column and row is the absolute foundation of modern responsive web architecture.",
+          "examples": [
+            {
+              "language": "css",
+              "code": "@media (min-width: 768px) {\n  .two-column { flex-direction: row; }\n}",
+              "explanation": "This simple switch transforms a mobile-first list into a professional desktop layout."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t5",
-          title: "Menu Layout",
-          examples: [
+          "id": "sc_day_58_t5",
+          "title": "The Power of Flex-Direction Reverse",
+          "explanation": "To prevent the page from looking repetitive, we use the .reverse class on the second content section. This uses flex-direction: row-reverse on larger screens. This technique places the image on the right for the first section and on the left for the second, creating a 'Z-pattern' layout that guides the user's eye across the page. On mobile, the reverse class can also be used to ensure the image appears above or below the text specifically, regardless of the HTML source order.",
+          "examples": [
             {
-              language: "html",
-              code: '<section id="exploreMenuSection">\n  <div class="menu-header">\n    <h1>Explore Menu</h1>\n  </div>\n  <div class="menu-container"></div>\n</section>',
-              explanation: "• Menu section structure.",
-            },
-            {
-              language: "css",
-              code: ".menu-container {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 24px;\n}",
-              explanation: "• Flexbox for responsive grid layout.",
-            },
-          ],
+              "language": "css",
+              "code": ".two-column.reverse { flex-direction: row-reverse; }",
+              "explanation": "This allows for alternating layouts without having to change the structure of the HTML for every section."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t6",
-          title: "Menu Card Design",
-          examples: [
+          "id": "sc_day_58_t6",
+          "title": "Responsive Payment Icons",
+          "explanation": "The payment section handles several small images (Visa, MasterCard, etc.). These icons are wrapped in a flex container with flex-wrap: wrap. By using justify-content: center, we ensure the payment logos remain centered as they wrap. This is crucial for maintaining a trustworthy and professional appearance on the 'Delivery & Payment' page. Large margins around the icons (margin: 20px) prevent them from looking cluttered and make them easier to tap on touchscreens.",
+          "examples": [
             {
-              language: "html",
-              code: '<article class="menu-card">\n  <img src="food-img.png" alt="">\n  <h3>Veg Starters</h3>\n  <a href="#">View All →</a>\n</article>',
-              explanation: "• Single menu card.",
-            },
-            {
-              language: "css",
-              code: ".menu-card {\n  width: 100%;\n  max-width: 260px;\n  background: #ffffff;\n  border-radius: 16px;\n  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);\n  padding: 16px;\n}",
-              explanation: "• Adds shadow and card styling.",
-            },
-          ],
+              "language": "css",
+              "code": ".payment-icons img { width: 50px; height: 50px; }",
+              "explanation": "Setting fixed dimensions for icons ensures they don't vary in size, which keeps the payment footer looking clean."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t7",
-          title: "Two Column Layout Section",
-          explanation:
-            "• Used for Healthy Food and Delivery & Payment sections. On mobile, layout is stacked. On larger screens, it becomes horizontal.",
+          "id": "sc_day_58_t7",
+          "title": "Breakpoint Strategy for Food Munch",
+          "explanation": "This project relies heavily on the 768px breakpoint. This is the most common dividing line between Mobile/Small Tablet and Large Tablet/Laptop. By writing CSS outside of media queries, we are practicing Mobile-First Design. This means the base styles are optimized for phones, and we only add complexity for larger screens. This approach generally leads to faster page load times on mobile devices and cleaner, more maintainable CSS code.",
+          "examples": [
+            {
+              "language": "css",
+              "code": "@media (min-width: 768px) { ... }",
+              "explanation": "Using min-width ensures that your tablet styles also apply to desktop and ultra-wide screens automatically."
+            }
+          ]
         },
         {
-          id: "sc_day_58_t8",
-          title: "Two Column Implementation",
-          examples: [
+          "id": "sc_day_58_t8",
+          "title": "Typography and Visual Hierarchy",
+          "explanation": "Throughout these sections, different font sizes (h1, h2, h3) are used to create a clear Visual Hierarchy. The most important information (Explore Menu) uses the largest heading. Colors like #323f4b for text and #d0b200 for links/buttons provide high contrast against the white background, meeting web accessibility standards. Consistent padding (padding: 24px) across all sections ensures the content breathes and does not feel cramped against the edges of the screen.",
+          "examples": [
             {
-              language: "html",
-              code: '<section>\n  <div class="container two-column">\n    <div class="image-block">\n      <img src="healthy-food.png" alt="">\n    </div>\n    <div class="content-block">\n      <h1>Fresh, Healthy, Organic</h1>\n      <p>Say no to harmful chemicals.</p>\n    </div>\n  </div>\n</section>',
-              explanation: "• Two-column structure.",
-            },
-            {
-              language: "css",
-              code: ".two-column {\n  display: flex;\n  flex-direction: column;\n}\n\n@media (min-width: 768px) {\n  .two-column {\n    flex-direction: row;\n    justify-content: space-between;\n  }\n  .two-column.reverse {\n    flex-direction: row-reverse;\n  }\n}",
-              explanation: "• Responsive direction switching.",
-            },
-          ],
-        },
-        {
-          id: "sc_day_58_t9",
-          title: "Payment Icons Layout",
-          examples: [
-            {
-              language: "html",
-              code: '<div class="payment-icons">\n  <img src="visa.png" alt="">\n  <img src="mastercard.png" alt="">\n  <img src="paypal.png" alt="">\n</div>',
-              explanation: "• Payment icons container.",
-            },
-            {
-              language: "css",
-              code: ".payment-icons {\n  display: flex;\n  justify-content: center;\n  flex-wrap: wrap;\n  margin-top: 30px;\n}\n\n.payment-icons img {\n  margin: 20px;\n  width: 50px;\n  height: 50px;\n}",
-              explanation:
-                "• Aligns icons side-by-side and wraps on small screens.",
-            },
-          ],
-        },
-      ],
-    },
+              "language": "css",
+              "code": ".section-header { text-align: center; margin-bottom: 40px; }",
+              "explanation": "Centering headers and adding bottom margins clearly separates the introduction of a section from the content cards."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   59: [
     {
-      id: "sc_day_59",
-      title: "Building Responsive Web Page | Part - 3",
-      topics: [
+      "id": "sc_day_59",
+      "title": "Finalizing the Responsive Webpage: Social Media and Footers",
+      "topics": [
         {
-          id: "sc_day_59_t1",
-          title: "Responsive Webpage Structure",
-          explanation:
-            "• This part completes the Food Munch responsive webpage using pure CSS. Sections covered include Follow Us and Footer sections. Each section is independently responsive and built using Flexbox.",
-        },
-        {
-          id: "sc_day_59_t2",
-          title: "Follow Us Section Overview",
-          explanation:
-            "• The Follow Us section contains social media icons displayed inside circular containers. Icons are centered using Flexbox and evenly spaced.",
-        },
-        {
-          id: "sc_day_59_t3",
-          title: "Follow Us Section - HTML Structure",
-          examples: [
+          "id": "sc_day_59_t1",
+          "title": "Designing Circular Social Media Icons",
+          "explanation": "The 'Follow Us' section uses SVG icons nested inside circular containers. By setting a fixed width and height (80px) and applying border-radius: 50%, we transform square span elements into perfect circles. Using Flexbox on the span (display: flex with align-items and justify-content: center) ensures the SVG icon is perfectly centered within that circle regardless of its specific path dimensions.",
+          "examples": [
             {
-              language: "html",
-              code: '<section class="follow-us" id="followUsSection">\n  <div class="container">\n    <h2>Follow Us</h2>\n    <div class="social-icons"></div>\n  </div>\n</section>',
-              explanation: "• Main wrapper for social media section.",
-            },
-          ],
+              "language": "css",
+              "code": ".social-icons span {\n  width: 80px;\n  height: 80px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}",
+              "explanation": "This is a standard utility pattern for creating centered icon buttons or circular avatars in web design."
+            }
+          ]
         },
         {
-          id: "sc_day_59_t4",
-          title: "Social Icons Layout - CSS",
-          examples: [
+          "id": "sc_day_59_t2",
+          "title": "Leveraging SVGs for Scalable Graphics",
+          "explanation": "Instead of using image files (PNG/JPG), this section uses Inline SVGs. SVGs (Scalable Vector Graphics) are code-based, meaning they stay perfectly sharp at any zoom level or screen resolution. They also allow us to change their color dynamically using the 'fill' property in CSS, making them much more flexible than traditional images for UI components like social icons.",
+          "examples": [
             {
-              language: "css",
-              code: ".follow-us {\n  text-align: center;\n}\n\n.social-icons {\n  display: flex;\n  justify-content: center;\n  gap: 24px;\n  margin-top: 24px;\n}",
-              explanation: "• Flexbox centers icons with equal spacing.",
-            },
-            {
-              language: "css",
-              code: ".social-icons span {\n  width: 80px;\n  height: 80px;\n  background: #faf7e8;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}",
-              explanation:
-                "• Creates circular containers and centers SVG icons.",
-            },
-          ],
+              "language": "html",
+              "code": "<svg fill=\"currentColor\" viewBox=\"0 0 16 16\">...</svg>",
+              "explanation": "Setting fill to 'currentColor' allows the SVG to inherit the text color of its parent element."
+            }
+          ]
         },
         {
-          id: "sc_day_59_t5",
-          title: "Footer Section Overview",
-          explanation:
-            "• The Footer section displays company logo, email, and address. It uses Flexbox with column layout and centered alignment.",
+          "id": "sc_day_59_t3",
+          "title": "Creating a Professional Footer Layout",
+          "explanation": "The site-footer uses a dark theme (#0d2436) to provide a strong visual 'anchor' to the bottom of the page. By using a column-based Flexbox layout (flex-direction: column), we stack the logo, email link, and physical address. This keeps the information clean and readable, which is the primary goal of any informational footer.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".footer-content {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}",
+              "explanation": "Stacking elements vertically is the most common mobile-friendly pattern for footers."
+            }
+          ]
         },
         {
-          id: "sc_day_59_t6",
-          title: "Footer HTML Structure",
-          examples: [
+          "id": "sc_day_59_t4",
+          "title": "Styling the Address and Contact Info",
+          "explanation": "The HTML <address> tag is used for contact information. By default, browsers display this in italics. To maintain a modern look, we use font-style: normal in CSS. We also use a muted text color (#959ead) to ensure it doesn't distract from the main logo but remains perfectly legible for users looking for contact details.",
+          "examples": [
             {
-              language: "html",
-              code: '<footer class="site-footer">\n  <div class="container footer-content">\n    <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/food-munch-logo-light.png" alt="Food Munch" class="food-munch-logo" />\n    <p class="email">orderfood@foodmunch.com</p>\n    <address>123 Ayur Vigyan Nagar, New Delhi, India.</address>\n  </div>\n</footer>',
-              explanation:
-                "• Footer container includes logo, email, and address.",
-            },
-          ],
+              "language": "css",
+              "code": ".footer-content address {\n  font-style: normal;\n  color: #959ead;\n}",
+              "explanation": "Resetting default browser styles is a key part of creating a custom branded experience."
+            }
+          ]
         },
         {
-          id: "sc_day_59_t7",
-          title: "Footer Styling - CSS",
-          examples: [
+          "id": "sc_day_59_t5",
+          "title": "Spacing and Padding for Visual Rhythm",
+          "explanation": "We use significant vertical padding (60px) in the footer. This creates white space (or 'dark space' in this case) that signals the end of the content journey. Without adequate padding, the footer would feel 'glued' to the content above it, making the page feel cluttered and unprofessional.",
+          "examples": [
             {
-              language: "css",
-              code: ".site-footer {\n  background: #0d2436;\n  padding: 60px 0;\n}\n\n.footer-content {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  text-align: center;\n}",
-              explanation: "• Footer uses column layout with centered content.",
-            },
-            {
-              language: "css",
-              code: ".footer-content p,\n.footer-content address {\n  color: #959ead;\n  font-size: 14px;\n}\n\n.footer-content address {\n  font-style: normal;\n}",
-              explanation: "• Styling for text elements in footer.",
-            },
-          ],
+              "language": "css",
+              "code": ".site-footer {\n  padding: 60px 0;\n}",
+              "explanation": "Generous vertical padding helps separate logical sections and improves the overall aesthetic flow of the site."
+            }
+          ]
         },
         {
-          id: "sc_day_59_t8",
-          title: "Responsive Behavior",
-          explanation:
-            "• All sections use Flexbox for alignment and responsiveness. Social icons wrap properly on smaller screens. Footer remains centered and structured across all device sizes.",
+          "id": "sc_day_59_t6",
+          "title": "The Role of the Container in Global Layout",
+          "explanation": "The .container class is used consistently across all sections, including the footer and social section. This ensures that even as the background color changes (white to light yellow to dark blue), the actual content remains aligned along the same vertical 'gutters.' This alignment is what makes a website look 'tight' and professionally designed.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".container {\n  max-width: 1140px;\n  margin: 0 auto;\n}",
+              "explanation": "This centering logic prevents content from stretching too wide on 4K or ultra-wide monitors."
+            }
+          ]
         },
-      ],
-    },
+        {
+          "id": "sc_day_59_t7",
+          "title": "Combining Flexbox and Gap for Interactivity",
+          "explanation": "In the social icons section, we use the gap property (24px). This is superior to using margins because it only applies space between the items, not on the outer edges. This keeps the group of icons perfectly centered in the container without having to perform 'math' to compensate for extra margin on the first or last icon.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".social-icons {\n  display: flex;\n  gap: 24px;\n}",
+              "explanation": "The gap property simplifies responsive spacing significantly compared to older margin-based methods."
+            }
+          ]
+        },
+        {
+          "id": "sc_day_59_t8",
+          "title": "Semantic HTML Final Review",
+          "explanation": "We use specific tags like <header>, <main>, <section>, and <footer>. This is known as Semantic HTML. It helps search engines understand the structure of your page and allows screen readers to navigate the content efficiently. For example, a screen reader user can skip directly to the 'main' content or the 'footer' based on these tags.",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<footer class=\"site-footer\">...</footer>",
+              "explanation": "Using <footer> instead of <div class='footer'> is a best practice for accessibility and SEO."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   60: [
     {
-      id: "sc_day_60",
-      title: "Building a Website Using VS Code",
-      topics: [
+      "id": "sc_day_60",
+      "title": "Mastering Assets, Environments, and Connections",
+      "topics": [
         {
-          id: "sc_day_60_t1",
-          title: "Getting Image URLs Using Cloudinary",
-          explanation:
-            "• Cloudinary is a cloud-based media management platform used to upload, store, and deliver images and videos. After uploading an image, Cloudinary provides a public URL that can be used inside the HTML img tag src attribute.",
-          examples: [
+          "id": "sc_day_60_t1",
+          "title": "Cloudinary: Managing External Image Assets",
+          "explanation": "Cloudinary is a cloud-based service used to store and optimize images. Instead of keeping large image files in your local project folder—which can slow down loading and increase project size—you upload them to Cloudinary. This provides you with a Direct URL (e.g., https://res.cloudinary.com/...) that you can plug directly into your HTML <img> tags or CSS background-image properties.",
+          "examples": [
             {
-              language: "html",
-              code: '<img src="https://res.cloudinary.com/demo/image/upload/sample.jpg" alt="Sample Image">',
-              explanation:
-                "• The src attribute contains the image URL generated by Cloudinary.",
-            },
-          ],
+              "language": "html",
+              "code": "<img src=\"https://res.cloudinary.com/demo/image/upload/sample.jpg\" alt=\"Cloudinary Image\">",
+              "explanation": "Using external URLs reduces the load on your local server and ensures images are delivered via a Content Delivery Network (CDN) for faster speeds."
+            }
+          ]
         },
         {
-          id: "sc_day_60_t2",
-          title: "Installing Visual Studio Code",
-          explanation:
-            "• Visual Studio Code (VS Code) is a lightweight and powerful source-code editor. It supports HTML, CSS, JavaScript, and many other languages. Download it based on your operating system (Windows, Mac, or Linux) and install it following the setup instructions.",
-        },
-        {
-          id: "sc_day_60_t3",
-          title: "Project Folder Structure",
-          explanation:
-            "• When building a website in VS Code, create a project folder containing HTML and CSS files. Keeping files organized improves maintainability.",
-          examples: [
+          "id": "sc_day_60_t2",
+          "title": "Setting Up Visual Studio Code (VS Code)",
+          "explanation": "VS Code is the industry-standard Integrated Development Environment (IDE). It offers essential features like IntelliSense (code completion), a built-in terminal, and extensions that make web development faster. Depending on your OS (Windows, Linux, or Mac), the installation varies slightly, but the core functionality remains the same: providing a workspace to write and manage your code efficiently.",
+          "examples": [
             {
-              language: "text",
-              code: "project-folder/\n  index.html\n  styles.css\n  images/",
-              explanation: "• Basic folder structure for a simple website.",
-            },
-          ],
+              "language": "markdown",
+              "code": "* Step 1: Download the installer from the official site.\n* Step 2: Run the .exe (Windows) or .dmg (Mac).\n* Step 3: Open your project folder to start coding.",
+              "explanation": "VS Code is highly customizable, allowing you to install themes and plugins tailored to HTML/CSS development."
+            }
+          ]
         },
         {
-          id: "sc_day_60_t4",
-          title: "Linking HTML and CSS Files",
-          explanation:
-            "• To apply CSS styles to an HTML document, we use the HTML <link> element. It connects the external CSS file to the HTML file. The link tag must be placed inside the head section of the HTML document.",
-        },
-        {
-          id: "sc_day_60_t5",
-          title: "Link Element Syntax",
-          examples: [
+          "id": "sc_day_60_t3",
+          "title": "Linking CSS via the <link> Element",
+          "explanation": "The <link> tag is a 'void element' (meaning it has no closing tag) used to connect your CSS file to your HTML. It must be placed inside the <head> section. The 'rel' attribute defines the relationship (stylesheet), and the 'href' attribute provides the path to the CSS file. This separation of concerns allows you to change the entire look of a site by simply editing one CSS file without touching the HTML structure.",
+          "examples": [
             {
-              language: "html",
-              code: '<head>\n  <link rel="stylesheet" href="styles.css">\n</head>',
-              explanation:
-                '• rel="stylesheet" defines relationship, href specifies the CSS file path.',
-            },
-          ],
+              "language": "html",
+              "code": "<head>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>",
+              "explanation": "The href path is relative to the location of the HTML file. If the CSS is in a folder, use 'folder/style.css'."
+            }
+          ]
         },
         {
-          id: "sc_day_60_t6",
-          title: "Important Notes",
-          explanation:
-            "• The <link> element is a void element, meaning it does not require a closing tag. Always ensure the CSS file path in href matches the file location. If the file is in another folder, provide the correct relative path.",
-        },
-      ],
-    },
+          "id": "sc_day_60_t4",
+          "title": "Understanding the Relationship between HTML and CSS",
+          "explanation": "Think of HTML as the skeleton and CSS as the skin and clothing. By linking them, the browser reads the HTML structure first, then fetches the CSS rules to apply styles like colors, fonts, and layouts. If the link is broken or the path in 'href' is incorrect, the webpage will appear as plain text with no styling.",
+          "examples": [
+            {
+              "language": "css",
+              "code": "/* In tourism.css */\nbody {\n  background-color: #f0f0f0;\n}",
+              "explanation": "Once linked, any change made in this file automatically updates the appearance of the connected HTML document."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   61: [
