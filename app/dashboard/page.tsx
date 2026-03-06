@@ -47,7 +47,7 @@ const parsePracticeAttempts = (value: unknown): PracticeAttemptLite[] => {
 }
 
 const hasPassingAttempt = (attempts: PracticeAttemptLite[]): boolean =>
-  attempts.some((attempt) => attempt.percentage > UNLOCK_PERCENTAGE)
+  attempts.some((attempt) => attempt.percentage >= UNLOCK_PERCENTAGE)
 
 export default function DashboardPage() {
   const days = useMemo(

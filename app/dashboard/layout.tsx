@@ -183,9 +183,7 @@ export default function DashboardLayout({
                 <div ref={profileMenuRef} className="relative">
                   <button
                     type="button"
-                    onClick={() => {
-                      setIsProfileMenuOpen((prev) => !prev)
-                    }}
+                    onClick={() => setIsProfileMenuOpen((prev) => !prev)}
                     className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--card)] px-2.5 py-1.5 shadow-[0_8px_16px_rgba(19,58,96,0.1)] transition hover:border-[var(--primary)]"
                     aria-haspopup="menu"
                     aria-expanded={isProfileMenuOpen}

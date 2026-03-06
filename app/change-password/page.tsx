@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { getAccessContext, normalizeEmail } from '@/lib/auth'
+import { checkAllowedEmail, normalizeEmail } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 
 export default function ChangePasswordPage() {
@@ -15,41 +15,6 @@ export default function ChangePasswordPage() {
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const [checkingSession, setCheckingSession] = useState(true)
-
-  useEffect(() => {
-    let active = true
-
-    const checkSession = async () => {
-      const access = await getAccessContext()
-      if (!active) return
-
-      if (!access.user) {
-        router.replace('/login')
-        return
-      }
-
-      if (access.role === 'admin') {
-        router.replace('/admin')
-        return
-      }
-
-      if (!access.allowedEmail) {
-        await supabase.auth.signOut()
-        router.replace('/login')
-        return
-      }
-
-      setEmail(access.user.email ?? '')
-      setCheckingSession(false)
-    }
-
-    checkSession()
-
-    return () => {
-      active = false
-    }
-  }, [router])
 
   const handleChangePassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -79,6 +44,18 @@ export default function ChangePasswordPage() {
     }
 
     setLoading(true)
+
+    const allowedCheck = await checkAllowedEmail(normalizedEmail)
+    if (allowedCheck.error) {
+      setLoading(false)
+      setErrorMessage(allowedCheck.error)
+      return
+    }
+    if (!allowedCheck.allowed) {
+      setLoading(false)
+      setErrorMessage('This email is not allowed. Contact admin.')
+      return
+    }
 
     const { data: signInData, error: signInError } =
       await supabase.auth.signInWithPassword({
@@ -120,14 +97,6 @@ export default function ChangePasswordPage() {
     }, 1200)
   }
 
-  if (checkingSession) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8">
-        <p className="muted-text">Loading...</p>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8">
       <form
@@ -139,7 +108,13 @@ export default function ChangePasswordPage() {
           Change password directly without email reset links.
         </p>
 
-        <input type="email" value={email} readOnly placeholder="Email" />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
 
         <input
           type="password"
