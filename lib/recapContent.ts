@@ -3197,252 +3197,101 @@ export const recapContent = {
 
   63: [
     {
-      id: "sc_day_63",
-      title: "CSS Grid part 1",
-      topics: [
-
+      "id": "sc_day_63",
+      "title": "CSS Grid - 1",
+      "topics": [
         {
-          id: "sc_day_63_t1",
-          title: "Layout",
-          explanation:
-            "• A layout is a structural pattern used to organize and arrange elements on a webpage.\n" +
-            "• It defines how headers, sidebars, content sections, and footers are positioned.\n" +
-            "• Proper layout planning improves readability and user experience.\n" +
-            "• Popular websites like Facebook and YouTube follow well-structured layouts.\n" +
-            "• Always plan the layout before writing code to avoid messy structure."
+          "id": "sc_day_63_t1",
+          "title": "Fundamentals of Grid Layout",
+          "explanation": "A layout is the structural pattern used to arrange elements on a website. While Flexbox is great for 1D alignment, CSS Grid provides a 2D system. \n\n* Layout Definition: Patterns used to structure information (e.g., Facebook or YouTube layouts).\n* Grid Container: The parent element where display: grid is applied.\n* Grid Items: The direct children of a grid container.\n* Implicit Grid: The default behavior where Grid automatically stacks items in a single column.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".container {\n  display: grid;\n}",
+              "explanation": "This defines the container as a grid context for all its direct children."
+            }
+          ]
         },
-
         {
-          id: "sc_day_63_t2",
-          title: "Methods to Design a Layout",
-          explanation:
-            "• There are two primary methods to design webpage layouts: CSS Flexbox and CSS Grid.\n" +
-            "• CSS Flexbox is a one-dimensional layout system.\n" +
-            "• CSS Grid is a two-dimensional layout system.\n" +
-            "• Flexbox is useful for simpler layouts like navigation bars.\n" +
-            "• CSS Grid is more powerful and better suited for complex layouts.\n" +
-            "• For complex UI structures, CSS Grid makes the code cleaner and more manageable."
+          "id": "sc_day_63_t2",
+          "title": "Grid Terminology & Structure",
+          "explanation": "To master Grid, you must understand the internal anatomy of the grid system. \n\n* Rows & Columns: The horizontal and vertical tracks of the grid.\n* Grid Lines: The dividing lines that create the structure.\n* Grid Cell: The smallest unit of a grid (intersection of one row and one column).\n* Grid Track: The space between two adjacent grid lines (entire rows or columns).\n* Grid Area: Any space enclosed by four grid lines (can span multiple cells).",
+          "examples": [
+            {
+              "language": "markdown",
+              "code": "",
+              "explanation": "Visualizing these components helps in planning the placement of items."
+            }
+          ]
         },
-
         {
-          id: "sc_day_63_t3",
-          title: "CSS Flexbox",
-          explanation:
-            "• Flexbox arranges elements either horizontally (row) or vertically (column).\n" +
-            "• It works along a single axis at a time.\n" +
-            "• It is useful for aligning items and distributing space efficiently.\n" +
-            "• Flexbox is ideal for small components and simple page sections.\n" +
-            "• For complex multi-row and multi-column layouts, Flexbox can become difficult to manage."
+          "id": "sc_day_63_t3",
+          "title": "Explicit Grid Properties",
+          "explanation": "Explicitly defining rows and columns gives you full control over the gallery structure. \n\n* grid-template-columns: Defines the number and width of columns.\n* grid-template-rows: Defines the number and height of rows.\n* Units: You can use pixels (px), percentages (%), or flexible units (fr).",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".gallery-container {\n  display: grid;\n  grid-template-columns: 200px 200px 200px;\n  grid-template-rows: 150px 150px;\n}",
+              "explanation": "Creates a fixed grid of 3 columns and 2 rows."
+            }
+          ]
         },
-
         {
-          id: "sc_day_63_t4",
-          title: "Introduction to CSS Grid",
-          explanation:
-            "• CSS Grid is an advanced two-dimensional layout system.\n" +
-            "• It allows developers to design layouts using both rows and columns simultaneously.\n" +
-            "• It provides precise control over element placement.\n" +
-            "• Grid supports advanced features like fractional units (fr), named areas, and minmax().\n" +
-            "• It reduces the need for nested div elements.\n" +
-            "• CSS Grid produces cleaner and more maintainable code compared to complex Flexbox layouts."
-        },
-
-        {
-          id: "sc_day_63_t5",
-          title: "Basic Terminology of CSS Grid",
-          explanation:
-            "• Rows are horizontal sections in a grid.\n" +
-            "• Columns are vertical sections in a grid.\n" +
-            "• Grid Lines divide rows and columns and are numbered starting from 1.\n" +
-            "• A Grid Cell is the smallest unit formed between adjacent row and column lines.\n" +
-            "• A Grid Track is the space between two adjacent grid lines.\n" +
-            "• A Grid Area is a rectangular space enclosed by four grid lines and can span multiple cells."
-        },
-
-        {
-          id: "sc_day_63_t6",
-          title: "Steps to Build a Layout",
-          explanation:
-            "• Step 1: Identify the layout structure of the application.\n" +
-            "• Step 2: Determine the number of rows and columns needed.\n" +
-            "• Step 3: Visualize the layout in grid format.\n" +
-            "• Step 4: Implement CSS Grid properties.\n" +
-            "• Example: In a gallery layout, we may use 2 rows and 3 columns."
-        },
-
-        {
-          id: "sc_day_63_t7",
-          title: "display: grid",
-          explanation:
-            "• The display property converts an element into a Grid Container when set to grid.\n" +
-            "• Syntax: display: grid;\n" +
-            "• The element with display: grid becomes the Grid Container.\n" +
-            "• All direct child elements become Grid Items.\n" +
-            "• By default, Grid creates a single-column layout if rows and columns are not defined.\n" +
-            "• This automatic behavior is called an Implicit Grid."
-        },
-
-        {
-          id: "sc_day_63_t8",
-          title: "Implicit Grid",
-          explanation:
-            "• When rows and columns are not explicitly defined, CSS Grid automatically places items.\n" +
-            "• It creates new rows dynamically based on the number of child elements.\n" +
-            "• For example, if there are 6 grid items, 6 rows may be created automatically.\n" +
-            "• Implicit grids are dynamic and adjust based on content.\n" +
-            "• However, they may not produce the expected structured layout."
-        },
-
-        {
-          id: "sc_day_63_t9",
-          title: "grid-template-columns",
-          explanation:
-            "• grid-template-columns defines the number and width of columns.\n" +
-            "• Syntax: grid-template-columns: width width ...;\n" +
-            "• Example: grid-template-columns: 33% 33% 33%; creates three equal columns.\n" +
-            "• Units can be px, %, fr, etc.\n" +
-            "• It explicitly controls the horizontal structure of the layout."
-        },
-
-        {
-          id: "sc_day_63_t10",
-          title: "grid-template-rows",
-          explanation:
-            "• grid-template-rows defines the number and height of rows.\n" +
-            "• Syntax: grid-template-rows: height height ...;\n" +
-            "• Example: grid-template-rows: 40% 40%; creates two rows.\n" +
-            "• Units can be px, %, fr, etc.\n" +
-            "• It explicitly controls the vertical structure of the layout."
+          "id": "sc_day_63_t4",
+          "title": "Spacing and Flexibility",
+          "explanation": "Managing gutters and responsive behavior is easier with specific Grid units and properties. \n\n* Gap Property: Adds fixed spacing between rows and columns without using margins.\n* Fractional Unit (fr): Represents a fraction of the available free space and eliminates horizontal scrolling issues caused by fixed percentages.\n* Repeat() Function: A shorthand method to define multiple identical tracks quickly.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".gallery-container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 15px;\n}",
+              "explanation": "Creates 3 equal columns that adjust to screen width with a 15px gap."
+            }
+          ]
         }
-
       ]
     }
   ],
 
   64: [
     {
-      id: "sc_day_64",
-      title: "Advanced CSS Grid - Blog Application",
-      topics: [
-
+      "id": "sc_day_64",
+      "title": "CSS Grid - 2",
+      "topics": [
         {
-          id: "sc_day_64_t1",
-          title: "Introduction",
-          explanation:
-            "• In the previous session, we learned the fundamentals of CSS Grid.\n" +
-            "• In this session, we build a complete Blog Application using advanced Grid properties.\n" +
-            "• We will learn how to control grid items precisely using grid lines and grid areas.\n" +
-            "• The goal is to create a structured multi-section layout using CSS Grid."
+          "id": "sc_day_64_t1",
+          "title": "Grid Item Spanning",
+          "explanation": "Grid items can span multiple tracks by specifying their start and end lines. This is essential for elements like headers and footers that need to stretch across the entire layout.\n\n* grid-column-start/end: Defines the vertical line boundaries where an item begins and ends.\n* grid-row-start/end: Defines the horizontal line boundaries for an item.\n* Line Numbering: Grid lines are numbered starting from 1. To span 3 columns, you go from line 1 to line 4.\n* Short-hand syntax: Use 'grid-column: start / end' to combine both properties into one line.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".header {\n  grid-column: 1 / 4;\n  grid-row: 1 / 2;\n}",
+              "explanation": "This tells the header to start at the first column line and end at the fourth, spanning all three columns in the first row."
+            }
+          ]
         },
-
         {
-          id: "sc_day_64_t2",
-          title: "Identifying the Layout",
-          explanation:
-            "• Before writing CSS, always identify the layout structure.\n" +
-            "• In this Blog Application, we have Header, Sidebar, Blog Content, Ads, and Footer.\n" +
-            "• The layout consists of 3 rows and 3 columns.\n" +
-            "• Different rows and columns have different widths and heights.\n" +
-            "• Planning layout visually helps in writing cleaner grid code."
+          "id": "sc_day_64_t2",
+          "title": "The Auto Keyword and Dynamic Sizing",
+          "explanation": "The auto value allows grid tracks to adjust their size automatically based on the content they contain.\n\n* Content-Based Sizing: Unlike 1fr which divides remaining space, auto only takes up as much space as the content (text, images, buttons) requires.\n* Practical Usage: Frequently used for headers and footers to ensure they stay compact while the main content area expands.\n* Interaction with 1fr: Combining auto and 1fr creates layouts where some parts are fixed to content size and others are flexible.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".bg-container {\n  display: grid;\n  grid-template-rows: auto 1fr auto;\n}",
+              "explanation": "This creates a layout where the top and bottom rows fit their content, and the middle row fills all remaining vertical space."
+            }
+          ]
         },
-
         {
-          id: "sc_day_64_t3",
-          title: "Creating Grid Structure",
-          explanation:
-            "• The container is converted into a Grid Container using display: grid.\n" +
-            "• grid-template-columns: 1fr 2fr 1fr defines three columns with flexible widths.\n" +
-            "• grid-template-rows: 1fr 3fr 1fr defines three rows.\n" +
-            "• gap: 15px creates spacing between grid items.\n" +
-            "• fr unit distributes remaining space proportionally."
-        },
-
-        {
-          id: "sc_day_64_t4",
-          title: "Spanning Grid Items Across Columns",
-          explanation:
-            "• grid-column-start defines where a grid item begins horizontally.\n" +
-            "• grid-column-end defines where it ends horizontally.\n" +
-            "• Example: grid-column-start: 1; grid-column-end: 4; makes header span all 3 columns.\n" +
-            "• This allows elements like Header and Footer to stretch across the entire layout."
-        },
-
-        {
-          id: "sc_day_64_t5",
-          title: "Spanning Grid Items Across Rows",
-          explanation:
-            "• grid-row-start defines where a grid item begins vertically.\n" +
-            "• grid-row-end defines where it ends vertically.\n" +
-            "• Example: grid-row-start: 1; grid-row-end: 2;\n" +
-            "• Using row and column start/end gives full control over grid placement."
-        },
-
-        {
-          id: "sc_day_64_t6",
-          title: "Shorthand for grid-row and grid-column",
-          explanation:
-            "• grid-column: start/end is shorthand for grid-column-start and grid-column-end.\n" +
-            "• grid-row: start/end is shorthand for grid-row-start and grid-row-end.\n" +
-            "• Example: grid-column: 1/4; grid-row: 1/2;\n" +
-            "• Providing only the start value automatically spans one track by default.\n" +
-            "• Shorthand properties simplify grid placement and reduce code length."
-        },
-
-        {
-          id: "sc_day_64_t7",
-          title: "Positioning Sidebar, Blog, Ads, Footer",
-          explanation:
-            "• Sidebar is placed using grid-column: 1/2; grid-row: 2/3;\n" +
-            "• Blog Content is placed using grid-column: 2/3; grid-row: 2/3;\n" +
-            "• Ads section is placed using grid-column: 3/4; grid-row: 2/3;\n" +
-            "• Footer spans across all columns using grid-column: 1/4; grid-row: 3/4;\n" +
-            "• Each grid item is precisely placed inside the defined structure."
-        },
-
-        {
-          id: "sc_day_64_t8",
-          title: "auto Value in Grid",
-          explanation:
-            "• auto sets the size of rows or columns based on content.\n" +
-            "• grid-template-rows: auto 1fr auto;\n" +
-            "• Header and Footer adjust height according to their content.\n" +
-            "• Middle row takes remaining space using 1fr.\n" +
-            "• auto is useful when content height should determine row size."
-        },
-
-        {
-          id: "sc_day_64_t9",
-          title: "grid-area Property",
-          explanation:
-            "• grid-area assigns a name to a grid item.\n" +
-            "• Example: .header { grid-area: header; }\n" +
-            "• It connects grid items with grid-template-areas.\n" +
-            "• grid-area can also be shorthand for row and column placement.\n" +
-            "• Syntax: grid-area: row-start / column-start / row-end / column-end;"
-        },
-
-        {
-          id: "sc_day_64_t10",
-          title: "grid-template-areas",
-          explanation:
-            "• grid-template-areas provides a visual way to define layout.\n" +
-            "• It defines layout using named areas in string format.\n" +
-            "• Example:\n" +
-            "  \"header header header\"\n" +
-            "  \"sidebar blog ads\"\n" +
-            "  \"footer footer footer\";\n" +
-            "• It makes layout easier to read and manage.\n" +
-            "• Best for simple and clearly structured grid designs."
-        },
-
-        {
-          id: "sc_day_64_t11",
-          title: "Grid Areas vs Grid Lines",
-          explanation:
-            "• Grid Lines are powerful and flexible but can become complex in large layouts.\n" +
-            "• Grid Areas are more readable and semantic.\n" +
-            "• Grid Areas are ideal for fixed, clearly defined layouts.\n" +
-            "• Grid Lines are better for dynamic and complex grid positioning."
+          "id": "sc_day_64_t3",
+          "title": "Grid Template Areas",
+          "explanation": "This is a highly visual method of designing layouts by assigning names to specific grid cells. It makes the CSS code act as a map of the webpage.\n\n* grid-area: A property applied to child elements to give them a custom name.\n* grid-template-areas: A container property that describes the layout using strings of these names.\n* Spanning logic: Repeating a name in adjacent cells (e.g., 'header header') automatically causes that item to span across those cells.\n* Readability: It is generally easier to maintain than grid-line numbers for large-scale projects.",
+          "examples": [
+            {
+              "language": "css",
+              "code": ".bg-container {\n  grid-template-areas: \n    \"header header header\"\n    \"sidebar blog ads\"\n    \"footer footer footer\";\n}\n\n.header { grid-area: header; }",
+              "explanation": "This visually defines a 3-column layout where the header and footer span all columns, while the middle row is split into three distinct sections."
+            }
+          ]
         }
       ]
     }
@@ -3450,145 +3299,57 @@ export const recapContent = {
 
   65: [
     {
-      id: "sc_day_65",
-      title: "Factory Functions, Constructor Functions & Date Object",
-      topics: [
-
+      "id": "sc_day_65",
+      "title": "Factory and Constructor Functions",
+      "topics": [
         {
-          id: "sc_day_65_t1",
-          title: "Factory Function",
-          explanation:
-            "• A Factory Function is a regular function that returns a new object every time it is called.\n" +
-            "• It follows camelCase naming convention.\n" +
-            "• The function explicitly returns an object.\n" +
-            "• Each function call creates a separate object instance.\n" +
-            "• It does not require the new keyword.\n" +
-            "• Useful for creating multiple similar objects without using classes."
+          "id": "sc_day_65_t1",
+          "title": "Factory Functions",
+          "explanation": "A Factory function is any function that returns a new object for every function call. It is a clean way to create multiple objects with the same structure without repeating code.\n\n* Naming Convention: Always use camelCase (e.g., createUser, getCar).\n* Shorthand Notation: When the property name and the variable name are identical, you can omit the value (e.g., color instead of color: color).\n* Method Shorthand: You can define methods directly without the function keyword (e.g., start() { ... }).",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function createCar(color, brand) {\n  return {\n    color,\n    brand,\n    start() {\n      console.log(\"started\");\n    }\n  };\n}\n\nlet car1 = createCar(\"blue\", \"Audi\");",
+              "explanation": "This function 'manufactures' and returns a unique object literal whenever invoked."
+            }
+          ]
         },
-
         {
-          id: "sc_day_65_t2",
-          title: "Factory Function Shorthand",
-          explanation:
-            "• ES6 provides shorthand syntax for object creation.\n" +
-            "• Property shorthand allows writing { color, brand } instead of { color: color }.\n" +
-            "• Method shorthand allows writing start() {} instead of start: function() {}.\n" +
-            "• Shorthand improves readability and reduces code length."
+          "id": "sc_day_65_t2",
+          "title": "Constructor Functions & The 'new' Operator",
+          "explanation": "A Constructor function is a regular function used with the 'new' operator to create instances of an object. It works differently from factory functions by using the 'this' keyword.\n\n* Naming Convention: Always use PascalCase (e.g., Car, UserProfile).\n* The 'new' Operator: When called, it creates an empty object, assigns it to 'this', and implicitly returns 'this'.\n* Instances: Objects created via a constructor are called instances of that function.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function Car(color, brand) {\n  this.color = color;\n  this.brand = brand;\n  this.start = function() {\n    console.log(\"started\");\n  };\n}\n\nlet car1 = new Car(\"blue\", \"Audi\");",
+              "explanation": "The 'new' keyword handles the object creation and the return statement automatically."
+            }
+          ]
         },
-
         {
-          id: "sc_day_65_t3",
-          title: "Constructor Function",
-          explanation:
-            "• A Constructor Function creates objects using the new operator.\n" +
-            "• It follows PascalCase naming convention.\n" +
-            "• Properties are assigned using the this keyword.\n" +
-            "• The object is created automatically when called with new.\n" +
-            "• The created object is called an Instance.\n" +
-            "• Instance properties and methods belong to that specific object."
+          "id": "sc_day_65_t3",
+          "title": "Built-in Constructor: The Date Object",
+          "explanation": "JavaScript provides built-in constructors to handle specific data types like Dates. The Date object represents a single moment in time in a platform-independent format.\n\n* Time Epoch: Dates are stored as milliseconds since January 1, 1970, UTC.\n* Zero-Based Months: In JavaScript, months are indexed from 0 to 11 (0 is January, 11 is December).\n* Auto-Correction: The Date object automatically fixes out-of-range values (e.g., January 33 becomes February 2).",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let specificDate = new Date(2021, 0, 28);\nconsole.log(specificDate.toString());\n\nlet now = new Date();\nconsole.log(now.getFullYear()); // Returns current year",
+              "explanation": "You can create dates using strings, milliseconds, or specific year/month/day arguments."
+            }
+          ]
         },
-
         {
-          id: "sc_day_65_t4",
-          title: "The new Operator",
-          explanation:
-            "• When a function is called using new, JavaScript creates an empty object.\n" +
-            "• The empty object is assigned to this inside the function.\n" +
-            "• Properties and methods are attached to this.\n" +
-            "• The new object is returned automatically.\n" +
-            "• Example: let car1 = new Car('blue', 'Audi');\n" +
-            "• car1 becomes an instance of Car."
-        },
-
-        {
-          id: "sc_day_65_t5",
-          title: "Factory vs Constructor Functions",
-          explanation:
-            "• Factory functions follow camelCase naming.\n" +
-            "• Constructor functions follow PascalCase naming.\n" +
-            "• Factory functions do not require new keyword.\n" +
-            "• Constructor functions require new keyword.\n" +
-            "• Factory functions explicitly return objects.\n" +
-            "• Constructor functions return object implicitly."
-        },
-
-        {
-          id: "sc_day_65_t6",
-          title: "JavaScript Functions as Objects",
-          explanation:
-            "• In JavaScript, functions are also objects.\n" +
-            "• Functions have properties and methods.\n" +
-            "• Default properties include name, length, constructor.\n" +
-            "• Default methods include call(), apply(), bind(), toString()."
-        },
-
-        {
-          id: "sc_day_65_t7",
-          title: "Function Properties",
-          explanation:
-            "• name property returns the name of the function.\n" +
-            "• length property returns number of parameters.\n" +
-            "• typeof functionName returns 'function'.\n" +
-            "• These properties help in debugging and understanding functions."
-        },
-
-        {
-          id: "sc_day_65_t8",
-          title: "Constructor Property",
-          explanation:
-            "• Every object in JavaScript has a constructor property.\n" +
-            "• The constructor property refers to the function used to create the object.\n" +
-            "• Example: car1.constructor returns Car function definition.\n" +
-            "• Useful for identifying object type."
-        },
-
-        {
-          id: "sc_day_65_t9",
-          title: "Built-in Constructor Functions",
-          explanation:
-            "• JavaScript provides built-in constructor functions.\n" +
-            "• Examples: Date(), Error(), Promise(), Object(), String(), Number().\n" +
-            "• These constructors create predefined object types.\n" +
-            "• They provide built-in methods for common operations."
-        },
-
-        {
-          id: "sc_day_65_t10",
-          title: "Creating Date Objects",
-          explanation:
-            "• The Date object represents date and time.\n" +
-            "• new Date() creates current date and local time.\n" +
-            "• new Date(milliseconds) creates date from milliseconds since Jan 1, 1970 UTC.\n" +
-            "• new Date(dateString) creates date from formatted string.\n" +
-            "• new Date(year, month, day, hours, minutes, seconds, milliseconds) creates custom date.\n" +
-            "• Months are counted from 0 to 11 (January = 0).\n" +
-            "• If only one numeric argument is passed, it is treated as milliseconds."
-        },
-
-        {
-          id: "sc_day_65_t11",
-          title: "Date Auto-Correction",
-          explanation:
-            "• The Date object automatically corrects out-of-range values.\n" +
-            "• Example: new Date(2008, 0, 33) becomes February 2, 2008.\n" +
-            "• JavaScript adjusts overflow values internally.\n" +
-            "• This helps prevent invalid date errors."
-        },
-
-        {
-          id: "sc_day_65_t12",
-          title: "Date Instance Methods",
-          explanation:
-            "• Date.now() returns milliseconds since Jan 1, 1970 UTC.\n" +
-            "• getFullYear() returns the year.\n" +
-            "• getMonth() returns month (0–11).\n" +
-            "• getDate() returns day of month (1–31).\n" +
-            "• getDay() returns weekday (0–6).\n" +
-            "• getHours() and getMinutes() return time components.\n" +
-            "• setFullYear(), setMonth(), setDate() modify date values.\n" +
-            "• getUTCDate() and setUTCDate() work with universal time."
+          "id": "sc_day_65_t4",
+          "title": "Function Properties and Methods",
+          "explanation": "In JavaScript, functions are actually objects. Because of this, they have their own default properties and methods.\n\n* name: Returns the name of the function.\n* length: Returns the number of arguments expected by the function.\n* constructor property: Every object has a property that refers to the constructor function used to create it.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function Car(color, brand) {}\nconsole.log(Car.name);   // \"Car\"\nconsole.log(Car.length); // 2",
+              "explanation": "Accessing internal properties of the Car function object."
+            }
+          ]
         }
-
       ]
     }
   ],
@@ -4139,18 +3900,6 @@ export const recapContent = {
             }
           ]
         },
-
-        {
-          id: "sc_day_68_t9",
-          title: "Interview Recap",
-          explanation:
-            "• 'this' depends on how function is called.\n" +
-            "• Object method → this = object.\n" +
-            "• Regular function → this = global object.\n" +
-            "• Arrow function → this = surrounding context.\n" +
-            "• Constructor with new → this = new instance."
-        }
-
       ]
     }
   ],
@@ -4158,7 +3907,7 @@ export const recapContent = {
   69: [
     {
       id: "sc_day_69",
-      title: "CSS Positioning part - 1",
+      title: "CSS Positioning - 1",
       topics: [
 
         {
@@ -4310,18 +4059,6 @@ export const recapContent = {
             }
           ]
         },
-
-        {
-          id: "sc_day_69_t9",
-          title: "Interview Recap",
-          explanation:
-            "• static → default position, normal flow.\n" +
-            "• relative → shifts from original position.\n" +
-            "• fixed → relative to viewport, removed from flow.\n" +
-            "• Fixed elements stay during scrolling.\n" +
-            "• Used in navbars, modals, floating buttons."
-        }
-
       ]
     }
   ],
@@ -4497,19 +4234,6 @@ export const recapContent = {
             "• Ensures proper visual stacking.\n" +
             "• Always assign z-index carefully to avoid layout bugs."
         },
-
-        {
-          id: "sc_day_70_t12",
-          title: "Interview Recap",
-          explanation:
-            "• absolute → relative to nearest positioned ancestor.\n" +
-            "• fixed → relative to viewport.\n" +
-            "• positioned ancestor must not be static.\n" +
-            "• z-index controls stacking order.\n" +
-            "• Higher z-index appears on top.\n" +
-            "• Works only on positioned elements."
-        }
-
       ]
     }
   ],
@@ -4681,19 +4405,6 @@ export const recapContent = {
             "• super() must be called before accessing 'this'.\n" +
             "• After super(), 'this' can be used normally."
         },
-
-        {
-          id: "sc_day_71_t10",
-          title: "Interview Recap",
-          explanation:
-            "• Class is syntactic sugar over constructor functions.\n" +
-            "• constructor() initializes properties.\n" +
-            "• extends enables inheritance.\n" +
-            "• super() calls parent constructor.\n" +
-            "• Method overriding modifies parent behavior.\n" +
-            "• 'this' refers to instance object."
-        }
-
       ]
     }
   ],
@@ -4890,19 +4601,6 @@ export const recapContent = {
             "• Styles must be explicitly defined.\n" +
             "• Ensures consistency across browsers."
         },
-
-        {
-          id: "sc_day_72_t11",
-          title: "Interview Recap",
-          explanation:
-            "• Tailwind is utility-first CSS framework.\n" +
-            "• Uses small reusable classes.\n" +
-            "• CDN setup for quick start.\n" +
-            "• Customization via tailwind.config.\n" +
-            "• Speeds up UI development.\n" +
-            "• Popular in modern frontend projects."
-        }
-
       ]
     }
   ],
@@ -5063,19 +4761,6 @@ export const recapContent = {
             "• Items move to next row automatically.\n" +
             "• Grid is content-aware by default."
         },
-
-        {
-          id: "sc_day_73_t14",
-          title: "Interview Recap",
-          explanation:
-            "• grid → create grid container.\n" +
-            "• grid-cols-4 → 4 equal columns.\n" +
-            "• col-span-n → span across columns.\n" +
-            "• col-start & row-start → precise positioning.\n" +
-            "• place-content & place-items → alignment utilities.\n" +
-            "• Tailwind grid replaces custom CSS grid easily."
-        }
-
       ]
     }
   ],
@@ -5148,29 +4833,6 @@ export const recapContent = {
             "• Used to build dashboards, animations, and games.\n" +
             "• Backbone of modern frontend frameworks (React, Angular, Vue)."
         },
-
-        {
-          id: "sc_day_74_t7",
-          title: "Real World Examples",
-          explanation:
-            "• Instagram personalized feed.\n" +
-            "• YouTube video recommendations.\n" +
-            "• Live cricket scores.\n" +
-            "• Traffic updates.\n" +
-            "• E-commerce cart updates."
-        },
-
-        {
-          id: "sc_day_74_t8",
-          title: "Interview Recap",
-          explanation:
-            "• Dynamic web apps change content based on user interaction.\n" +
-            "• JavaScript enables interactivity.\n" +
-            "• HTML → structure, CSS → styling, JS → behavior.\n" +
-            "• Client-server communication is essential.\n" +
-            "• Most modern applications are dynamic."
-        }
-
       ]
     }
   ],
@@ -5291,19 +4953,6 @@ export const recapContent = {
             "• Easy to maintain large applications.\n" +
             "• Faster than writing custom CSS media queries."
         },
-
-        {
-          id: "sc_day_75_t8",
-          title: "Interview Recap",
-          explanation:
-            "• Tailwind uses mobile-first responsive design.\n" +
-            "• Breakpoints: sm, md, lg, xl.\n" +
-            "• Use prefix syntax like md:text-xl.\n" +
-            "• hidden md:block hides on mobile, shows on medium.\n" +
-            "• col-span responsive classes adjust layout.\n" +
-            "• Tailwind removes need for custom media queries."
-        }
-
       ]
     }
   ],
@@ -5470,28 +5119,6 @@ export const recapContent = {
             "• Shows creativity & flexibility.\n" +
             "• Demonstrates technical strength + AI skills."
         },
-
-        {
-          id: "sc_day_76_t16",
-          title: "Using GenAI in Interviews",
-          explanation:
-            "• Build multiple variants quickly.\n" +
-            "• Showcase debugging skills.\n" +
-            "• Combine technical logic + AI usage.\n" +
-            "• Present professional-level designs faster."
-        },
-
-        {
-          id: "sc_day_76_t17",
-          title: "Key Takeaways",
-          explanation:
-            "• Quality of prompt determines quality of output.\n" +
-            "• Always compare and refine.\n" +
-            "• No-code tools are fast but limited.\n" +
-            "• AI coding tools offer more flexibility.\n" +
-            "• Technical knowledge + AI = powerful combination."
-        }
-
       ]
     }
   ],
@@ -5661,50 +5288,65 @@ export const recapContent = {
             "• HTML updates instantly without page reload.\n" +
             "• This creates dynamic behavior."
         },
-
-        {
-          id: "sc_day_77_t12",
-          title: "Interview Recap",
-          explanation:
-            "• Variables store data.\n" +
-            "• DOM represents HTML as objects.\n" +
-            "• document is entry point.\n" +
-            "• getElementById selects elements.\n" +
-            "• textContent changes text.\n" +
-            "• style modifies CSS dynamically.\n" +
-            "• Events trigger interactivity.\n" +
-            "• DOM + Events = Dynamic Web Apps."
-        }
-
       ]
     }
   ],
 
   78: [
     {
-      id: "sc_day_78",
-      title: "DOM and Event Fundamentals",
-      topics: [
+      "id": "sc_day_78",
+      "title": "Advanced DOM Manipulations & Dynamic Lists",
+      "topics": [
         {
-          id: "sc_day_78_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "DOM and Event Fundamentals". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_78_t1",
+          "title": "Creating and Appending Elements",
+          "explanation": "DOM manipulation allows you to build a website structure entirely through JavaScript. This process involves creating an element in memory and then physically attaching it to the document so the user can see it.\n\n* createElement(): This method creates an HTML element node. For example, document.createElement('h1') creates a heading object in the background.\n* textContent: This property allows you to set or update the text inside an element.\n* appendChild(): This is used to insert the newly created element into a parent container, such as document.body or a specific div.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let h1Element = document.createElement('h1');\nh1Element.textContent = 'Web Technologies';\ndocument.body.appendChild(h1Element);",
+              "explanation": "This creates a heading and adds it to the end of the webpage."
+            }
+          ]
         },
         {
-          id: "sc_day_78_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "DOM and Event Fundamentals" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_78_t2",
+          "title": "Dynamic Styling with classList",
+          "explanation": "Managing CSS classes through JavaScript is more efficient than setting individual inline styles. The classList object provides methods to toggle design properties dynamically.\n\n* classList.add(): Adds one or multiple CSS classes to an element to apply styles instantly.\n* classList.remove(): Removes specific classes to change the look of an element back to its original state.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let h1Element = document.createElement('h1');\nh1Element.classList.add('text-[40px]', 'font-bold');\n// To remove later:\nh1Element.classList.remove('font-bold');",
+              "explanation": "Using classList to apply Tailwind CSS utility classes to a dynamic element."
+            }
+          ]
         },
         {
-          id: "sc_day_78_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "DOM and Event Fundamentals". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
+          "id": "sc_day_78_t3",
+          "title": "Interactive Event Listeners",
+          "explanation": "To make dynamically created elements interactive, you can assign functions to event properties like onclick. This allows the element to respond to user actions the moment it is created.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let btnElement = document.createElement('button');\nbtnElement.textContent = 'Click Me';\nbtnElement.onclick = function() {\n  console.log('Button was clicked!');\n};",
+              "explanation": "Creating a button and defining what it does when clicked using an anonymous function."
+            }
+          ]
         },
-      ],
-    },
+        {
+          "id": "sc_day_78_t4",
+          "title": "Automating UI with for...of Loop",
+          "explanation": "Instead of creating elements one by one, we use loops to iterate over data arrays. This is the foundation of data-driven web applications.\n\n* for...of Loop: A simple way to loop through an array of items (like a grocery list).\n* Logic: For every item in your array, the loop creates a new element, sets its content, and appends it to the container.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let groceryItems = ['Milk', 'Bread', 'Eggs'];\nlet listContainer = document.createElement('ul');\n\nfor (let item of groceryItems) {\n  let listItem = document.createElement('li');\n  listItem.textContent = item;\n  listContainer.appendChild(listItem);\n}",
+              "explanation": "Using a for...of loop to transform an array of strings into a visible HTML list."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   79: [
@@ -5882,7 +5524,7 @@ export const recapContent = {
   80: [
     {
       id: "sc_day_80",
-      title: "JavaScript Schedulers & Asynchronous Execution",
+      title: "JavaScript Schedulers",
       topics: [
 
         {
@@ -6010,7 +5652,7 @@ export const recapContent = {
   81: [
     {
       id: "sc_day_81",
-      title: "Event Listeners, Operators & Event Object",
+      title: "Event Listeners and More Events",
       topics: [
 
         {
@@ -6167,7 +5809,7 @@ export const recapContent = {
   82: [
     {
       id: "sc_day_82",
-      title: "JavaScript Promises & Asynchronous Flow",
+      title: "JS Promises",
       topics: [
 
         {
@@ -6291,764 +5933,527 @@ export const recapContent = {
             "• Promises support error management."
         },
 
-        {
-          id: "sc_day_82_t12",
-          title: "Real-World Example (Network Simulation)",
-          explanation:
-            "• setTimeout simulates API delay.\n" +
-            "• Promise wraps async behavior.\n" +
-            "• resolve returns user data.\n" +
-            "• .then() handles success.\n" +
-            "• .catch() handles failure."
-        },
-
-        {
-          id: "sc_day_82_t13",
-          title: "Interview Recap",
-          explanation:
-            "• Promise handles future results.\n" +
-            "• States: Pending, Fulfilled, Rejected.\n" +
-            "• resolve() → success.\n" +
-            "• reject() → failure.\n" +
-            "• .then() handles success.\n" +
-            "• .catch() handles errors.\n" +
-            "• Must return promises for chaining.\n" +
-            "• Better than using only setTimeout."
-        }
-
       ]
     }
   ],
 
   83: [
     {
-      id: "sc_day_83",
-      title: "Custom Promises, Async/Await & Error Handling",
-      topics: [
-
+      "id": "sc_day_83",
+      "title": "JS Promises and Error Handling",
+      "topics": [
         {
-          id: "sc_day_83_t1",
-          title: "Why Create Custom Promises?",
-          explanation:
-            "• For custom validation logic.\n" +
-            "• For wrapping async operations.\n" +
-            "• For simulating API calls.\n" +
-            "• For reusable async functions.\n" +
-            "• For better error handling."
+          "id": "sc_day_83_t1",
+          "title": "Creating Custom Promises",
+          "explanation": "While we often consume APIs that return promises, you can create your own using the Promise constructor. This is useful for wrapping old callback-based functions (like setTimeout) or adding custom validation logic.\n\n* resolve(value): Call this when the operation is successful. It moves the promise to the 'fulfilled' state.\n* reject(error): Call this when the operation fails. It moves the promise to the 'rejected' state.\n* Reusability: It is best practice to wrap your promise inside a function so you can pass different arguments to it.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function checkAge(age) {\n  return new Promise((resolve, reject) => {\n    if (age >= 18) {\n      resolve('Eligible to vote');\n    } else {\n      reject('Not eligible yet');\n    }\n  });\n}\n\ncheckAge(20).then(res => console.log(res));",
+              "explanation": "A reusable function that returns a promise based on a conditional check."
+            }
+          ]
         },
-
         {
-          id: "sc_day_83_t2",
-          title: "new Promise() Constructor",
-          explanation:
-            "• Creates a promise object.\n" +
-            "• Takes executor function (resolve, reject).\n" +
-            "• resolve() → success.\n" +
-            "• reject() → failure.\n" +
-            "• Moves promise from pending to final state."
+          "id": "sc_day_83_t2",
+          "title": "Modern Async/Await Syntax",
+          "explanation": "Async/Await is 'syntactic sugar' built on top of promises. It makes asynchronous code look and behave more like synchronous, line-by-line code.\n\n* async: This keyword placed before a function makes it return a promise automatically.\n* await: This keyword pauses the execution of the function until the promise is resolved. It can only be used inside an async function.\n* Execution Flow: When JavaScript hits an 'await' line, it pauses that specific function but doesn't block the rest of the browser.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "async function displayUser() {\n  console.log('Fetching...');\n  const user = await fetchUserData(); // Pauses here until done\n  console.log('User received:', user);\n}\ndisplayUser();",
+              "explanation": "The code waits for fetchUserData to finish before logging the final result."
+            }
+          ]
         },
-
         {
-          id: "sc_day_83_t3",
-          title: "Promise Returning Functions",
-          explanation:
-            "• Wrap promises inside functions.\n" +
-            "• Makes them reusable.\n" +
-            "• Accept parameters.\n" +
-            "• Clean architecture.\n" +
-            "• Common in APIs."
-        },
-
-        {
-          id: "sc_day_83_t4",
-          title: "Passing Data via resolve()",
-          explanation:
-            "• resolve() can return strings.\n" +
-            "• Can return objects.\n" +
-            "• Can return arrays.\n" +
-            "• Used to pass async results.\n" +
-            "• Accessible inside .then() or await."
-        },
-
-        {
-          id: "sc_day_83_t5",
-          title: "Simulating Async with setTimeout",
-          explanation:
-            "• Wrap setTimeout inside Promise.\n" +
-            "• Simulates API delay.\n" +
-            "• Useful for testing.\n" +
-            "• Demonstrates async behavior.\n" +
-            "• Common interview example."
-        },
-
-        {
-          id: "sc_day_83_t6",
-          title: "Promise Chaining",
-          explanation:
-            "• Chain multiple .then().\n" +
-            "• Must return next promise.\n" +
-            "• If one fails → .catch() runs.\n" +
-            "• Sequential async flow.\n" +
-            "• Prevents callback nesting."
-        },
-
-        {
-          id: "sc_day_83_t7",
-          title: "Async/Await Introduction",
-          explanation:
-            "• Modern syntax for promises.\n" +
-            "• Makes async code readable.\n" +
-            "• Looks like synchronous code.\n" +
-            "• Built on top of promises.\n" +
-            "• Cleaner than chaining."
-        },
-
-        {
-          id: "sc_day_83_t8",
-          title: "async Keyword",
-          explanation:
-            "• Added before function.\n" +
-            "• Makes function return a promise.\n" +
-            "• Allows use of await.\n" +
-            "• Automatically wraps return value.\n" +
-            "• Required for await usage."
-        },
-
-        {
-          id: "sc_day_83_t9",
-          title: "await Keyword",
-          explanation:
-            "• Used before a promise.\n" +
-            "• Pauses execution inside async function.\n" +
-            "• Waits until promise resolves.\n" +
-            "• Makes code sequential.\n" +
-            "• Cannot be used outside async function."
-        },
-
-        {
-          id: "sc_day_83_t10",
-          title: "Multiple await Statements",
-          explanation:
-            "• Executes promises sequentially.\n" +
-            "• Waits for each to finish.\n" +
-            "• Cleaner than nested .then().\n" +
-            "• Useful for step-by-step workflows.\n" +
-            "• Easier debugging."
-        },
-
-        {
-          id: "sc_day_83_t11",
-          title: "Async Functions Always Return Promises",
-          explanation:
-            "• Even normal return values become promises.\n" +
-            "• greet() returns Promise.\n" +
-            "• Must use await or .then() to get value.\n" +
-            "• Important interview question.\n" +
-            "• Automatic wrapping behavior."
-        },
-
-        {
-          id: "sc_day_83_t12",
-          title: "Error Handling with try-catch",
-          explanation:
-            "• Used with async/await.\n" +
-            "• Wrap risky code in try block.\n" +
-            "• catch handles errors.\n" +
-            "• Prevents app crash.\n" +
-            "• Cleaner than .catch()."
-        },
-
-        {
-          id: "sc_day_83_t13",
-          title: "finally Block",
-          explanation:
-            "• Runs always (success or failure).\n" +
-            "• Used for cleanup.\n" +
-            "• Useful for loading spinners.\n" +
-            "• Ensures final execution.\n" +
-            "• Improves reliability."
-        },
-
-        {
-          id: "sc_day_83_t14",
-          title: "Real-World Pattern (Loading State)",
-          explanation:
-            "• Show loading message.\n" +
-            "• Await multiple async tasks.\n" +
-            "• Handle errors if occur.\n" +
-            "• Use finally for cleanup.\n" +
-            "• Common dashboard pattern."
-        },
-
-        {
-          id: "sc_day_83_t15",
-          title: "Interview Recap",
-          explanation:
-            "• Custom promises handle reusable async logic.\n" +
-            "• async makes function return promise.\n" +
-            "• await pauses execution.\n" +
-            "• try-catch handles errors.\n" +
-            "• finally runs always.\n" +
-            "• async/await is cleaner than .then().\n" +
-            "• Must return promises in chaining.\n" +
-            "• Professional async structure."
+          "id": "sc_day_83_t3",
+          "title": "Error Handling with Try-Catch-Finally",
+          "explanation": "In async functions, we don't use .catch(). Instead, we use the traditional try-catch blocks to handle errors gracefully.\n\n* try: Contains the code that might throw an error (the awaited promises).\n* catch (error): Executes only if a promise is rejected or a code error occurs.\n* finally: Always runs, regardless of success or failure. Perfect for hiding loading spinners or closing database connections.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "async function loadData() {\n  try {\n    const data = await fetchUserData();\n    console.log(data);\n  } catch (err) {\n    console.log('Error caught:', err);\n  } finally {\n    console.log('Operation Finished');\n  }\n}",
+              "explanation": "A complete error handling pattern for asynchronous operations."
+            }
+          ]
         }
-
       ]
     }
   ],
 
   84: [
     {
-      id: "sc_day_84",
-      title: "Hypertext Transfer Protocol (HTTP)",
-      topics: [
-
+      "id": "sc_day_84",
+      "title": "The Hypertext Transfer Protocol (HTTP)",
+      "topics": [
         {
-          id: "sc_day_84_t1",
-          title: "Web Resources",
-          explanation:
-            "• A Web Resource is any data available over the internet.\n" +
-            "• Can be HTML, CSS, JS, JSON.\n" +
-            "• Can be images, videos, PDFs.\n" +
-            "• APIs also return resources.\n" +
-            "• Everything on the web is a resource."
+          "id": "sc_day_84_t1",
+          "title": "Anatomy of a URL",
+          "explanation": "A Uniform Resource Locator (URL) is the address used to find resources on the internet. It follows a specific structure that tells the browser how to connect, where to go, and what specific data to look for.\n\n* Protocol: The rules of communication (http or https).\n* Domain Name: The address of the web server (e.g., google.com).\n* Path: The specific folder or file on that server.\n* Query Parameters: Key-value pairs used to filter or provide extra details (starts with a ?).",
+          "examples": [
+            {
+              "language": "text",
+              "code": "https://www.store.com/products?category=shoes&size=10",
+              "explanation": "Protocol: https | Domain: www.store.com | Path: /products | Query Params: category=shoes, size=10"
+            }
+          ]
         },
-
         {
-          id: "sc_day_84_t2",
-          title: "Uniform Resource Locator (URL)",
-          explanation:
-            "• URL identifies location of resource.\n" +
-            "• Syntax: protocol://domain/path?query.\n" +
-            "• Protocol defines communication rule.\n" +
-            "• Domain identifies server.\n" +
-            "• Path identifies resource.\n" +
-            "• Query parameters filter data."
+          "id": "sc_day_84_t2",
+          "title": "HTTP Requests & Methods",
+          "explanation": "When you interact with a website, your browser sends an HTTP Request message. This message contains a 'Method' which tells the server what action you want to take.\n\n* GET: Fetching data (like reading a blog post).\n* POST: Sending new data (like signing up for an account).\n* PUT: Updating existing data (like changing your profile picture).\n* DELETE: Removing data.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// A conceptual GET request\nStart Line: GET /watches HTTP/1.1\nHeaders: Content-Type: application/json\nBody: (Empty for GET)",
+              "explanation": "Requests are made of three parts: The Start Line, Headers (metadata), and the Body (actual data)."
+            }
+          ]
         },
-
         {
-          id: "sc_day_84_t3",
-          title: "Protocol",
-          explanation:
-            "• Protocol = communication rules.\n" +
-            "• HTTP transfers data.\n" +
-            "• HTTPS transfers encrypted data.\n" +
-            "• WebSockets enable real-time communication.\n" +
-            "• Determines security and behavior."
-        },
-
-        {
-          id: "sc_day_84_t4",
-          title: "HTTP vs HTTPS",
-          explanation:
-            "• HTTP → Data transferred in plain text.\n" +
-            "• HTTPS → Data encrypted using SSL/TLS.\n" +
-            "• HTTPS is secure.\n" +
-            "• Used for login, banking, payments.\n" +
-            "• Modern browsers prefer HTTPS."
-        },
-
-        {
-          id: "sc_day_84_t5",
-          title: "Domain Name",
-          explanation:
-            "• Identifies web server.\n" +
-            "• Example: www.flipkart.com.\n" +
-            "• Maps to IP address.\n" +
-            "• Human-readable address.\n" +
-            "• DNS resolves domain to IP."
-        },
-
-        {
-          id: "sc_day_84_t6",
-          title: "Path",
-          explanation:
-            "• Identifies specific resource.\n" +
-            "• Example: /watches.\n" +
-            "• Can be nested paths.\n" +
-            "• Maps to server endpoint.\n" +
-            "• Often represents API route."
-        },
-
-        {
-          id: "sc_day_84_t7",
-          title: "Query Parameters",
-          explanation:
-            "• Add filtering or search criteria.\n" +
-            "• Start with ? symbol.\n" +
-            "• Multiple params separated by &.\n" +
-            "• Used in search and filtering.\n" +
-            "• Common in APIs."
-        },
-
-        {
-          id: "sc_day_84_t8",
-          title: "HTTP Request Structure",
-          explanation:
-            "• Sent from client to server.\n" +
-            "• Contains Start Line.\n" +
-            "• Contains Headers.\n" +
-            "• May contain Body.\n" +
-            "• Initiates action."
-        },
-
-        {
-          id: "sc_day_84_t9",
-          title: "HTTP Methods",
-          explanation:
-            "• GET → Retrieve data.\n" +
-            "• POST → Create data.\n" +
-            "• PUT → Update data.\n" +
-            "• DELETE → Remove data.\n" +
-            "• Defines intended action."
-        },
-
-        {
-          id: "sc_day_84_t10",
-          title: "HTTP Versions",
-          explanation:
-            "• HTTP/1.0 → Basic support.\n" +
-            "• HTTP/1.1 → Persistent connections.\n" +
-            "• HTTP/2 → Multiplexing, faster.\n" +
-            "• HTTP/3 → Uses QUIC protocol.\n" +
-            "• Improves performance."
-        },
-
-        {
-          id: "sc_day_84_t11",
-          title: "HTTP Headers",
-          explanation:
-            "• Provide additional metadata.\n" +
-            "• Example: Content-Type.\n" +
-            "• Authorization header.\n" +
-            "• Accept header.\n" +
-            "• Important for APIs."
-        },
-
-        {
-          id: "sc_day_84_t12",
-          title: "HTTP Request Body",
-          explanation:
-            "• Used in POST/PUT.\n" +
-            "• Contains form data or JSON.\n" +
-            "• Not used in GET.\n" +
-            "• Carries payload.\n" +
-            "• Often contains user input."
-        },
-
-        {
-          id: "sc_day_84_t13",
-          title: "HTTP Response Structure",
-          explanation:
-            "• Sent from server to client.\n" +
-            "• Contains Status Line.\n" +
-            "• Contains Headers.\n" +
-            "• Contains Body.\n" +
-            "• Returns requested data."
-        },
-
-        {
-          id: "sc_day_84_t14",
-          title: "Status Codes",
-          explanation:
-            "• 1XX → Informational.\n" +
-            "• 2XX → Success.\n" +
-            "• 3XX → Redirection.\n" +
-            "• 4XX → Client Error.\n" +
-            "• 5XX → Server Error.\n" +
-            "• 200 OK → Success.\n" +
-            "• 404 → Not Found.\n" +
-            "• 401 → Unauthorized."
-        },
-
-        {
-          id: "sc_day_84_t15",
-          title: "Response Body",
-          explanation:
-            "• Contains requested resource.\n" +
-            "• Can be HTML.\n" +
-            "• Can be JSON.\n" +
-            "• Can be image/video.\n" +
-            "• Returned to browser."
-        },
-
-        {
-          id: "sc_day_84_t16",
-          title: "Interview Recap",
-          explanation:
-            "• HTTP transfers web resources.\n" +
-            "• URL = protocol + domain + path + query.\n" +
-            "• GET read, POST create, PUT update, DELETE remove.\n" +
-            "• Request → Start line + Headers + Body.\n" +
-            "• Response → Status line + Headers + Body.\n" +
-            "• 2XX success, 4XX client error, 5XX server error.\n" +
-            "• HTTPS is secure version of HTTP."
+          "id": "sc_day_84_t3",
+          "title": "HTTP Responses & Status Codes",
+          "explanation": "After the server processes your request, it sends back an HTTP Response. This includes a Status Code, which is a 3-digit number indicating the outcome.\n\n* 2XX (Success): Everything went fine (e.g., 200 OK).\n* 4XX (Client Error): You did something wrong (e.g., 404 Not Found).\n* 5XX (Server Error): The server crashed or failed (e.g., 500 Internal Server Error).",
+          "examples": [
+            {
+              "language": "text",
+              "code": "Status Line: HTTP/1.1 200 OK\nBody: { \"id\": 1, \"item\": \"watch\" }",
+              "explanation": "The server confirms success with 200 OK and sends the requested data in the response body."
+            }
+          ]
         }
-
       ]
     }
   ],
 
   85: [
     {
-      id: "sc_day_85",
-      title: "HTTP Requests using Fetch API",
-      topics: [
-
+      "id": "sc_day_85",
+      "title": "HTTP Requests using JS (Part 1)",
+      "topics": [
         {
-          id: "sc_day_85_t1",
-          title: "What is fetch()?",
-          explanation:
-            "• fetch() is used to make HTTP requests.\n" +
-            "• Used to communicate with backend APIs.\n" +
-            "• Returns a Promise.\n" +
-            "• Works asynchronously.\n" +
-            "• Modern replacement for XMLHttpRequest."
+          "id": "sc_day_85_t1",
+          "title": "The fetch() Method",
+          "explanation": "The fetch() API is the modern way to make network requests in JavaScript. It returns a Promise that resolves to the Response object representing the response to your request.\n\n* Syntax: fetch(url, options)\n* Promise-based: Because it is asynchronous, you usually handle the result using .then() or async/await.\n* Two-step process: First, you fetch the response, and then you must parse the body (usually as JSON) to read the actual data.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "fetch('https://gorest.co.in/public/v2/users')\n  .then(response => response.json())\n  .then(data => console.log(data));",
+              "explanation": "By default, fetch performs a GET request if no options are provided."
+            }
+          ]
         },
-
         {
-          id: "sc_day_85_t2",
-          title: "Basic Syntax",
-          explanation:
-            "• fetch(URL, options).\n" +
-            "• URL → endpoint.\n" +
-            "• options → request configuration.\n" +
-            "• Returns Response object.\n" +
-            "• Must handle using .then() or await."
+          "id": "sc_day_85_t2",
+          "title": "Request Configuration (Options)",
+          "explanation": "To go beyond simple GET requests, you pass an options object. This object tells the server exactly what you want to do and what data you are sending.\n\n* method: Specifies the HTTP verb (POST, PUT, DELETE, etc.).\n* headers: Metadata about the request. 'Content-Type: application/json' is crucial when sending JSON data.\n* body: The actual data you are sending. This must be a string, so we use JSON.stringify(data).",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let options = {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'Accept': 'application/json',\n    'Authorization': 'Bearer YOUR_TOKEN'\n  },\n  body: JSON.stringify({ name: 'Rahul', gender: 'Male' })\n};",
+              "explanation": "Configuring a POST request to send user data to a server."
+            }
+          ]
         },
-
         {
-          id: "sc_day_85_t3",
-          title: "Request Configuration (Options Object)",
-          explanation:
-            "• method → GET, POST, PUT, DELETE.\n" +
-            "• headers → metadata.\n" +
-            "• body → data sent to server.\n" +
-            "• credentials → cookies/auth.\n" +
-            "• cache → request caching behavior."
-        },
-
-        {
-          id: "sc_day_85_t4",
-          title: "GET Request (Default)",
-          explanation:
-            "• Default method.\n" +
-            "• Used to read data.\n" +
-            "• Does not send body.\n" +
-            "• Used for fetching lists or details.\n" +
-            "• Example: fetching users."
-        },
-
-        {
-          id: "sc_day_85_t5",
-          title: "POST Request",
-          explanation:
-            "• Used to create new resource.\n" +
-            "• Requires body.\n" +
-            "• Body usually JSON.\n" +
-            "• Must set Content-Type header.\n" +
-            "• Success status → 201."
-        },
-
-        {
-          id: "sc_day_85_t6",
-          title: "PUT Request",
-          explanation:
-            "• Used to update resource.\n" +
-            "• Requires body.\n" +
-            "• Replaces existing data.\n" +
-            "• Success status → 200.\n" +
-            "• 404 if resource not found."
-        },
-
-        {
-          id: "sc_day_85_t7",
-          title: "DELETE Request",
-          explanation:
-            "• Used to delete resource.\n" +
-            "• No body required usually.\n" +
-            "• Success status → 204.\n" +
-            "• No Content returned.\n" +
-            "• Used for removing users/data."
-        },
-
-        {
-          id: "sc_day_85_t8",
-          title: "Headers",
-          explanation:
-            "• Content-Type → tells server format.\n" +
-            "• Accept → expected response type.\n" +
-            "• Authorization → token-based auth.\n" +
-            "• Required in secure APIs.\n" +
-            "• Sent inside headers object."
-        },
-
-        {
-          id: "sc_day_85_t9",
-          title: "Response Object",
-          explanation:
-            "• fetch returns Response object.\n" +
-            "• response.status → HTTP code.\n" +
-            "• response.statusText → text.\n" +
-            "• response.headers → response headers.\n" +
-            "• response.url → final URL."
-        },
-
-        {
-          id: "sc_day_85_t10",
-          title: "Reading Response Data",
-          explanation:
-            "• response.text() → plain text.\n" +
-            "• response.json() → parse JSON.\n" +
-            "• Both return promises.\n" +
-            "• Must return in .then().\n" +
-            "• Common interview question."
-        },
-
-        {
-          id: "sc_day_85_t11",
-          title: "Common Status Codes",
-          explanation:
-            "• 200 → OK.\n" +
-            "• 201 → Created.\n" +
-            "• 204 → No Content.\n" +
-            "• 404 → Not Found.\n" +
-            "• 422 → Validation error."
-        },
-
-        {
-          id: "sc_day_85_t12",
-          title: "Interview Recap",
-          explanation:
-            "• fetch() returns a promise.\n" +
-            "• Must handle with .then() or await.\n" +
-            "• GET → Read.\n" +
-            "• POST → Create.\n" +
-            "• PUT → Update.\n" +
-            "• DELETE → Remove.\n" +
-            "• response.json() parses body.\n" +
-            "• Headers required for JSON APIs."
+          "id": "sc_day_85_t3",
+          "title": "Sending Data with POST",
+          "explanation": "The POST method is used to create new resources on the server. When using fetch for POST, you must ensure the body is correctly formatted and the server knows how to read it.\n\n* JSON.stringify(): Converts a JavaScript object into a JSON string so it can be sent over the internet.\n* Success Codes: A successful POST request often returns a 201 Created status.\n* Error Handling: Common errors include 422 Unprocessable Entity (e.g., if an email is already taken) or 401 (if your access token is invalid).",
+          "examples": [
+            {
+              "language": "js",
+              "code": "async function createUser() {\n  const response = await fetch(url, options);\n  const jsonData = await response.json();\n  console.log(response.status);\n  console.log(jsonData);\n}",
+              "explanation": "Using async/await to handle the POST request and check the status code."
+            }
+          ]
         }
-
       ]
     }
   ],
 
   86: [
     {
-      id: "sc_day_86",
-      title: "HTTP Requests using JS | Part 1",
-      topics: [
+      "id": "sc_day_86",
+      "title": "HTTP Requests using JS (Part 2)",
+      "topics": [
         {
-          id: "sc_day_86_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "HTTP Requests using JS | Part 1". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_86_t1",
+          "title": "Updating Resources with PUT",
+          "explanation": "The PUT method is used when you want to update an existing resource on the server. Unlike POST, which creates something new, PUT typically replaces the target resource or specific fields within it.\n\n* Identifying the Resource: You must include the unique ID of the resource in the URL (e.g., /users/123).\n* Success Status: A successful update usually returns a 200 OK status.\n* Error Handling: If the ID provided doesn't exist, the server returns a 404 Not Found.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let data = { name: 'Rahul Attuluri' };\nlet options = {\n  method: 'PUT',\n  headers: {\n    'Content-Type': 'application/json',\n    'Accept': 'application/json',\n    'Authorization': 'Bearer YOUR_TOKEN'\n  },\n  body: JSON.stringify(data)\n};\nfetch('https://gorest.co.in/public/v2/users/100', options);",
+              "explanation": "This request updates the user with ID 100 with a new name."
+            }
+          ]
         },
         {
-          id: "sc_day_86_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "HTTP Requests using JS | Part 1" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_86_t2",
+          "title": "Removing Resources with DELETE",
+          "explanation": "The DELETE method is used to remove a specific resource from the server. It is a straightforward request that usually doesn't require a 'body' because you are identifying the target via the URL.\n\n* Success Status: A successful deletion often returns a 204 No Content status. This indicates the task is done and there is no data left to show.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let options = {\n  method: 'DELETE',\n  headers: {\n    'Authorization': 'Bearer YOUR_TOKEN'\n  }\n};\nfetch('https://gorest.co.in/public/v2/users/100', options);",
+              "explanation": "This tells the server to permanently remove the user associated with ID 100."
+            }
+          ]
         },
         {
-          id: "sc_day_86_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "HTTP Requests using JS | Part 1". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_86_t3",
+          "title": "The Response Object: Properties and Methods",
+          "explanation": "When a fetch() promise resolves, it gives you a Response object. This object contains everything the server sent back, from the data itself to metadata about the connection.\n\n* status: The 3-digit numerical code (e.g., 200, 404).\n* statusText: The text message accompanying the code (e.g., 'OK', 'Not Found').\n* url: The final URL the request was sent to.\n* json(): An asynchronous method that parses the response body into a JavaScript object.\n* text(): An asynchronous method that returns the response body as plain text.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "fetch(url).then(response => {\n  console.log(response.status); // 200\n  console.log(response.ok);     // true\n  return response.json();\n});",
+              "explanation": "Accessing the status property to verify the request was successful before processing data."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   87: [
     {
-      id: "sc_day_87",
-      title: "HTTP Requests using JS | Part 2",
-      topics: [
+      "id": "sc_day_87",
+      "title": "Forms",
+      "topics": [
         {
-          id: "sc_day_87_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "HTTP Requests using JS | Part 2". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_87_t1",
+          "title": "The Form Element & Submission",
+          "explanation": "The <form> element acts as a container for various input controls (text, checkboxes, buttons). Its primary job is to collect user data and send it to a server.\n\n* Triggering Submission: A form is submitted when a user clicks a 'submit' button or presses the Enter key while in an input field.\n* Default Behavior: By default, submitting a form refreshes the page or navigates to a new URL. In modern web apps, we usually stop this to handle data with JavaScript.",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<form id='myForm'>\n  <input type='text' placeholder='Enter Name'>\n  <button type='submit'>Submit</button>\n</form>",
+              "explanation": "A basic form structure where the button triggers a submit event."
+            }
+          ]
         },
         {
-          id: "sc_day_87_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "HTTP Requests using JS | Part 2" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_87_t2",
+          "title": "The preventDefault() Method",
+          "explanation": "This is a crucial method in the Event Object. When used inside a form's 'submit' listener, it stops the browser's default action of refreshing the page.\n\n* Usage: This allows you to validate the data or send it to a server using fetch() without losing the current page state.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let myFormEl = document.getElementById('myForm');\nmyFormEl.addEventListener('submit', function(event) {\n  event.preventDefault();\n  console.log('Form submission stopped!');\n});",
+              "explanation": "The page will not reload when the submit button is clicked."
+            }
+          ]
         },
         {
-          id: "sc_day_87_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "HTTP Requests using JS | Part 2". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
+          "id": "sc_day_87_t3",
+          "title": "Form Events: Blur, Focus, and Change",
+          "explanation": "Form events help you create a better user experience by responding to how a user interacts with input fields.\n\n* blur: Triggers when an element loses focus (e.g., user clicks outside an input). Great for instant field validation.\n* focus: Triggers when an element gains focus (e.g., user clicks into an input).\n* change: Triggers when the value of an element is modified and then loses focus.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "let nameEl = document.getElementById('name');\nnameEl.addEventListener('blur', function(event) {\n  if (event.target.value === '') {\n    console.log('Field cannot be empty!');\n  }\n});",
+              "explanation": "This checks if the name field is empty immediately after the user leaves it."
+            }
+          ]
         },
-      ],
-    },
+        {
+          "id": "sc_day_87_t4",
+          "title": "The textarea Element",
+          "explanation": "While <input type='text'> is for single lines, the <textarea> element is designed for multi-line user input.\n\n* rows: Defines the visible height (number of lines).\n* cols: Defines the visible width (average character width).",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<textarea rows='5' cols='30'>Enter your feedback here...</textarea>",
+              "explanation": "Creates a text box suitable for comments or descriptions."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   88: [
     {
-      id: "sc_day_88",
-      title: "Forms",
-      topics: [
+      "id": "sc_day_88",
+      "title": "Forms | Part - 2",
+      "topics": [
         {
-          id: "sc_day_88_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "Forms". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_88_t1",
+          "title": "Drop-down Lists with <select>",
+          "explanation": "The <select> element creates a drop-down menu, which is ideal for choosing one option from a large list while saving screen space.\n\n* <option>: Defines each item in the list.\n* value attribute: While the text inside <option> is what the user sees, the 'value' is the actual data sent to the server/JavaScript.",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<select id='status'>\n  <option value='active'>Active</option>\n  <option value='inactive'>Inactive</option>\n</select>",
+              "explanation": "Creates a toggle-able menu for status selection."
+            }
+          ]
         },
         {
-          id: "sc_day_88_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "Forms" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_88_t2",
+          "title": "Radio Buttons and Groups",
+          "explanation": "Radio buttons allow a user to select exactly one option from a predefined set of choices.\n\n* name attribute: This is critical. All radio buttons in a single set must share the same 'name' to create a 'Radio Group'. Only one button in a group can be selected at a time.",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<input type='radio' name='gender' value='Male' id='male'>\n<label for='male'>Male</label>\n<input type='radio' name='gender' value='Female' id='female'>\n<label for='female'>Female</label>",
+              "explanation": "Using the same 'name' ensures that selecting one automatically deselects the other."
+            }
+          ]
         },
         {
-          id: "sc_day_88_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "Forms". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_88_t3",
+          "title": "Boolean Attributes (selected & checked)",
+          "explanation": "Boolean attributes are special attributes that don't need a value. Their mere presence indicates 'true'.\n\n* selected: Used on an <option> to make it the default choice in a drop-down.\n* checked: Used on a radio button or checkbox to have it pre-filled when the page loads.",
+          "examples": [
+            {
+              "language": "html",
+              "code": "<option value='india' selected>India</option>\n<input type='radio' name='plan' checked> Basic Plan",
+              "explanation": "These attributes set the default state of the form controls."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   89: [
     {
-      id: "sc_day_89",
-      title: "Forms | Part 2",
-      topics: [
+      "id": "sc_day_89",
+      "title": "JS Closures",
+      "topics": [
         {
-          id: "sc_day_89_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "Forms | Part 2". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_89_t1",
+          "title": "Understanding Closures",
+          "explanation": "A Closure is formed when a function is defined inside another function and the inner function 'remembers' the variables of the outer function. Even after the outer function has finished executing, the inner function still has access to that scope.\n\n* Core Concept: Functions in JS carry their 'birthplace' scope with them.\n* Use Case: Useful for data privacy and creating factory-like functions that maintain a state.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function makeCounter() {\n  let count = 0;\n  return function() {\n    count++;\n    return count;\n  };\n}\n\nconst counter = makeCounter();\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2",
+              "explanation": "The inner function maintains a reference to 'count' even though makeCounter() has already returned."
+            }
+          ]
         },
         {
-          id: "sc_day_89_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "Forms | Part 2" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_89_t2",
+          "title": "Lexical Environment",
+          "explanation": "The Lexical Environment is an internal engine mechanism that stores variables. Every time a script or function runs, a new Lexical Environment is created.\n\n* Environment Record: An internal object where all local variables (and the value of 'this') are stored.\n* Outer Reference: A pointer to the parent Lexical Environment. This creates a 'chain' that JS uses to look up variables.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// Global Lexical Environment (outer: null)\nlet name = 'Gemini';\n\nfunction greet() {\n  // Function Lexical Environment (outer: Global)\n  console.log(name);\n}",
+              "explanation": "When greet() runs, it looks for 'name' locally, fails, and then follows the reference to the outer (Global) environment."
+            }
+          ]
         },
         {
-          id: "sc_day_89_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "Forms | Part 2". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_89_t3",
+          "title": "Memory & Garbage Collection",
+          "explanation": "JavaScript automatically manages memory, but closures change the rules slightly. Normally, when a function ends, its variables are deleted (Garbage Collected). However, if an inner function still exists and references those variables, they stay in memory.\n\n* [[Environment]]: The hidden property in every function that keeps the link to its outer scope alive.\n* Disadvantage: If not careful, closures can lead to memory leaks by keeping large objects in memory longer than necessary.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function heavyTask() {\n  let bigData = new Array(1000).fill('Data');\n  return function() {\n    console.log(bigData.length);\n  };\n}\n// bigData stays in memory as long as the returned function exists.",
+              "explanation": "The inner function 'protects' bigData from being garbage collected."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   90: [
     {
-      id: "sc_day_90",
-      title: "JS Closures",
-      topics: [
+      "id": "sc_day_90",
+      "title": "Debouncing & Throttling",
+      "topics": [
         {
-          id: "sc_day_90_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "JS Closures". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_90_t1",
+          "title": "The Problem: Event Overload",
+          "explanation": "Browsers can trigger events (like scroll or input) dozens or hundreds of times per second. If each event triggers a heavy function (like an API call), it can lead to laggy performance, high server costs, and poor user experience.\n\n* Search Input: Typing 'React' can trigger 5 API calls in 1 second.\n* Scroll Events: Scrolling for 1 second can trigger over 100 function calls.\n* Impact: High CPU usage, battery drain on mobile, and unnecessary server load.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// Problematic code: runs on every single keystroke\nsearchInput.addEventListener('input', () => {\n  console.log('API Call Made');\n});",
+              "explanation": "Without optimization, this function executes far more often than necessary."
+            }
+          ]
         },
         {
-          id: "sc_day_90_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "JS Closures" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_90_t2",
+          "title": "Debouncing: 'Wait until I'm finished'",
+          "explanation": "Debouncing ensures that a function is only executed after a specific amount of time has passed since the last time it was triggered. It 'collapses' multiple rapid calls into a single one.\n\n* Analogy: An elevator waiting for the last person to get on before closing the doors. If a new person arrives, the timer resets.\n* Best For: Search bars, form validation, and auto-saving text.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function debounce(func, delay) {\n  let timer;\n  return function(...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => func(...args), delay);\n  };\n}\n\nconst processChange = debounce(() => saveSettings(), 500);",
+              "explanation": "saveSettings() will only run 500ms after the user stops typing."
+            }
+          ]
         },
         {
-          id: "sc_day_90_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "JS Closures". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_90_t3",
+          "title": "Throttling: 'One at a time, please'",
+          "explanation": "Throttling limits the execution of a function to once every X milliseconds. No matter how many times the event fires, the function runs at a steady, controlled rate.\n\n* Analogy: A water tap dripping at a constant rate. No matter how much pressure is behind it, it only releases one drop every second.\n* Best For: Scroll tracking, window resizing, and preventing button double-clicks.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "function throttle(func, delay) {\n  let isThrottled = false;\n  return function(...args) {\n    if (!isThrottled) {\n      func(...args);\n      isThrottled = true;\n      setTimeout(() => isThrottled = false, delay);\n    }\n  };\n}\n\nwindow.addEventListener('scroll', throttle(() => checkScroll(), 200));",
+              "explanation": "checkScroll() will run at most once every 200ms, even during rapid scrolling."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   91: [
     {
-      id: "sc_day_91",
-      title: "Debouncing & Throttling",
-      topics: [
+      "id": "sc_day_91",
+      "title": "Building a Dynamic Website using GenAI",
+      "topics": [
         {
-          id: "sc_day_91_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "Debouncing & Throttling". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_91_t1",
+          "title": "The Starting Point: Plans, Screenshots, and Designs",
+          "explanation": "Before coding starts, you need a blueprint. GenAI can process different types of input to understand your vision:\n\n* **Screenshots**: High-level visual references of existing sites.\n* **Design Files (Figma/XD)**: Precise blueprints including fonts, spacing, and colors.\n* **Plan (Textual)**: A detailed written description of features and behavior. For this session, we focus on using a Plan to guide the AI.",
+          "examples": [
+            {
+              "language": "text",
+              "code": "Plan: Build a Weather Dashboard that takes a city name, fetches data from an API, and changes the background color based on the temperature.",
+              "explanation": "A clear plan serves as the foundation for an effective AI prompt."
+            }
+          ]
         },
         {
-          id: "sc_day_91_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "Debouncing & Throttling" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_91_t2",
+          "title": "AI Coding Tools & Replit",
+          "explanation": "Modern development uses AI-powered IDEs to accelerate building. Replit is a cloud-based platform that allows you to generate, run, and deploy code directly in the browser.\n\n* **Replit Agent**: An AI assistant that understands natural language prompts to build full-stack applications.\n* **Cloud Development**: No local setup is required; the environment is ready instantly.",
+          "examples": [
+            {
+              "language": "text",
+              "code": "Prompt: 'Create a personal portfolio website with a home, projects, and contact section. Use Tailwind CSS for styling and add a dark mode toggle using JavaScript.'",
+              "explanation": "A specific prompt helps Replit generate accurate HTML, CSS, and JS files."
+            }
+          ]
         },
         {
-          id: "sc_day_91_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "Debouncing & Throttling". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
+          "id": "sc_day_91_t3",
+          "title": "The Workflow: From Prompt to Deployment",
+          "explanation": "Building with AI is an iterative process involving four main steps:\n\n1. **Create**: Start a new project.\n2. **Prompt**: Describe the app in detail.\n3. **Refine**: Review the AI's work, ask for bug fixes, or request design tweaks.\n4. **Deploy**: Push the code live so anyone with a URL can access it.",
+          "examples": [
+            {
+              "language": "text",
+              "code": "Follow-up Prompt: 'The buttons are too small. Make them larger with rounded corners and change the primary color to deep blue.'",
+              "explanation": "Refining allows you to polish the AI's first draft into a professional product."
+            }
+          ]
         },
-      ],
-    },
+        {
+          "id": "sc_day_91_t4",
+          "title": "The Power Combo: Tech Knowledge + GenAI",
+          "explanation": "AI is a co-pilot, not a replacement. To build successful websites, you must combine your technical understanding with AI's speed.\n\n* **Your Role**: Understand HTML (structure), CSS (styling), and JS (logic) to verify the AI's code.\n* **AI's Role**: Fast code generation, complex debugging, and layout analysis.\n* **Verification**: You must know how to read the code to decide which AI suggestions to accept or reject.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// AI generates this:\ndocument.getElementById('btn').onclick = () => alert('Hello');\n\n// You realize you need a listener instead:\nbtn.addEventListener('click', () => { ... });",
+              "explanation": "Technical knowledge allows you to improve AI-generated code for better performance and standards."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   92: [
     {
-      id: "sc_day_92",
-      title: "Building a Dynamic Website using GenAI",
-      topics: [
+      "id": "sc_day_92",
+      "title": "JS Modules",
+      "topics": [
         {
-          id: "sc_day_92_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "Building a Dynamic Website using GenAI". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_92_t1",
+          "title": "Introduction to Node.js & MERN",
+          "explanation": "Node.js is a runtime environment that allows you to run JavaScript code on a server or computer, rather than just inside a web browser. It is the backbone of the MERN stack.\n\n* **MERN**: MongoDB (Database), Express.js (Backend Framework), React (Frontend), and Node.js (Runtime).\n* **Node REPL**: A 'Read-Eval-Print Loop' terminal interface for testing small snippets of code instantly.\n* **Node CLI**: Used to run entire JavaScript files using the command `node filename.js`.",
+          "examples": [
+            {
+              "language": "bash",
+              "code": "# To run a file named app.js\nnode app.js",
+              "explanation": "The CLI is the standard way to execute backend applications."
+            }
+          ]
         },
         {
-          id: "sc_day_92_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "Building a Dynamic Website using GenAI" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_92_t2",
+          "title": "CommonJS Modules (Standard Node.js)",
+          "explanation": "CommonJS is the default module system in Node.js. It uses `require()` to import and `module.exports` to export code between files.\n\n* **Default Export**: Used when a file exports only one primary item (like a single class or function).\n* **Named Export**: Used to export multiple items from a single file using the `exports` object.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// math.js\nconst multiply = (a, b) => a * b;\nmodule.exports = multiply;\n\n// main.js\nconst multiply = require('./math');",
+              "explanation": "Using require to bring in logic from another file in CommonJS."
+            }
+          ]
         },
         {
-          id: "sc_day_92_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "Building a Dynamic Website using GenAI". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_92_t3",
+          "title": "Modern ES6 Modules (.mjs)",
+          "explanation": "ES6 Modules (ESM) are the modern JavaScript standard. They use `import` and `export` statements and usually require the `.mjs` file extension in Node.js.\n\n* **export default**: For a single main export.\n* **export const/function**: For multiple named exports. These must be imported using curly braces `{ }`.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "// utils.mjs\nexport const add = (a, b) => a + b;\nexport const sub = (a, b) => a - b;\n\n// main.mjs\nimport { add, sub } from './utils.mjs';",
+              "explanation": "Named exports allow you to selectively import only what you need."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   93: [
     {
-      id: "sc_day_93",
-      title: "JS Modules",
-      topics: [
+      "id": "sc_day_93",
+      "title": "Node Packages",
+      "topics": [
         {
-          id: "sc_day_93_t1",
-          title: "Concept Overview",
-          explanation:
-            '• This section gives you a clear conceptual foundation for "JS Modules". You will learn the main ideas, definitions, and principles that underpin this area. Understanding these concepts first makes the hands-on work and assignments much easier. Pay attention to how the pieces fit together and how they relate to the rest of the curriculum. Take notes and revisit any part that feels unclear before moving to practice. The concept overview sets the stage for everything you will do in this day\'s learning.',
+          "id": "sc_day_93_t1",
+          "title": "Core Modules: Path",
+          "explanation": "Node.js comes with built-in 'Core Modules' that provide essential functionality without needing installation. The `path` module is vital for handling file and directory paths consistently across different operating systems (Windows uses `\\` while Linux/Mac use `/`).\n\n* **path.join()**: Combines segments into a single path string.\n* **Benefits**: Prevents errors caused by manual string concatenation of file paths.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "const path = require('path');\nconst fullPath = path.join('workspace', 'project', 'index.js');\nconsole.log(fullPath); // outputs: workspace/project/index.js",
+              "explanation": "The path module automatically handles the slashes for your specific OS."
+            }
+          ]
         },
         {
-          id: "sc_day_93_t2",
-          title: "Hands-on Practice",
-          explanation:
-            '• Here you apply the concepts of "JS Modules" through guided exercises and examples. You will follow step-by-step instructions, write code or perform tasks, and see results in real time. Hands-on practice is where theoretical knowledge turns into practical skill. Use the editor, run your code, and experiment with small changes to deepen your understanding. If something does not work as expected, use the concepts from the overview to debug. Repeating and varying the exercises will help you retain what you learn and prepare you for the mini assignment.',
+          "id": "sc_day_93_t2",
+          "title": "NPM & Project Initialization",
+          "explanation": "NPM (Node Package Manager) is the world's largest software registry. It allows you to manage your project's dependencies and metadata through a file called `package.json`.\n\n* **npm init -y**: Quickly creates a `package.json` file with default settings.\n* **package.json**: The 'ID card' of your project. It lists the name, version, and all the external packages your app needs to run.",
+          "examples": [
+            {
+              "language": "bash",
+              "code": "mkdir my-project\ncd my-project\nnpm init -y",
+              "explanation": "These commands set up the folder structure and the configuration file for a new Node.js app."
+            }
+          ]
         },
         {
-          id: "sc_day_93_t3",
-          title: "Mini Assignment / Implementation",
-          explanation:
-            '• This mini assignment or implementation task lets you use what you have learned in "JS Modules". You will build, implement, or solve something that ties together the concepts and practice from this day. Completing it reinforces your learning and shows how well you have understood the material. Use the concept overview and hands-on practice as reference while you work. Do your best to finish the assignment; it is a key part of tracking your progress. Submitting your work helps you and your mentors see how you are doing and where to focus next.',
-        },
-      ],
-    },
+          "id": "sc_day_93_t3",
+          "title": "Third-Party Packages: date-fns",
+          "explanation": "Third-party packages are tools built by the community. `date-fns` is a popular alternative to the native JS Date object because it makes date manipulation much simpler.\n\n* **Installation**: Use `npm install package-name` to download the code into a `node_modules` folder.\n* **Usage**: Import specific functions (like `addDays`) to avoid loading the entire library.",
+          "examples": [
+            {
+              "language": "js",
+              "code": "const addDays = require('date-fns/addDays');\n// Jan is index 0. This adds 5 days to Jan 1st, 2024\nconst newDate = addDays(new Date(2024, 0, 1), 5);\nconsole.log(newDate);",
+              "explanation": "Third-party packages like date-fns save you from writing complex logic manually."
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   94: [
