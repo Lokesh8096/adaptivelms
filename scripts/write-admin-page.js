@@ -1,4 +1,9 @@
-'use client'
+const fs = require('fs')
+const path = require('path')
+
+const target = path.join(__dirname, '..', 'app', 'admin', 'page.tsx')
+
+const content = `'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -70,7 +75,7 @@ export default function AdminPage() {
   const setStudentField = <K extends keyof typeof emptyStudentForm>(key: K, value: string) =>
     setStudentForm((prev) => ({ ...prev, [key]: value }))
 
-  const isValidGmail = (email: string) => /^[^\s@]+@gmail\.com$/i.test(email.trim())
+  const isValidGmail = (email: string) => /^[^\\s@]+@gmail\\.com$/i.test(email.trim())
 
   const addStudent = useCallback(async () => {
     const name = studentForm.name.trim()
@@ -86,7 +91,7 @@ export default function AdminPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        ...(session?.access_token ? { Authorization: \`Bearer \${session.access_token}\` } : {}),
       },
       body: JSON.stringify({ name, student_id: studentId, email }),
     })
@@ -108,11 +113,11 @@ export default function AdminPage() {
   const saveAllQuestions = useCallback(async () => {
     for (let i = 0; i < blocks.length; i++) {
       const b = blocks[i]
-      if (!b.prompt.trim()) { alert(`Question ${i + 1}: prompt is required.`); return }
-      if (!Number.isFinite(b.day) || b.day <= 0) { alert(`Question ${i + 1}: valid day number required.`); return }
+      if (!b.prompt.trim()) { alert(\`Question \${i + 1}: prompt is required.\`); return }
+      if (!Number.isFinite(b.day) || b.day <= 0) { alert(\`Question \${i + 1}: valid day number required.\`); return }
       if (b.type === 'quiz') {
-        const opts = b.optionsText.split('\n').map((l) => l.trim()).filter(Boolean)
-        if (opts.length < 2) { alert(`Question ${i + 1}: quiz needs at least 2 options.`); return }
+        const opts = b.optionsText.split('\\n').map((l) => l.trim()).filter(Boolean)
+        if (opts.length < 2) { alert(\`Question \${i + 1}: quiz needs at least 2 options.\`); return }
       }
     }
     setSavingQuestions(true)
@@ -121,7 +126,7 @@ export default function AdminPage() {
       type: b.type,
       day_number: b.day,
       prompt: b.prompt.trim(),
-      options: b.type === 'quiz' ? b.optionsText.split('\n').map((l) => l.trim()).filter(Boolean) : null,
+      options: b.type === 'quiz' ? b.optionsText.split('\\n').map((l) => l.trim()).filter(Boolean) : null,
       correct_answer: b.answer.trim() || null,
       difficulty: b.difficulty.trim() || null,
       active: b.active,
@@ -130,7 +135,7 @@ export default function AdminPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        ...(session?.access_token ? { Authorization: \`Bearer \${session.access_token}\` } : {}),
       },
       body: JSON.stringify({ questions: questionsPayload }),
     })
@@ -140,7 +145,7 @@ export default function AdminPage() {
     const saved = (json.questions as QuestionRow[] | null) ?? []
     setBlocks([newBlock()])
     setRecentQuestions((prev) => [...saved, ...prev].slice(0, 10))
-    alert(`${saved.length} question${saved.length !== 1 ? 's' : ''} saved!`)
+    alert(\`\${saved.length} question\${saved.length !== 1 ? 's' : ''} saved!\`)
   }, [blocks])
 
   return (
@@ -245,7 +250,7 @@ export default function AdminPage() {
           >
             {savingQuestions
               ? 'Saving...'
-              : `Save ${blocks.length} Question${blocks.length !== 1 ? 's' : ''}`}
+              : \`Save \${blocks.length} Question\${blocks.length !== 1 ? 's' : ''}\`}
           </button>
         </div>
       </section>
@@ -289,7 +294,7 @@ function QuestionBlockForm({ block, index, total, onChange, onRemove }: Question
 
   const parsedOptions = useMemo(() => {
     if (!isQuiz) return null
-    const raw = block.optionsText.split('\n').map((l) => l.trim()).filter(Boolean)
+    const raw = block.optionsText.split('\\n').map((l) => l.trim()).filter(Boolean)
     return raw.length > 0 ? raw : null
   }, [block.optionsText, isQuiz])
 
@@ -374,3 +379,7 @@ function QuestionBlockForm({ block, index, total, onChange, onRemove }: Question
     </div>
   )
 }
+`
+
+fs.writeFileSync(target, content, 'utf8')
+console.log('Written:', target, '— bytes:', fs.statSync(target).size)
