@@ -1,7 +1,10 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { buildOverview, type AdminProgressRow, type AnalyticsOverview } from '@/lib/adminAnalytics'
+import { fetchAdminJson } from '@/lib/adminClient'
 
 /* ─── Types ──────────────────────────────────────────────────── */
 
@@ -51,10 +54,12 @@ export default function AdminPage() {
   const [blocks, setBlocks] = useState<QuestionBlock[]>([newBlock()])
   const [savingQuestions, setSavingQuestions] = useState(false)
   const [recentQuestions, setRecentQuestions] = useState<QuestionRow[]>([])
+  const [overview, setOverview] = useState<AnalyticsOverview | null>(null)
 
   useEffect(() => {
     let active = true
-    const load = async () => {
+    // Fetch recent questions
+    const loadQuestions = async () => {
       const { data, error } = await supabase
         .from('questions')
         .select('id,type,day_number,prompt,correct_answer,active')
@@ -63,7 +68,16 @@ export default function AdminPage() {
       if (!active) return
       if (!error) setRecentQuestions((data as QuestionRow[] | null) ?? [])
     }
-    load()
+    // Fetch quick overview stats
+    const loadOverview = async () => {
+      try {
+        const data = await fetchAdminJson<{ progressRows: AdminProgressRow[] }>('/api/admin/analytics-data')
+        if (!active) return
+        setOverview(buildOverview(data.progressRows ?? []))
+      } catch { /* silently ignore */ }
+    }
+    loadQuestions()
+    loadOverview()
     return () => { active = false }
   }, [])
 
@@ -151,6 +165,61 @@ export default function AdminPage() {
           Manage allowed students and question bank from one place.
         </p>
       </div>
+
+      {/* ── Quick Analytics Banner ──────────────────── */}
+      <section
+        style={{
+          background: 'linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a855f7 100%)',
+          borderRadius: '1rem',
+          padding: '1.25rem 1.5rem',
+          color: '#fff',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div>
+            <h2 style={{ fontWeight: 700, fontSize: '1rem' }}>📊 LMS Analytics Overview</h2>
+            <p style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '0.2rem' }}>Live stats from the system</p>
+          </div>
+          <Link
+            href="/admin/analytics"
+            style={{
+              background: 'rgba(255,255,255,0.2)',
+              color: '#fff',
+              padding: '0.45rem 1rem',
+              borderRadius: '0.5rem',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              textDecoration: 'none',
+              display: 'inline-block',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            Full Analytics →
+          </Link>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(130px,1fr))', gap: '0.75rem' }}>
+          {overview ? (
+            [
+              { label: 'Total Students', value: overview.totalStudents },
+              { label: 'Active Today', value: overview.activeStudentsToday },
+              { label: 'Avg Completion', value: `${overview.avgCompletionRate}%` },
+              { label: 'Avg Quiz Score', value: overview.averageQuizScore },
+              { label: 'Quiz Attempts', value: overview.totalQuizAttempts },
+            ].map(({ label, value }) => (
+              <div key={label} style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '0.6rem', padding: '0.75rem 1rem', backdropFilter: 'blur(2px)' }}>
+                <div style={{ fontSize: '0.65rem', opacity: 0.75, marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 800, lineHeight: 1 }}>{value}</div>
+              </div>
+            ))
+          ) : (
+            <div style={{ gridColumn: '1/-1', opacity: 0.7, fontSize: '0.82rem' }}>Loading stats…</div>
+          )}
+        </div>
+        <div style={{ marginTop: '0.75rem', fontSize: '0.72rem', opacity: 0.7 }}>
+          View Sprint analytics, Day-wise progress charts, and Insights on the
+          {' '}<Link href="/admin/analytics" style={{ color: '#fff', fontWeight: 600 }}>Analytics page</Link>.
+        </div>
+      </section>
 
       {/* ── Allow Student ──────────────────────────────────────── */}
       <section className="surface-card p-5 space-y-4">

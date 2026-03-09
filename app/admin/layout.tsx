@@ -8,6 +8,7 @@ import { getAccessContext } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 
 const adminLinks = [
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/admin', label: 'Overview' },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/students', label: 'Students' },
@@ -97,9 +98,8 @@ export default function AdminLayout({
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`nav-btn ${
-                      pathname === link.href ? 'active' : ''
-                    }`}
+                    className={`nav-btn ${pathname === link.href ? 'active' : ''
+                      }`}
                   >
                     {link.label}
                   </Link>
@@ -120,9 +120,8 @@ export default function AdminLayout({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`nav-btn ${
-                  pathname === link.href ? 'active' : ''
-                }`}
+                className={`nav-btn ${pathname === link.href ? 'active' : ''
+                  }`}
               >
                 {link.label}
               </Link>

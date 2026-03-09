@@ -60,6 +60,9 @@ export type AnalyticsOverview = {
   fullDayCount: number
   fullCompletionPct: number
   averageQuizScore: number
+  activeStudentsToday: number
+  totalQuizAttempts: number
+  avgCompletionRate: number
 }
 
 export const toPercent = (value: number, total: number): number => {
@@ -70,14 +73,20 @@ export const toPercent = (value: number, total: number): number => {
 export const buildOverview = (
   progressRows: AdminProgressRow[]
 ): AnalyticsOverview => {
+  const today = new Date().toISOString().slice(0, 10)
   const studentIds = new Set<string>()
+  const activeTodayIds = new Set<string>()
   let fullDayCount = 0
   let quizScoreTotal = 0
   let quizScoreCount = 0
 
   progressRows.forEach((row) => {
-    if (row.student_id) studentIds.add(row.student_id)
-
+    if (row.student_id) {
+      studentIds.add(row.student_id)
+      if (row.created_at && row.created_at.slice(0, 10) === today) {
+        activeTodayIds.add(row.student_id)
+      }
+    }
     if (
       row.recap_completed &&
       row.interview_completed &&
@@ -86,12 +95,30 @@ export const buildOverview = (
     ) {
       fullDayCount += 1
     }
-
     if (typeof row.quiz_score === 'number') {
       quizScoreTotal += row.quiz_score
       quizScoreCount += 1
     }
   })
+
+  // Avg per-student full-completion rate
+  const byStudent = new Map<string, { total: number; done: number }>()
+  progressRows.forEach((row) => {
+    if (!row.student_id) return
+    const s = byStudent.get(row.student_id) ?? { total: 0, done: 0 }
+    s.total += 1
+    if (
+      row.recap_completed &&
+      row.interview_completed &&
+      row.scenario_completed &&
+      row.quiz_completed
+    ) s.done += 1
+    byStudent.set(row.student_id, s)
+  })
+  let pctSum = 0
+  byStudent.forEach(({ total, done }) => { pctSum += total > 0 ? (done / total) * 100 : 0 })
+  const avgCompletionRate =
+    byStudent.size > 0 ? Number((pctSum / byStudent.size).toFixed(1)) : 0
 
   return {
     totalStudents: studentIds.size,
@@ -102,6 +129,9 @@ export const buildOverview = (
       quizScoreCount > 0
         ? Number((quizScoreTotal / quizScoreCount).toFixed(2))
         : 0,
+    activeStudentsToday: activeTodayIds.size,
+    totalQuizAttempts: quizScoreCount,
+    avgCompletionRate,
   }
 }
 
@@ -269,4 +299,100 @@ export const buildStudentAnalytics = (
       }
     })
     .sort((a, b) => b.fullCompletionPct - a.fullCompletionPct)
+}
+
+/* ── Sprint Analytics ────────────────────────────────────────────── */
+
+export type SprintAnalyticsRow = {
+  sprintNumber: number
+  startDay: number
+  endDay: number
+  studentsStarted: number
+  studentsCompleted: number
+  completionPct: number
+  averageQuizScore: number
+  totalQuizAttempts: number
+  dayRows: DayAnalyticsRow[]
+}
+
+const SPRINT_SIZE = 6
+
+export const buildSprintAnalytics = (
+  progressRows: AdminProgressRow[],
+  dayAnalytics: DayAnalyticsRow[]
+): SprintAnalyticsRow[] => {
+  if (dayAnalytics.length === 0) return []
+  const maxDay = dayAnalytics.reduce((m, d) => Math.max(m, d.dayNumber), 0)
+  const numSprints = Math.ceil(maxDay / SPRINT_SIZE)
+
+  return Array.from({ length: numSprints }, (_, i) => {
+    const sprintNumber = i + 1
+    const startDay = (sprintNumber - 1) * SPRINT_SIZE + 1
+    const endDay = sprintNumber * SPRINT_SIZE
+
+    const sprintDayRows = dayAnalytics.filter(
+      (d) => d.dayNumber >= startDay && d.dayNumber <= endDay
+    )
+    const sprintProgress = progressRows.filter(
+      (r) => r.day_number !== null && r.day_number >= startDay && r.day_number <= endDay
+    )
+
+    const startedIds = new Set<string>()
+    sprintProgress.forEach((r) => { if (r.student_id) startedIds.add(r.student_id) })
+
+    const studentMap = new Map<string, AdminProgressRow[]>()
+    sprintProgress.forEach((r) => {
+      if (!r.student_id) return
+      const list = studentMap.get(r.student_id) ?? []
+      list.push(r)
+      studentMap.set(r.student_id, list)
+    })
+    let studentsCompleted = 0
+    studentMap.forEach((rows) => {
+      if (rows.every((r) => r.recap_completed && r.interview_completed && r.scenario_completed && r.quiz_completed))
+        studentsCompleted += 1
+    })
+
+    let quizTotal = 0, quizCount = 0
+    sprintProgress.forEach((r) => {
+      if (typeof r.quiz_score === 'number') { quizTotal += r.quiz_score; quizCount += 1 }
+    })
+
+    const studentsStarted = startedIds.size
+    return {
+      sprintNumber, startDay, endDay,
+      studentsStarted, studentsCompleted,
+      completionPct: toPercent(studentsCompleted, studentsStarted),
+      averageQuizScore: quizCount > 0 ? Number((quizTotal / quizCount).toFixed(2)) : 0,
+      totalQuizAttempts: quizCount,
+      dayRows: sprintDayRows,
+    }
+  }).filter((s) => s.dayRows.length > 0)
+}
+
+/* ── Insights ─────────────────────────────────────────────────────── */
+
+export type InsightItem = {
+  type: 'warning' | 'info' | 'success'
+  message: string
+}
+
+export const buildInsights = (dayAnalytics: DayAnalyticsRow[]): InsightItem[] => {
+  const insights: InsightItem[] = []
+  const MIN = 2
+  dayAnalytics.forEach((day) => {
+    const s = day.studentsStarted
+    if (s < MIN) return
+    const stuckInterview = s - day.interviewDone
+    if (stuckInterview > 0 && day.interviewPct < 60)
+      insights.push({ type: 'warning', message: `Day ${day.dayNumber} – ${stuckInterview} student${stuckInterview !== 1 ? 's' : ''} have not completed the Interview section (${day.interviewPct}% done)` })
+    const stuckScenario = s - day.scenarioDone
+    if (stuckScenario > 0 && day.scenarioPct < 60)
+      insights.push({ type: 'warning', message: `Day ${day.dayNumber} – ${stuckScenario} student${stuckScenario !== 1 ? 's' : ''} have not completed the Scenario section (${day.scenarioPct}% done)` })
+    if (day.averageQuizScore > 0 && day.averageQuizScore < 5)
+      insights.push({ type: 'warning', message: `Day ${day.dayNumber} – Average quiz score is low at ${day.averageQuizScore}/10` })
+    if (day.fullCompletionPct >= 80 && s >= 3)
+      insights.push({ type: 'success', message: `Day ${day.dayNumber} – High engagement! ${day.fullCompletionPct}% of students fully completed this day` })
+  })
+  return insights.slice(0, 12)
 }
