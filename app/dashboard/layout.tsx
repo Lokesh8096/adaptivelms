@@ -167,6 +167,12 @@ export default function DashboardLayout({
                 >
                   All Days
                 </Link>
+                <Link
+                  href="/dashboard/leaderboard"
+                  className={`nav-btn ${pathname === '/dashboard/leaderboard' ? 'active' : ''}`}
+                >
+                  🏆 Leaderboard
+                </Link>
                 {isAdminView && (
                   <Link href="/admin" className="nav-btn">
                     Admin Panel
@@ -257,6 +263,12 @@ export default function DashboardLayout({
               className={`nav-btn ${pathname === '/dashboard' ? 'active' : ''}`}
             >
               All Days
+            </Link>
+            <Link
+              href="/dashboard/leaderboard"
+              className={`nav-btn ${pathname === '/dashboard/leaderboard' ? 'active' : ''}`}
+            >
+              🏆 Leaderboard
             </Link>
             {isAdminView && (
               <Link href="/admin" className="nav-btn">

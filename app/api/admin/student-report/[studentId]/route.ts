@@ -20,6 +20,15 @@ type ProgressRow = {
     quiz_completed: boolean | null
     quiz_score: number | null
     created_at: string | null
+    'Practice Quiz Scores': unknown
+}
+
+type PracticeAttempt = {
+    attempt: number
+    score: number
+    total: number
+    percentage: number
+    completed_at: string
 }
 
 const getBearerToken = (request: Request): string | null => {
@@ -30,6 +39,30 @@ const getBearerToken = (request: Request): string | null => {
 
 const toPercent = (val: number, total: number) =>
     total > 0 ? Number(((val / total) * 100).toFixed(1)) : 0
+
+const SPRINT_SIZE = 6
+
+function parsePracticeAttempts(value: unknown): PracticeAttempt[] {
+    if (!Array.isArray(value)) return []
+    return value
+        .map((entry, idx) => {
+            if (!entry || typeof entry !== 'object') return null
+            const item = entry as Record<string, unknown>
+            const score = Number(item.score ?? 0)
+            const total = Number(item.total ?? 0)
+            if (!Number.isFinite(score) || !Number.isFinite(total) || total <= 0) return null
+            const attempt = Number(item.attempt ?? idx + 1)
+            const percentage = Number(item.percentage ?? Math.round((score / total) * 100))
+            return {
+                attempt: Number.isFinite(attempt) && attempt > 0 ? Math.trunc(attempt) : idx + 1,
+                score,
+                total,
+                percentage: Number.isFinite(percentage) ? percentage : Math.round((score / total) * 100),
+                completed_at: typeof item.completed_at === 'string' ? item.completed_at : new Date().toISOString(),
+            } satisfies PracticeAttempt
+        })
+        .filter((e): e is PracticeAttempt => e !== null)
+}
 
 export async function GET(
     request: Request,
@@ -98,11 +131,11 @@ export async function GET(
         studentRegisteredId = row.Student_id ?? ''
     }
 
-    // Fetch all progress rows for this student
+    // Fetch all progress rows (now includes Practice Quiz Scores)
     const { data: progressData, error: progressError } = await admin
         .from('student_day_progress')
         .select(
-            'student_id,day_number,recap_completed,interview_completed,scenario_completed,quiz_completed,quiz_score,created_at'
+            'student_id,day_number,recap_completed,interview_completed,scenario_completed,quiz_completed,quiz_score,created_at,"Practice Quiz Scores"'
         )
         .eq('student_id', studentId)
         .order('day_number', { ascending: true })
@@ -113,7 +146,7 @@ export async function GET(
 
     const rows = (progressData as ProgressRow[] | null) ?? []
 
-    // Aggregate statistics
+    // ── Aggregate day-level statistics ────────────────────────────────
     let totalQuizAttempts = 0
     let quizScoreTotal = 0
     let fullyCompletedDays = 0
@@ -144,6 +177,51 @@ export async function GET(
     const totalInterview = rows.filter((r) => r.interview_completed).length
     const totalScenario = rows.filter((r) => r.scenario_completed).length
     const totalQuiz = rows.filter((r) => r.quiz_completed).length
+
+    // ── Build sprint-level Practice Box data ─────────────────────────
+    // Sprint anchor = last day of the sprint (e.g. Day 6 for Sprint 1)
+    // Practice Quiz Scores are stored on that anchor row
+    const maxDay = latestDay > 0 ? latestDay : (rows[rows.length - 1]?.day_number ?? 0)
+    const numSprints = maxDay > 0 ? Math.ceil(maxDay / SPRINT_SIZE) : 0
+
+    const sprintRows: Array<{
+        sprint: number
+        startDay: number
+        endDay: number
+        attempts: PracticeAttempt[]
+        firstAttemptScore: number | null
+        firstAttemptTotal: number | null
+        firstAttemptPct: number | null
+        bestPct: number | null
+        totalAttempts: number
+    }> = []
+
+    for (let sprint = 1; sprint <= numSprints; sprint++) {
+        const startDay = (sprint - 1) * SPRINT_SIZE + 1
+        const endDay = sprint * SPRINT_SIZE
+        const anchorDay = endDay
+
+        // Find the row for the anchor day (where Practice Quiz Scores are stored)
+        const anchorRow = rows.find((r) => r.day_number === anchorDay)
+        const attempts = parsePracticeAttempts(anchorRow?.['Practice Quiz Scores'])
+
+        const firstAttempt = attempts.length > 0 ? attempts[0] : null
+        const bestAttempt = attempts.length > 0
+            ? attempts.reduce((best, a) => a.percentage > best.percentage ? a : best, attempts[0])
+            : null
+
+        sprintRows.push({
+            sprint,
+            startDay,
+            endDay,
+            attempts,
+            firstAttemptScore: firstAttempt ? firstAttempt.score : null,
+            firstAttemptTotal: firstAttempt ? firstAttempt.total : null,
+            firstAttemptPct: firstAttempt ? firstAttempt.percentage : null,
+            bestPct: bestAttempt ? bestAttempt.percentage : null,
+            totalAttempts: attempts.length,
+        })
+    }
 
     return NextResponse.json({
         studentInfo: {
@@ -180,6 +258,7 @@ export async function GET(
                     row.quiz_completed),
             date: row.created_at ? row.created_at.slice(0, 10) : null,
         })),
+        sprintRows,
         generatedAt: new Date().toISOString(),
     })
 }

@@ -12,7 +12,7 @@ const adminLinks = [
   { href: '/admin', label: 'Overview' },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/students', label: 'Students' },
-  { href: '/admin/export', label: 'Export' },
+  { href: '/admin/leaderboard', label: '🏆 Leaderboard' },
 ]
 
 export default function AdminLayout({

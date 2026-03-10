@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { buildOverview, type AdminProgressRow, type AnalyticsOverview } from '@/lib/adminAnalytics'
@@ -51,10 +51,15 @@ const emptyStudentForm = { name: '', studentId: '', email: '' }
 export default function AdminPage() {
   const [studentForm, setStudentForm] = useState(emptyStudentForm)
   const [savingStudent, setSavingStudent] = useState(false)
+  const [uploadingStudents, setUploadingStudents] = useState(false)
   const [blocks, setBlocks] = useState<QuestionBlock[]>([newBlock()])
   const [savingQuestions, setSavingQuestions] = useState(false)
+  const [uploadingQuestions, setUploadingQuestions] = useState(false)
   const [recentQuestions, setRecentQuestions] = useState<QuestionRow[]>([])
   const [overview, setOverview] = useState<AnalyticsOverview | null>(null)
+
+  const studentCsvRef = useRef<HTMLInputElement>(null)
+  const questionCsvRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     let active = true
@@ -110,6 +115,113 @@ export default function AdminPage() {
     setStudentForm(emptyStudentForm)
     alert('Student saved successfully!')
   }, [studentForm])
+
+  // ── CSV parser (comma + optional quoted fields) ──────────────────
+  const parseCsvText = useCallback((text: string): Record<string, string>[] => {
+    const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter((l) => l.trim())
+    if (lines.length < 2) return []
+    // Parse a single CSV line respecting quoted fields
+    const parseLine = (line: string): string[] => {
+      const fields: string[] = []
+      let cur = ''
+      let inQuotes = false
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i]
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') { cur += '"'; i++ }
+          else inQuotes = !inQuotes
+        } else if (ch === ',' && !inQuotes) {
+          fields.push(cur.trim()); cur = ''
+        } else {
+          cur += ch
+        }
+      }
+      fields.push(cur.trim())
+      return fields
+    }
+    const headers = parseLine(lines[0]).map((h) => h.toLowerCase().replace(/[^a-z0-9_]/g, '_'))
+    const result: Record<string, string>[] = []
+    for (let i = 1; i < lines.length; i++) {
+      const vals = parseLine(lines[i])
+      if (vals.every((v) => !v)) continue // skip blank rows
+      const row: Record<string, string> = {}
+      headers.forEach((h, idx) => { row[h] = vals[idx] ?? '' })
+      result.push(row)
+    }
+    return result
+  }, [])
+
+  // ── Bulk students CSV upload ─────────────────────────────────────
+  const uploadStudentsCsv = useCallback(async (file: File) => {
+    setUploadingStudents(true)
+    try {
+      const text = await file.text()
+      const rows = parseCsvText(text)
+      if (rows.length === 0) { alert('CSV is empty or has no data rows.'); return }
+      // Map CSV columns → API shape
+      const students = rows.map((r) => ({
+        name: r.student_name ?? r.name ?? '',
+        student_id: r.student_id ?? r.id ?? '',
+        email: r.student_email ?? r.email ?? '',
+      }))
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/admin/bulk-students', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
+        body: JSON.stringify({ students }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok) { alert(json.error ?? 'Upload failed.'); return }
+      alert(json.message ?? `${json.inserted ?? 0} students uploaded successfully.`)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to read CSV.')
+    } finally {
+      setUploadingStudents(false)
+      if (studentCsvRef.current) studentCsvRef.current.value = ''
+    }
+  }, [parseCsvText])
+
+  // ── Bulk questions CSV upload ────────────────────────────────────
+  const uploadQuestionsCsv = useCallback(async (file: File) => {
+    setUploadingQuestions(true)
+    try {
+      const text = await file.text()
+      const rows = parseCsvText(text)
+      if (rows.length === 0) { alert('CSV is empty or has no data rows.'); return }
+      // Map CSV columns → API shape
+      const questions = rows.map((r) => ({
+        type: (r.type ?? '').toLowerCase().trim(),
+        day_number: Number(r.day_number ?? r.day ?? 0),
+        prompt: r.prompt ?? r.question ?? r.question_prompt ?? '',
+        model_answer: r.model_answer ?? r.answer ?? r.correct_answer ?? '',
+        difficulty: r.difficulty ?? '',
+        active: (r.active ?? 'true').toLowerCase() !== 'false',
+      }))
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/admin/bulk-questions-csv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
+        body: JSON.stringify({ questions }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok) { alert(json.error ?? 'Upload failed.'); return }
+      // Refresh recent questions list
+      const newQs = (json.questions as QuestionRow[] | null) ?? []
+      if (newQs.length > 0) setRecentQuestions((prev) => [...newQs, ...prev].slice(0, 10))
+      alert(json.message ?? `${json.inserted ?? 0} questions uploaded successfully.`)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to read CSV.')
+    } finally {
+      setUploadingQuestions(false)
+      if (questionCsvRef.current) questionCsvRef.current.value = ''
+    }
+  }, [parseCsvText])
 
   const updateBlock = useCallback(
     <K extends keyof QuestionBlock>(id: number, key: K, value: QuestionBlock[K]) =>
@@ -268,14 +380,23 @@ export default function AdminPage() {
           )}
         </div>
 
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
           <button
             id="save-student-btn"
             onClick={addStudent}
-            disabled={savingStudent}
+            disabled={savingStudent || uploadingStudents}
             className="quick-btn disabled:opacity-60"
           >
             {savingStudent ? 'Saving...' : 'Save Student'}
+          </button>
+          <button
+            id="upload-students-csv-btn"
+            onClick={() => studentCsvRef.current?.click()}
+            disabled={savingStudent || uploadingStudents}
+            className="quick-btn disabled:opacity-60"
+            style={{ background: 'linear-gradient(135deg,#059669,#10b981)', color: '#fff', border: 'none' }}
+          >
+            {uploadingStudents ? 'Uploading...' : '⬆ Upload Students CSV'}
           </button>
         </div>
       </section>
@@ -284,14 +405,25 @@ export default function AdminPage() {
       <section className="surface-card p-5 space-y-5">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <h2 className="text-lg font-semibold">Add Question</h2>
-          <button
-            id="add-another-question-btn"
-            onClick={addBlock}
-            className="quick-btn"
-            style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}
-          >
-            + Add Another Question
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button
+              id="add-another-question-btn"
+              onClick={addBlock}
+              className="quick-btn"
+              style={{ fontSize: '0.85rem', padding: '0.4rem 1rem' }}
+            >
+              + Add Another Question
+            </button>
+            <button
+              id="upload-questions-csv-btn"
+              onClick={() => questionCsvRef.current?.click()}
+              disabled={uploadingQuestions}
+              className="quick-btn disabled:opacity-60"
+              style={{ fontSize: '0.85rem', padding: '0.4rem 1rem', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none' }}
+            >
+              {uploadingQuestions ? 'Uploading...' : '⬆ Upload Questions CSV'}
+            </button>
+          </div>
         </div>
 
         {blocks.map((block, index) => (
@@ -339,6 +471,28 @@ export default function AdminPage() {
           ))}
         </div>
       </section>
+
+      {/* ── Hidden CSV file inputs ─────────────────────────────── */}
+      <input
+        ref={studentCsvRef}
+        type="file"
+        accept=".csv,text/csv"
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) void uploadStudentsCsv(file)
+        }}
+      />
+      <input
+        ref={questionCsvRef}
+        type="file"
+        accept=".csv,text/csv"
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) void uploadQuestionsCsv(file)
+        }}
+      />
     </div>
   )
 }
