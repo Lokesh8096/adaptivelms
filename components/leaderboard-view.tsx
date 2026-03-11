@@ -130,12 +130,12 @@ function SprintDropdown({
             {open && (
                 <div style={{
                     position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
-                    background: 'var(--bg-card, #1e1e2e)', border: '1.5px solid rgba(124,58,237,0.35)',
-                    borderRadius: '0.6rem', boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+                    background: 'var(--card)', border: '1.5px solid var(--border)',
+                    borderRadius: '0.6rem', boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
                     zIndex: 100, overflow: 'hidden',
                 }}>
                     {sprints.length === 0 ? (
-                        <div style={{ padding: '0.75rem 1rem', fontSize: '0.82rem', opacity: 0.6, fontStyle: 'italic' }}>
+                        <div style={{ padding: '0.75rem 1rem', fontSize: '0.82rem', color: 'var(--muted)', fontStyle: 'italic' }}>
                             No sprint data available yet.
                         </div>
                     ) : (
@@ -149,17 +149,17 @@ function SprintDropdown({
                                     style={{
                                         display: 'block', width: '100%', textAlign: 'left',
                                         padding: '0.65rem 1rem', fontSize: '0.85rem', fontWeight: isSelected ? 700 : 500,
-                                        background: isSelected ? 'rgba(124,58,237,0.18)' : 'transparent',
-                                        color: isSelected ? '#a78bfa' : 'inherit',
+                                        background: isSelected ? 'rgba(124,58,237,0.14)' : 'transparent',
+                                        color: isSelected ? '#7c3aed' : 'var(--text)',
                                         border: 'none', cursor: 'pointer',
                                         borderLeft: isSelected ? '3px solid #7c3aed' : '3px solid transparent',
                                         transition: 'background 0.15s',
                                     }}
-                                    onMouseEnter={(e) => { if (!isSelected) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(124,58,237,0.08)' }}
-                                    onMouseLeave={(e) => { if (!isSelected) (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
+                                    onMouseEnter={(e) => { if (!isSelected) { (e.currentTarget as HTMLButtonElement).style.background = 'var(--bg-soft)' } }}
+                                    onMouseLeave={(e) => { if (!isSelected) { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' } }}
                                 >
                                     Sprint {s.sprint}
-                                    <span style={{ marginLeft: '0.4rem', fontSize: '0.75rem', opacity: 0.65 }}>
+                                    <span style={{ marginLeft: '0.4rem', fontSize: '0.75rem', color: 'var(--muted)' }}>
                                         (Days {s.startDay}–{s.endDay})
                                     </span>
                                 </button>
