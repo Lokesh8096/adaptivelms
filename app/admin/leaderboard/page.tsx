@@ -8,7 +8,7 @@ export default function AdminLeaderboardPage() {
             <div className="surface-card p-5 md:p-6">
                 <h1 className="text-2xl font-bold md:text-3xl">Leaderboard</h1>
                 <p className="mt-2 text-sm muted-text">
-                    Sprint rankings based on first-attempt quiz scores + Practice Box first-attempt score.
+                    Sprint rankings: Recap (+10) + Interview (+10) + Scenario (+10) per day + Quiz correct answers + Practice Box first-attempt score. Max 250 pts/sprint.
                 </p>
             </div>
             <LeaderboardView />

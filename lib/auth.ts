@@ -30,11 +30,62 @@ type AllowedEmailCheck = {
   error: string | null
 }
 
+type AccessContextCacheEntry = {
+  userId: string
+  role: string | null
+  normalizedEmail: string
+  allowedEmail: AllowedEmailRow | null
+}
+
 const emptyAccessContext: AccessContext = {
   user: null,
   role: null,
   normalizedEmail: '',
   allowedEmail: null,
+}
+
+const ACCESS_CONTEXT_CACHE_KEY = 'adaptive-lms.access-context'
+
+const readCachedAccessContext = (userId: string): AccessContextCacheEntry | null => {
+  if (typeof window === 'undefined') return null
+
+  try {
+    const raw = window.localStorage.getItem(ACCESS_CONTEXT_CACHE_KEY)
+    if (!raw) return null
+
+    const parsed = JSON.parse(raw) as Partial<AccessContextCacheEntry> | null
+    if (!parsed || parsed.userId !== userId) return null
+
+    return {
+      userId,
+      role: typeof parsed.role === 'string' ? parsed.role : null,
+      normalizedEmail:
+        typeof parsed.normalizedEmail === 'string' ? parsed.normalizedEmail : '',
+      allowedEmail: parsed.allowedEmail ?? null,
+    }
+  } catch {
+    return null
+  }
+}
+
+const writeCachedAccessContext = (entry: AccessContextCacheEntry): void => {
+  if (typeof window === 'undefined') return
+
+  try {
+    window.localStorage.setItem(ACCESS_CONTEXT_CACHE_KEY, JSON.stringify(entry))
+  } catch {
+    // Ignore localStorage failures and continue with live auth state.
+  }
+}
+
+const clearCachedAccessContext = (): void => {
+  if (typeof window === 'undefined') return
+
+  try {
+    window.localStorage.removeItem(ACCESS_CONTEXT_CACHE_KEY)
+  } catch {
+    // Ignore localStorage failures.
+  }
 }
 
 export const getAccessContext = async (): Promise<AccessContext> => {
@@ -45,9 +96,11 @@ export const getAccessContext = async (): Promise<AccessContext> => {
 
   const session = sessionData.session
   if (!session?.access_token || !session.user) {
+    clearCachedAccessContext()
     return emptyAccessContext
   }
 
+  const cached = readCachedAccessContext(session.user.id)
   const normalized = normalizeEmail(session.user.email)
 
   try {
@@ -71,6 +124,16 @@ export const getAccessContext = async (): Promise<AccessContext> => {
       if (errMsg !== 'Auth session missing!') {
         console.error('Access context API failed', errMsg)
       }
+
+      if (cached) {
+        return {
+          user: session.user,
+          role: cached.role,
+          normalizedEmail: cached.normalizedEmail || normalized,
+          allowedEmail: cached.allowedEmail,
+        }
+      }
+
       return {
         user: session.user,
         role: null,
@@ -78,6 +141,13 @@ export const getAccessContext = async (): Promise<AccessContext> => {
         allowedEmail: null,
       }
     }
+
+    writeCachedAccessContext({
+      userId: session.user.id,
+      role: body?.role ?? null,
+      normalizedEmail: body?.normalizedEmail ?? normalized,
+      allowedEmail: body?.allowedEmail ?? null,
+    })
 
     return {
       user: session.user,
@@ -87,6 +157,16 @@ export const getAccessContext = async (): Promise<AccessContext> => {
     }
   } catch (error) {
     console.error('Failed to fetch access context', error)
+
+    if (cached) {
+      return {
+        user: session.user,
+        role: cached.role,
+        normalizedEmail: cached.normalizedEmail || normalized,
+        allowedEmail: cached.allowedEmail,
+      }
+    }
+
     return {
       user: session.user,
       role: null,

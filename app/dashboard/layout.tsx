@@ -29,6 +29,7 @@ export default function DashboardLayout({
       pathname
     )
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const [checkingSession, setCheckingSession] = useState(true)
   const [guardError, setGuardError] = useState<string | null>(null)
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
@@ -37,14 +38,20 @@ export default function DashboardLayout({
   const profileMenuRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     let active = true
 
     const checkStudentAccess = async () => {
       try {
         const access = await getAccessContext()
+        if (!active) return
 
         if (!access.user) {
-          if (active) router.replace('/login')
+          router.replace('/login')
           return
         }
 
@@ -52,32 +59,31 @@ export default function DashboardLayout({
 
         if (!adminMode && !access.allowedEmail) {
           await supabase.auth.signOut()
-          if (active) router.replace('/login')
+          if (!active) return
+          router.replace('/login')
           return
         }
 
-        if (active) {
-          const email = access.user.email ?? ''
-          const meta = access.user.user_metadata as Record<string, string> | undefined
-          const fullName = meta?.full_name || meta?.name || ''
-          const displayName = adminMode
-            ? fullName || email.split('@')[0] || 'Admin'
-            : access.allowedEmail?.Student_Name?.trim() || FALLBACK_STUDENT_NAME
-          const studentId = adminMode
-            ? 'ADMIN'
-            : access.allowedEmail?.Student_id?.trim() || FALLBACK_STUDENT_ID
-          const initials = displayName
-            .split(' ')
-            .map((w: string) => w[0] ?? '')
-            .join('')
-            .toUpperCase()
-            .slice(0, 2)
+        const email = access.user.email ?? ''
+        const meta = access.user.user_metadata as Record<string, string> | undefined
+        const fullName = meta?.full_name || meta?.name || ''
+        const displayName = adminMode
+          ? fullName || email.split('@')[0] || 'Admin'
+          : access.allowedEmail?.Student_Name?.trim() || FALLBACK_STUDENT_NAME
+        const studentId = adminMode
+          ? 'ADMIN'
+          : access.allowedEmail?.Student_id?.trim() || FALLBACK_STUDENT_ID
+        const initials = displayName
+          .split(' ')
+          .map((w: string) => w[0] ?? '')
+          .join('')
+          .toUpperCase()
+          .slice(0, 2)
 
-          setIsAdminView(adminMode)
-          setUserInfo({ name: displayName, email, studentId, initials })
-          setGuardError(null)
-          setCheckingSession(false)
-        }
+        setIsAdminView(adminMode)
+        setUserInfo({ name: displayName, email, studentId, initials })
+        setGuardError(null)
+        setCheckingSession(false)
       } catch (error) {
         console.error('Failed to validate student access', error)
         if (active) {
@@ -87,9 +93,17 @@ export default function DashboardLayout({
       }
     }
 
-    checkStudentAccess()
+    void checkStudentAccess()
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => {
+      if (!active) return
+      setCheckingSession(true)
+      void checkStudentAccess()
+    })
+
     return () => {
       active = false
+      authListener.subscription.unsubscribe()
     }
   }, [router])
 
@@ -132,22 +146,9 @@ export default function DashboardLayout({
     router.push('/dashboard')
   }
 
-  if (checkingSession) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="muted-text">Checking your session...</p>
-      </div>
-    )
-  }
-
-  if (guardError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="surface-card max-w-md p-4 text-sm text-red-700">
-          {guardError}
-        </div>
-      </div>
-    )
+  if (!mounted) {
+    // Render deterministic placeholder on server and first client render to avoid hydration mismatch.
+    return <div className="min-h-screen" suppressHydrationWarning />
   }
 
   return (
@@ -160,7 +161,7 @@ export default function DashboardLayout({
               <Link href="/" className="text-lg font-extrabold tracking-wide">
                 Student LMS
               </Link>
-              <nav className="hidden items-center gap-2 md:flex">
+              <nav className="flex items-center gap-2">
                 <Link
                   href="/dashboard"
                   className={`nav-btn ${pathname === '/dashboard' ? 'active' : ''}`}
@@ -185,7 +186,13 @@ export default function DashboardLayout({
             <div className="flex items-center gap-2 sm:gap-3">
               <ThemeToggle />
 
-              {userInfo && (
+              {checkingSession ? (
+                <div style={{
+                  width: '7rem', height: '2.25rem', borderRadius: '1rem',
+                  background: 'var(--bg-soft)', opacity: 0.55,
+                  animation: 'lb-pulse 1.4s ease-in-out infinite',
+                }} />
+              ) : userInfo ? (
                 <div ref={profileMenuRef} className="relative">
                   <button
                     type="button"
@@ -252,30 +259,10 @@ export default function DashboardLayout({
                     </div>
                   )}
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
 
-          {/* Mobile nav */}
-          <nav className="mt-3 flex gap-2 overflow-x-auto pb-1 md:hidden">
-            <Link
-              href="/dashboard"
-              className={`nav-btn ${pathname === '/dashboard' ? 'active' : ''}`}
-            >
-              All Days
-            </Link>
-            <Link
-              href="/dashboard/leaderboard"
-              className={`nav-btn ${pathname === '/dashboard/leaderboard' ? 'active' : ''}`}
-            >
-              🏆 Leaderboard
-            </Link>
-            {isAdminView && (
-              <Link href="/admin" className="nav-btn">
-                Admin Panel
-              </Link>
-            )}
-          </nav>
         </div>
 
         <div className="top-announcement">
@@ -314,7 +301,20 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 md:px-6">{children}</main>
+      <main className="mx-auto max-w-7xl px-4 py-6 md:px-6">
+        {guardError ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="surface-card max-w-md p-4 text-sm text-red-700">{guardError}</div>
+          </div>
+        ) : checkingSession ? (
+          <div className="flex items-center justify-center py-20">
+            <p className="muted-text text-sm">Checking your session…</p>
+          </div>
+        ) : (
+          children
+        )}
+      </main>
+      <style>{`@keyframes lb-pulse { 0%,100%{opacity:0.5} 50%{opacity:0.9} }`}</style>
     </div>
   )
 }

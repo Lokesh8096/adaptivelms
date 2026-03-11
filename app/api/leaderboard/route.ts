@@ -8,10 +8,21 @@ const getBearerToken = (request: Request): string | null => {
 }
 
 const SPRINT_SIZE = 6
+const TOTAL_SPRINTS = 5 // Total sprints in the course (5 sprints × 6 days = 30 days)
+
+// Points awarded per completed activity
+const RECAP_POINTS = 10
+const INTERVIEW_POINTS = 10
+const SCENARIO_POINTS = 10
+// Quiz points = number of correct answers (quiz_score stored directly as correct count)
+// Practice Box points = first attempt raw score (attempts[0].score = correct count)
 
 type ProgressRow = {
     student_id: string | null
     day_number: number | null
+    recap_completed: boolean | null
+    interview_completed: boolean | null
+    scenario_completed: boolean | null
     quiz_score: number | null
     'Practice Quiz Scores': unknown
 }
@@ -28,6 +39,28 @@ type PracticeAttempt = {
     total: number
     percentage: number
     completed_at: string
+}
+
+export type SprintEntry = {
+    rank: number
+    name: string
+    score: number
+    activityPoints: number
+    quizPoints: number
+    practicePoints: number
+    completedDays: number
+    isCurrentUser: boolean
+}
+
+type CurrentUserStats = {
+    rank: number | null
+    name: string
+    score: number
+    activityPoints: number
+    quizPoints: number
+    practicePoints: number
+    completedDays: number
+    hasData: boolean
 }
 
 function parsePracticeAttempts(value: unknown): PracticeAttempt[] {
@@ -68,6 +101,8 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: userError?.message ?? 'Invalid session.' }, { status: 401 })
     }
 
+    const currentUserId = userData.user.id
+
     // Fetch all progress rows + allowed_emails (for student names)
     const [
         { data: progressData, error: progressError },
@@ -75,7 +110,7 @@ export async function GET(request: Request) {
     ] = await Promise.all([
         admin
             .from('student_day_progress')
-            .select('student_id,day_number,quiz_score,"Practice Quiz Scores"')
+            .select('student_id,day_number,recap_completed,interview_completed,scenario_completed,quiz_score,"Practice Quiz Scores"')
             .order('day_number', { ascending: true }),
         admin
             .from('allowed_emails')
@@ -114,109 +149,148 @@ export async function GET(request: Request) {
         }
     }
 
-    // ── Day-wise leaderboard ─────────────────────────────────────────
-    // Group first-attempt quiz_score per (student, day)
-    // quiz_score in student_day_progress IS the first attempt score
-    const dayMap = new Map<number, Map<string, number>>()
-    for (const row of progressRows) {
-        if (!row.student_id || row.day_number === null || row.quiz_score === null) continue
-        const day = row.day_number
-        if (!dayMap.has(day)) dayMap.set(day, new Map())
-        const studentScores = dayMap.get(day)!
-        // Take the stored quiz_score (it's the first-attempt score as per existing system)
-        if (!studentScores.has(row.student_id)) {
-            studentScores.set(row.student_id, row.quiz_score)
-        }
-    }
-
-    const dayLeaderboard: Record<number, Array<{ rank: number; name: string; score: number }>> = {}
-    for (const [day, studentScores] of dayMap.entries()) {
-        const entries = Array.from(studentScores.entries())
-            .map(([uid, score]) => ({ name: authUidToName[uid] || uid, score }))
-            .sort((a, b) => b.score - a.score)
-
-        let rank = 1
-        dayLeaderboard[day] = entries.map((e, i) => {
-            if (i > 0 && e.score < entries[i - 1].score) rank = i + 1
-            return { rank, name: e.name, score: e.score }
-        })
-    }
+    // ── Determine how many sprints to show ───────────────────────────
+    const allDayNumbers = progressRows
+        .map(r => r.day_number)
+        .filter((d): d is number => typeof d === 'number' && d > 0)
+    const maxDay = allDayNumbers.length > 0 ? Math.max(...allDayNumbers) : 0
+    const numSprints = Math.ceil(maxDay / SPRINT_SIZE)
+    const totalSprintsToShow = Math.max(numSprints, TOTAL_SPRINTS)
 
     // ── Sprint-wise leaderboard ───────────────────────────────────────
-    // Score = sum of first-attempt quiz scores in the sprint + practice box first attempt percentage
-    const allDays = Array.from(dayMap.keys()).sort((a, b) => a - b)
-    const maxDay = allDays[allDays.length - 1] ?? 0
-    const numSprints = Math.ceil(maxDay / SPRINT_SIZE)
+    //
+    // De-duplication: student_day_progress has a unique (student_id, day_number)
+    // constraint enforced by upsert. We still de-duplicate in code to be safe —
+    // for each (student_id, day_number) we keep only ONE row (the first seen, which
+    // is the earliest row since we order by day_number ASC).
+    //
+    // Scoring per day → Recap: +10 | Interview: +10 | Scenario: +10 | Quiz: quiz_score
+    // Per sprint     → sum of daily points + Practice Box first-attempt raw score (.score)
+    // Max per day = 40, Max per sprint = 240 + Practice Box (max 10) = 250
+    //
+    // FILTER: Only show students with score > 0 (students who never accumulated any points
+    //         are excluded from the public leaderboard).
 
-    const sprintLeaderboard: Record<number, Array<{ rank: number; name: string; score: number; quizScore: number; practiceScore: number }>> = {}
+    const sprintLeaderboard: Record<number, SprintEntry[]> = {}
+    const currentUserStatsBySprint: Record<number, CurrentUserStats> = {}
 
-    for (let sprint = 1; sprint <= numSprints; sprint++) {
+    for (let sprint = 1; sprint <= totalSprintsToShow; sprint++) {
         const startDay = (sprint - 1) * SPRINT_SIZE + 1
         const endDay = sprint * SPRINT_SIZE
-        const anchorDay = endDay // Practice box score stored on last day of sprint
+        const anchorDay = endDay // Practice box score stored on the last day of the sprint
 
-        // Collect per-student quiz scores summed over sprint days
-        const studentQuizTotals = new Map<string, { total: number; count: number }>()
-        const studentPractice = new Map<string, number>() // first attempt practice %
+        // Per-student sprint accumulation (keyed by auth UID)
+        const studentActivityPoints = new Map<string, number>()
+        const studentQuizPoints = new Map<string, number>()
+        const studentPracticePoints = new Map<string, number>()
+        const studentCompletedDays = new Map<string, number>()
+        // De-dup guard: track (uid, day) pairs we've already processed
+        const processedDays = new Set<string>()
 
         for (const row of progressRows) {
             if (!row.student_id || row.day_number === null) continue
+            const uid = row.student_id
             const day = row.day_number
 
-            // Quiz scores (days in this sprint)
-            if (day >= startDay && day <= endDay && row.quiz_score !== null) {
-                const existing = studentQuizTotals.get(row.student_id) ?? { total: 0, count: 0 }
-                existing.total += row.quiz_score
-                existing.count += 1
-                studentQuizTotals.set(row.student_id, existing)
+            // ── Daily points (sprint days only, first row per student+day) ──
+            if (day >= startDay && day <= endDay) {
+                const key = `${uid}|${day}`
+                if (!processedDays.has(key)) {
+                    processedDays.add(key)
+
+                    // Activity completion points
+                    let dayActivityPts = 0
+                    if (row.recap_completed) dayActivityPts += RECAP_POINTS
+                    if (row.interview_completed) dayActivityPts += INTERVIEW_POINTS
+                    if (row.scenario_completed) dayActivityPts += SCENARIO_POINTS
+
+                    studentActivityPoints.set(uid, (studentActivityPoints.get(uid) ?? 0) + dayActivityPts)
+
+                    // Quiz points = correct answers stored in quiz_score
+                    if (row.quiz_score !== null) {
+                        studentQuizPoints.set(uid, (studentQuizPoints.get(uid) ?? 0) + row.quiz_score)
+                    }
+
+                    // Count completed days (all 4 activities done in this day)
+                    const fullyDone = row.recap_completed && row.interview_completed && row.scenario_completed && row.quiz_score !== null
+                    if (fullyDone) {
+                        studentCompletedDays.set(uid, (studentCompletedDays.get(uid) ?? 0) + 1)
+                    }
+                }
             }
 
-            // Practice box: first attempt on the anchor (last) day
-            if (day === anchorDay) {
+            // ── Practice Box: first attempt raw score on the anchor day ──
+            // parsePracticeAttempts returns attempts ordered as stored; attempts[0] is first attempt
+            if (day === anchorDay && !studentPracticePoints.has(uid)) {
                 const attempts = parsePracticeAttempts(row['Practice Quiz Scores'])
-                if (attempts.length > 0 && !studentPractice.has(row.student_id)) {
-                    // First attempt = attempts[0]
-                    studentPractice.set(row.student_id, attempts[0].percentage)
+                if (attempts.length > 0) {
+                    studentPracticePoints.set(uid, attempts[0].score)
                 }
             }
         }
 
-        // Union of all students who appear in either quiz or practice for this sprint
-        const allStudentIds = new Set([...studentQuizTotals.keys(), ...studentPractice.keys()])
+        // Union of all student UIDs that have any data for this sprint
+        const allStudentIds = new Set([
+            ...studentActivityPoints.keys(),
+            ...studentQuizPoints.keys(),
+            ...studentPracticePoints.keys(),
+        ])
 
-        const entries = Array.from(allStudentIds).map((uid) => {
-            const quiz = studentQuizTotals.get(uid)
-            const quizScore = quiz ? quiz.total : 0
-            const practiceScore = studentPractice.get(uid) ?? 0
-            // Combined score = sum of quiz scores (each out of 10, so max = days*10) + practice%
-            const score = quizScore + practiceScore
-            return {
-                name: authUidToName[uid] || uid,
-                score: Math.round(score * 10) / 10,
-                quizScore,
-                practiceScore,
-            }
+        const allEntries = Array.from(allStudentIds).map((uid) => {
+            const activityPoints = studentActivityPoints.get(uid) ?? 0
+            const quizPoints = studentQuizPoints.get(uid) ?? 0
+            const practicePoints = studentPracticePoints.get(uid) ?? 0
+            const score = Math.round((activityPoints + quizPoints + practicePoints) * 10) / 10
+            const completedDays = studentCompletedDays.get(uid) ?? 0
+            return { uid, name: authUidToName[uid] || uid, score, activityPoints, quizPoints, practicePoints, completedDays }
         }).sort((a, b) => b.score - a.score)
 
-        let rank = 1
-        sprintLeaderboard[sprint] = entries.map((e, i) => {
-            if (i > 0 && e.score < entries[i - 1].score) rank = i + 1
-            return { rank, ...e }
-        })
+        // ── Find current user's raw stats (before filtering) for the stats panel ──
+        const currentUserEntry = allEntries.find(e => e.uid === currentUserId)
+        const currentUserRankInAll = allEntries.findIndex(e => e.uid === currentUserId)
+
+        // ── FILTER: only students with score > 0 appear in the public leaderboard ──
+        const filteredEntries = allEntries.filter(e => e.score > 0)
+
+        // Re-rank filtered list (sequential, no gaps)
+        const rankedFiltered: SprintEntry[] = filteredEntries.map((e, i) => ({
+            rank: i + 1,
+            name: e.name,
+            score: e.score,
+            activityPoints: e.activityPoints,
+            quizPoints: e.quizPoints,
+            practicePoints: e.practicePoints,
+            completedDays: e.completedDays,
+            isCurrentUser: e.uid === currentUserId,
+        }))
+
+        sprintLeaderboard[sprint] = rankedFiltered
+
+        // Current user's filtered rank (null if they have 0 pts and were filtered out)
+        const filteredRank = rankedFiltered.findIndex(e => e.isCurrentUser)
+        currentUserStatsBySprint[sprint] = {
+            rank: filteredRank !== -1 ? filteredRank + 1 : null,
+            name: currentUserEntry?.name ?? authUidToName[currentUserId] ?? '',
+            score: currentUserEntry?.score ?? 0,
+            activityPoints: currentUserEntry?.activityPoints ?? 0,
+            quizPoints: currentUserEntry?.quizPoints ?? 0,
+            practicePoints: currentUserEntry?.practicePoints ?? 0,
+            completedDays: currentUserEntry?.completedDays ?? 0,
+            // hasData = student has at least any score > 0 among all entries
+            hasData: currentUserRankInAll !== -1 && (currentUserEntry?.score ?? 0) > 0,
+        }
     }
 
-    // ── Determine available days and sprints ─────────────────────────
-    const availableDays = Array.from(dayMap.keys()).sort((a, b) => a - b)
-    const availableSprints = Array.from({ length: numSprints }, (_, i) => ({
+    // ── Determine available sprints ──────────────────────────────────
+    const availableSprints = Array.from({ length: totalSprintsToShow }, (_, i) => ({
         sprint: i + 1,
         startDay: i * SPRINT_SIZE + 1,
         endDay: (i + 1) * SPRINT_SIZE,
     }))
 
     return NextResponse.json({
-        dayLeaderboard,
         sprintLeaderboard,
-        availableDays,
         availableSprints,
+        currentUserStatsBySprint,
     })
 }

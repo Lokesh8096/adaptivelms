@@ -4,13 +4,44 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 // ── Types ─────────────────────────────────────────────────────────────
-type SprintEntry = { rank: number; name: string; score: number; quizScore: number; practiceScore: number }
+type SprintEntry = {
+    rank: number
+    name: string
+    score: number
+    activityPoints: number
+    quizPoints: number
+    practicePoints: number
+    completedDays: number
+    isCurrentUser: boolean
+}
 type SprintInfo = { sprint: number; startDay: number; endDay: number }
+
+type CurrentUserStats = {
+    rank: number | null
+    name: string
+    score: number
+    activityPoints: number
+    quizPoints: number
+    practicePoints: number
+    completedDays: number
+    hasData: boolean
+}
 
 type LeaderboardData = {
     sprintLeaderboard: Record<number, SprintEntry[]>
     availableSprints: SprintInfo[]
+    currentUserStatsBySprint: Record<number, CurrentUserStats>
 }
+
+const scoreIndicator = (score: number | null | undefined): string => {
+    if (score === null || score === undefined) return ''
+    if (score >= 40) return "\uD83C\uDFC6" // 🏆
+    if (score >= 30) return "\u2B50" // ⭐
+    if (score >= 15) return "\uD83D\uDC4D" // 👍
+    if (score >= 1) return "\uD83D\uDE15" // 😕
+    return ''
+}
+
 
 // ── Medal colors ──────────────────────────────────────────────────────
 const MEDAL: Record<number, { bg: string; text: string; icon: string }> = {
@@ -60,7 +91,6 @@ function SprintDropdown({
 
     const selected = sprints.find((s) => s.sprint === selectedSprint)
 
-    // Close on outside click
     useEffect(() => {
         const handler = (e: MouseEvent) => {
             if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -73,7 +103,6 @@ function SprintDropdown({
 
     return (
         <div ref={ref} style={{ position: 'relative', display: 'inline-block', minWidth: '220px' }}>
-            {/* Trigger button */}
             <button
                 id="lb-sprint-dropdown-trigger"
                 onClick={() => setOpen((o) => !o)}
@@ -82,10 +111,8 @@ function SprintDropdown({
                     width: '100%', padding: '0.5rem 1rem', fontWeight: 700, fontSize: '0.88rem',
                     borderRadius: '0.6rem', cursor: 'pointer',
                     border: '1.5px solid rgba(124,58,237,0.5)',
-                    background: 'rgba(124,58,237,0.1)',
-                    color: '#a78bfa',
-                    transition: 'all 0.2s',
-                    gap: '0.5rem',
+                    background: 'rgba(124,58,237,0.1)', color: '#a78bfa',
+                    transition: 'all 0.2s', gap: '0.5rem',
                 }}
             >
                 <span>
@@ -100,7 +127,6 @@ function SprintDropdown({
                 }}>▼</span>
             </button>
 
-            {/* Dropdown menu */}
             {open && (
                 <div style={{
                     position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
@@ -142,6 +168,81 @@ function SprintDropdown({
                     )}
                 </div>
             )}
+        </div>
+    )
+}
+
+// ── Student Stats Panel ───────────────────────────────────────────────
+function StudentStatsPanel({ stats, sprintInfo }: { stats: CurrentUserStats; sprintInfo: SprintInfo | undefined }) {
+    const statItems = [
+        { label: 'Your Rank', value: stats.rank !== null ? `#${stats.rank}` : '—', accent: true },
+        { label: 'Activity Points', value: `${stats.activityPoints}`, sub: 'Recap/Interview/Scenario' },
+        { label: 'Quiz Points', value: `${stats.quizPoints}`, sub: 'Correct answers' },
+        { label: 'Practice Box', value: `${stats.practicePoints}`, sub: 'First attempt score' },
+        { label: 'Total Points', value: `${stats.score}`, accent: true, sub: 'Max 250' },
+        { label: 'Completed Days', value: `${stats.completedDays}${sprintInfo ? ` / 6` : ''}` },
+    ]
+
+    return (
+        <div style={{
+            borderRadius: '1rem',
+            border: '1.5px solid rgba(79,70,229,0.35)',
+            background: 'linear-gradient(135deg,rgba(79,70,229,0.08),rgba(124,58,237,0.05))',
+            overflow: 'hidden',
+        }}>
+            {/* Panel header */}
+            <div style={{
+                padding: '0.85rem 1.1rem',
+                background: 'linear-gradient(135deg,rgba(79,70,229,0.18),rgba(124,58,237,0.12))',
+                borderBottom: '1px solid rgba(79,70,229,0.2)',
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+            }}>
+                <span style={{ fontSize: '1.1rem' }}>👤</span>
+                <div>
+                    <div style={{ fontWeight: 800, fontSize: '0.85rem', color: '#818cf8' }}>Your Performance</div>
+                    {stats.name && (
+                        <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '0.05rem', fontWeight: 600 }}>
+                            {stats.name}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Stats grid */}
+            <div style={{ padding: '0.75rem' }}>
+                {!stats.hasData ? (
+                    <div style={{ padding: '0.75rem 0.25rem', fontSize: '0.78rem', opacity: 0.55, fontStyle: 'italic', textAlign: 'center' }}>
+                        You haven&apos;t started this sprint yet.
+                    </div>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                        {statItems.map((item) => (
+                            <div key={item.label} style={{
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                padding: '0.4rem 0.6rem',
+                                borderRadius: '0.5rem',
+                                background: item.accent ? 'rgba(79,70,229,0.1)' : 'transparent',
+                            }}>
+                                <div>
+                                    <div style={{ fontSize: '0.75rem', fontWeight: item.accent ? 700 : 500, opacity: item.accent ? 1 : 0.75 }}>
+                                        {item.label}
+                                    </div>
+                                    {item.sub && (
+                                        <div style={{ fontSize: '0.65rem', opacity: 0.5, marginTop: '0.05rem' }}>{item.sub}</div>
+                                    )}
+                                </div>
+                                <div style={{
+                                    fontSize: item.accent ? '1rem' : '0.85rem',
+                                    fontWeight: 800,
+                                    color: item.accent ? '#818cf8' : 'inherit',
+                                }}>
+                                    {item.value}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
@@ -188,6 +289,21 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
         return data.sprintLeaderboard[selectedSprint] ?? []
     }, [data, selectedSprint])
 
+    const currentUserStats = useMemo(() => {
+        if (!data || selectedSprint === null) return null
+        return data.currentUserStatsBySprint?.[selectedSprint] ?? null
+    }, [data, selectedSprint])
+
+    const selectedSprintInfo = useMemo(() => {
+        if (!data || selectedSprint === null) return undefined
+        return data.availableSprints.find(s => s.sprint === selectedSprint)
+    }, [data, selectedSprint])
+
+    // Show student stats panel only when currentUserName is provided (student view)
+    const isStudentView = Boolean(currentUserName)
+    const studentScore = isStudentView ? (currentUserStats?.score ?? null) : null
+    const studentScoreIcon = scoreIndicator(studentScore)
+
     // ── Render ────────────────────────────────────────────────────────
     if (loading) {
         return (
@@ -226,15 +342,18 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
                 borderRadius: '1rem', padding: '1.75rem 2rem',
                 color: '#fff', position: 'relative', overflow: 'hidden',
             }}>
-                {/* decorative circles */}
                 <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(255,255,255,0.07)', pointerEvents: 'none' }} />
                 <div style={{ position: 'absolute', bottom: '-20px', right: '80px', width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', position: 'relative' }}>
                     <span style={{ fontSize: '2.5rem', lineHeight: 1 }}>🏆</span>
                     <div>
-                        <h1 style={{ fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.5px', margin: 0 }}>Leaderboard</h1>
+                        <h1 style={{ fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.5px', margin: 0 }}>
+                            {isStudentView && studentScore !== null
+                                ? `Leaderboard | Your Score: ${studentScore}${studentScoreIcon ? ` ${studentScoreIcon}` : ''}`
+                                : 'Leaderboard'}
+                        </h1>
                         <p style={{ margin: '0.25rem 0 0', opacity: 0.85, fontSize: '0.88rem' }}>
-                            Sprint rankings based on first-attempt quiz &amp; practice box scores
+                            Sprint rankings based on daily completion + quiz scores + Practice Box
                         </p>
                     </div>
                     <button
@@ -274,12 +393,29 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
             }}>
                 <span>ℹ️</span>
                 <span>
-                    Sprint score = <strong>sum of daily first-attempt quiz scores</strong> + <strong>Practice Box first-attempt %</strong>
+                    Sprint score = <strong>Recap (+10)</strong> + <strong>Interview (+10)</strong> + <strong>Scenario (+10)</strong> per day
+                    &nbsp;+&nbsp;<strong>Quiz correct answers</strong> per day
+                    &nbsp;+&nbsp;<strong>Practice Box first-attempt score</strong>
+                    &nbsp;· Max per sprint: <strong>250 pts</strong>
+                    &nbsp;· First attempts only; retakes do not affect ranking.
                 </span>
             </div>
 
-            {/* ── Table ── */}
-            <LeaderboardTable entries={displayEntries} currentUserName={currentUserName} />
+            {/* ── Two-column layout: Rankings + Student Stats Panel ── */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: isStudentView && currentUserStats ? 'minmax(0,1fr) 260px' : '1fr',
+                gap: '1.25rem',
+                alignItems: 'start',
+            }}>
+                {/* Left: Rankings table */}
+                <LeaderboardTable entries={displayEntries} currentUserName={currentUserName} />
+
+                {/* Right: Student stats panel (student view only) */}
+                {isStudentView && currentUserStats && (
+                    <StudentStatsPanel stats={currentUserStats} sprintInfo={selectedSprintInfo} />
+                )}
+            </div>
 
             <style>{`@keyframes lb-spin { to { transform: rotate(360deg); } }`}</style>
         </div>
@@ -314,7 +450,7 @@ function LeaderboardTable({
                     flexWrap: 'wrap',
                 }}>
                     {entries.slice(0, 3).map((e, i) => {
-                        const isSelf = currentUserName && e.name === currentUserName
+                        const isSelf = e.isCurrentUser
                         const medal = MEDAL[e.rank]
                         return (
                             <div key={i} style={{
@@ -337,7 +473,7 @@ function LeaderboardTable({
                                     {e.score}
                                 </div>
                                 <div style={{ fontSize: '0.68rem', opacity: 0.55, marginTop: '0.1rem' }}>
-                                    combined score
+                                    points
                                 </div>
                             </div>
                         )
@@ -345,7 +481,7 @@ function LeaderboardTable({
                 </div>
             )}
 
-            {/* Full table */}
+            {/* Full table — Rank | Student Name | Points */}
             <div style={{ overflowX: 'auto', marginTop: '1.25rem' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
@@ -353,15 +489,13 @@ function LeaderboardTable({
                             <th style={{ padding: '0.65rem 1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap', opacity: 0.7 }}>Rank</th>
                             <th style={{ padding: '0.65rem 1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem' }}>Student Name</th>
                             <th style={{ padding: '0.65rem 1rem', textAlign: 'right', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
-                                Total Score
+                                Points
                             </th>
-                            <th style={{ padding: '0.65rem 1rem', textAlign: 'right', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap', opacity: 0.7 }}>Quiz Total</th>
-                            <th style={{ padding: '0.65rem 1rem', textAlign: 'right', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap', opacity: 0.7 }}>Practice %</th>
                         </tr>
                     </thead>
                     <tbody>
                         {entries.map((entry, idx) => {
-                            const isSelf = currentUserName && entry.name === currentUserName
+                            const isSelf = entry.isCurrentUser
                             const isTop3 = entry.rank <= 3
 
                             return (
@@ -398,12 +532,6 @@ function LeaderboardTable({
                                     </td>
                                     <td style={{ padding: '0.7rem 1rem', textAlign: 'right', fontWeight: 700, color: '#4f46e5', fontSize: '0.95rem' }}>
                                         {entry.score}
-                                    </td>
-                                    <td style={{ padding: '0.7rem 1rem', textAlign: 'right', opacity: 0.7, fontSize: '0.82rem' }}>
-                                        {entry.quizScore}
-                                    </td>
-                                    <td style={{ padding: '0.7rem 1rem', textAlign: 'right', opacity: 0.7, fontSize: '0.82rem' }}>
-                                        {entry.practiceScore}%
                                     </td>
                                 </tr>
                             )
