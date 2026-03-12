@@ -28,9 +28,7 @@ type ProgressRow = {
 }
 
 type AllowedRow = {
-    email: string
-    Student_Name: string | null
-    Student_id: string | null
+    [key: string]: unknown
 }
 
 type PracticeAttempt = {
@@ -85,6 +83,14 @@ function parsePracticeAttempts(value: unknown): PracticeAttempt[] {
         .filter((e): e is PracticeAttempt => e !== null)
 }
 
+function pickString(row: AllowedRow, keys: string[]): string {
+    for (const key of keys) {
+        const value = row[key]
+        if (typeof value === 'string' && value.trim().length > 0) return value.trim()
+    }
+    return ''
+}
+
 export async function GET(request: Request) {
     const admin = getSupabaseAdmin()
     if (!admin) {
@@ -114,7 +120,7 @@ export async function GET(request: Request) {
             .order('day_number', { ascending: true }),
         admin
             .from('allowed_emails')
-            .select('email,Student_Name,Student_id'),
+            .select('*'),
     ])
 
     if (progressError) return NextResponse.json({ error: progressError.message }, { status: 500 })
@@ -126,7 +132,10 @@ export async function GET(request: Request) {
     // Build email → name map from allowed_emails
     const nameByEmail: Record<string, string> = {}
     for (const row of allowedRows) {
-        if (row.email) nameByEmail[row.email.trim().toLowerCase()] = row.Student_Name ?? ''
+        const email = pickString(row, ['email', 'Email'])
+        if (!email) continue
+        const studentName = pickString(row, ['Student_Name', 'student_name', 'name'])
+        nameByEmail[email.toLowerCase()] = studentName
     }
 
     // Resolve auth UIDs → email → name by listing auth users
