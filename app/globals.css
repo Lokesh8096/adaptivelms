@@ -124,6 +124,11 @@ button:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
+/* Eye-toggle buttons inside password fields must not shift vertically on hover */
+.btn-eye-toggle:hover {
+  transform: translateY(-50%) !important;
+}
+
 button:disabled {
   cursor: not-allowed;
 }
