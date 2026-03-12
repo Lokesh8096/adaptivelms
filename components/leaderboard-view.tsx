@@ -102,7 +102,7 @@ function SprintDropdown({
     }, [])
 
     return (
-        <div ref={ref} style={{ position: 'relative', display: 'inline-block', minWidth: '220px' }}>
+        <div ref={ref} style={{ position: 'relative', display: 'block', width: '100%', maxWidth: '340px' }}>
             <button
                 id="lb-sprint-dropdown-trigger"
                 onClick={() => setOpen((o) => !o)}
@@ -335,40 +335,45 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
     const noSprints = data.availableSprints.length === 0
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 lb-root">
             {/* ── Header ── */}
             <div style={{
                 background: 'linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#a855f7 100%)',
-                borderRadius: '1rem', padding: '1.75rem 2rem',
+                borderRadius: '1rem', padding: '1.5rem',
                 color: '#fff', position: 'relative', overflow: 'hidden',
             }}>
+                {/* Decorative circles */}
                 <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(255,255,255,0.07)', pointerEvents: 'none' }} />
                 <div style={{ position: 'absolute', bottom: '-20px', right: '80px', width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', position: 'relative' }}>
-                    <span style={{ fontSize: '2.5rem', lineHeight: 1 }}>🏆</span>
-                    <div>
-                        <h1 style={{ fontSize: '1.6rem', fontWeight: 800, letterSpacing: '-0.5px', margin: 0 }}>
-                            {isStudentView && studentScore !== null
-                                ? `Leaderboard | Your Score: ${studentScore}${studentScoreIcon ? ` ${studentScoreIcon}` : ''}`
-                                : 'Leaderboard'}
-                        </h1>
-                        <p style={{ margin: '0.25rem 0 0', opacity: 0.85, fontSize: '0.88rem' }}>
-                            Sprint rankings based on daily completion + quiz scores + Practice Box
-                        </p>
-                    </div>
+
+                {/* Top row: trophy + refresh */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', position: 'relative', marginBottom: '0.6rem' }}>
+                    <span className="lb-trophy" style={{ fontSize: '2.5rem', lineHeight: 1, flexShrink: 0 }}>🏆</span>
                     <button
                         id="leaderboard-refresh"
                         onClick={() => void fetchLeaderboard()}
                         style={{
-                            marginLeft: 'auto', padding: '0.4rem 0.9rem', fontSize: '0.78rem', fontWeight: 600,
+                            padding: '0.4rem 0.9rem', fontSize: '0.78rem', fontWeight: 600,
                             borderRadius: '0.5rem', border: '1.5px solid rgba(255,255,255,0.4)',
                             background: 'rgba(255,255,255,0.12)', color: '#fff', cursor: 'pointer',
                             backdropFilter: 'blur(4px)', transition: 'background 0.2s',
-                            flexShrink: 0,
+                            flexShrink: 0, whiteSpace: 'nowrap',
                         }}
                     >
                         ↻ Refresh
                     </button>
+                </div>
+
+                {/* Title + subtitle below */}
+                <div style={{ position: 'relative' }}>
+                    <h1 className="lb-title" style={{ fontWeight: 800, letterSpacing: '-0.5px', margin: 0, lineHeight: 1.2 }}>
+                        {isStudentView && studentScore !== null
+                            ? `Leaderboard | Your Score: ${studentScore}${studentScoreIcon ? ` ${studentScoreIcon}` : ''}`
+                            : 'Leaderboard'}
+                    </h1>
+                    <p style={{ margin: '0.3rem 0 0', opacity: 0.85, fontSize: '0.82rem', lineHeight: 1.5 }}>
+                        Sprint rankings based on daily completion + quiz scores + Practice Box
+                    </p>
                 </div>
             </div>
 
@@ -387,11 +392,12 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
 
             {/* ── Score note ── */}
             <div style={{
-                display: 'flex', alignItems: 'flex-start', gap: '0.6rem',
+                display: 'flex', alignItems: 'flex-start', gap: '0.5rem',
                 background: 'rgba(168,85,247,0.08)', borderLeft: '3px solid #a855f7',
-                borderRadius: '0 0.5rem 0.5rem 0', padding: '0.6rem 0.9rem', fontSize: '0.78rem',
+                borderRadius: '0 0.5rem 0.5rem 0', padding: '0.6rem 0.8rem', fontSize: '0.76rem',
+                lineHeight: 1.55,
             }}>
-                <span>ℹ️</span>
+                <span style={{ flexShrink: 0 }}>ℹ️</span>
                 <span>
                     Sprint score = <strong>Recap (+10)</strong> + <strong>Interview (+10)</strong> + <strong>Scenario (+10)</strong> per day
                     &nbsp;+&nbsp;<strong>Quiz correct answers</strong> per day
@@ -402,7 +408,7 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
             </div>
 
             {/* ── Two-column layout: Rankings + Student Stats Panel ── */}
-            <div style={{
+            <div className="lb-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: isStudentView && currentUserStats ? 'minmax(0,1fr) 260px' : '1fr',
                 gap: '1.25rem',
@@ -417,7 +423,44 @@ export default function LeaderboardView({ currentUserName }: { currentUserName?:
                 )}
             </div>
 
-            <style>{`@keyframes lb-spin { to { transform: rotate(360deg); } }`}</style>
+            <style>{`
+                @keyframes lb-spin { to { transform: rotate(360deg); } }
+
+                /* ── Mobile overrides (≤ 600px) ── */
+                @media (max-width: 600px) {
+                    /* Stack grid to single column */
+                    .lb-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                    /* Smaller trophy on very small screens */
+                    .lb-trophy {
+                        font-size: 2rem !important;
+                    }
+                    /* Responsive heading size */
+                    .lb-title {
+                        font-size: clamp(1rem, 5vw, 1.4rem) !important;
+                    }
+                    /* Tighten table cells */
+                    .lb-table td,
+                    .lb-table th {
+                        padding: 0.55rem 0.65rem !important;
+                    }
+                    /* Make top-3 podium cards 2-per-row on small screens */
+                    .lb-podium {
+                        padding: 0.85rem 0.85rem 0 !important;
+                        gap: 0.5rem !important;
+                    }
+                    .lb-podium-card {
+                        flex: 1 1 calc(50% - 0.25rem) !important;
+                        min-width: 0 !important;
+                        padding: 0.75rem 0.5rem !important;
+                    }
+                    /* Sprint dropdown full width */
+                    .lb-root > div:nth-child(2) {
+                        width: 100%;
+                    }
+                }
+            `}</style>
         </div>
     )
 }
@@ -445,34 +488,34 @@ function LeaderboardTable({
         <div className="surface-card overflow-hidden" style={{ borderRadius: '1rem' }}>
             {/* Top 3 podium cards */}
             {entries.length >= 1 && (
-                <div style={{
-                    display: 'flex', gap: '0.75rem', padding: '1.25rem 1.5rem 0',
+                <div className="lb-podium" style={{
+                    display: 'flex', gap: '0.75rem', padding: '1.25rem 1.25rem 0',
                     flexWrap: 'wrap',
                 }}>
                     {entries.slice(0, 3).map((e, i) => {
                         const isSelf = e.isCurrentUser
                         const medal = MEDAL[e.rank]
                         return (
-                            <div key={i} style={{
-                                flex: '1 1 140px', borderRadius: '0.875rem',
+                            <div key={i} className="lb-podium-card" style={{
+                                flex: '1 1 130px', borderRadius: '0.875rem',
                                 background: medal ? 'linear-gradient(135deg,rgba(79,70,229,0.10),rgba(124,58,237,0.06))' : 'var(--bg-soft)',
                                 border: isSelf ? '2px solid #4f46e5' : '1.5px solid var(--border, #e5e7eb)',
-                                padding: '1rem', textAlign: 'center',
+                                padding: '0.9rem 0.75rem', textAlign: 'center',
                                 boxShadow: i === 0 ? '0 4px 16px rgba(79,70,229,0.15)' : 'none',
-                                transition: 'transform 0.2s',
+                                transition: 'transform 0.2s', minWidth: 0,
                             }}>
-                                <div style={{ fontSize: '1.8rem', lineHeight: 1 }}>{medal?.icon ?? `#${e.rank}`}</div>
+                                <div style={{ fontSize: '1.7rem', lineHeight: 1 }}>{medal?.icon ?? `#${e.rank}`}</div>
                                 <div style={{
-                                    marginTop: '0.4rem', fontWeight: 700, fontSize: '0.9rem',
+                                    marginTop: '0.4rem', fontWeight: 700, fontSize: '0.85rem',
                                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                                     color: isSelf ? '#818cf8' : 'inherit',
                                 }}>
                                     {e.name}{isSelf && ' (You)'}
                                 </div>
-                                <div style={{ marginTop: '0.25rem', fontSize: '1.1rem', fontWeight: 800, color: '#4f46e5' }}>
+                                <div style={{ marginTop: '0.25rem', fontSize: '1rem', fontWeight: 800, color: '#4f46e5' }}>
                                     {e.score}
                                 </div>
-                                <div style={{ fontSize: '0.68rem', opacity: 0.55, marginTop: '0.1rem' }}>
+                                <div style={{ fontSize: '0.65rem', opacity: 0.55, marginTop: '0.1rem' }}>
                                     points
                                 </div>
                             </div>
@@ -483,12 +526,12 @@ function LeaderboardTable({
 
             {/* Full table — Rank | Student Name | Points */}
             <div style={{ overflowX: 'auto', marginTop: '1.25rem' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+                <table className="lb-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                         <tr style={{ background: 'var(--bg-soft)' }}>
-                            <th style={{ padding: '0.65rem 1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap', opacity: 0.7 }}>Rank</th>
-                            <th style={{ padding: '0.65rem 1rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem' }}>Student Name</th>
-                            <th style={{ padding: '0.65rem 1rem', textAlign: 'right', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
+                            <th style={{ padding: '0.65rem 0.85rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap', opacity: 0.7 }}>Rank</th>
+                            <th style={{ padding: '0.65rem 0.85rem', textAlign: 'left', fontWeight: 700, fontSize: '0.78rem' }}>Student Name</th>
+                            <th style={{ padding: '0.65rem 0.85rem', textAlign: 'right', fontWeight: 700, fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
                                 Points
                             </th>
                         </tr>
@@ -515,22 +558,22 @@ function LeaderboardTable({
                                             : isTop3 ? 'rgba(79,70,229,0.02)' : 'transparent'
                                     }}
                                 >
-                                    <td style={{ padding: '0.7rem 1rem' }}>
+                                    <td style={{ padding: '0.7rem 0.85rem' }}>
                                         <RankBadge rank={entry.rank} />
                                     </td>
-                                    <td style={{ padding: '0.7rem 1rem', fontWeight: isSelf ? 700 : 500, color: isSelf ? '#818cf8' : 'inherit' }}>
+                                    <td style={{ padding: '0.7rem 0.85rem', fontWeight: isSelf ? 700 : 500, color: isSelf ? '#818cf8' : 'inherit' }}>
                                         {entry.name}
                                         {isSelf && (
                                             <span style={{
-                                                marginLeft: '0.5rem', fontSize: '0.68rem', fontWeight: 700,
+                                                marginLeft: '0.4rem', fontSize: '0.65rem', fontWeight: 700,
                                                 background: 'rgba(79,70,229,0.15)', color: '#818cf8',
-                                                borderRadius: '99px', padding: '0.1rem 0.45rem',
+                                                borderRadius: '99px', padding: '0.1rem 0.4rem',
                                             }}>
                                                 You
                                             </span>
                                         )}
                                     </td>
-                                    <td style={{ padding: '0.7rem 1rem', textAlign: 'right', fontWeight: 700, color: '#4f46e5', fontSize: '0.95rem' }}>
+                                    <td style={{ padding: '0.7rem 0.85rem', textAlign: 'right', fontWeight: 700, color: '#4f46e5', fontSize: '0.95rem' }}>
                                         {entry.score}
                                     </td>
                                 </tr>

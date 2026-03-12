@@ -155,7 +155,115 @@ export default function DashboardLayout({
     <div className="min-h-screen">
       <header className="sticky top-0 z-[60] border-b border-[var(--border)] bg-[var(--bg-soft)]">
         <div className="mx-auto max-w-7xl px-4 py-3 md:px-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+
+          {/* ── Mobile layout: two rows ── */}
+          <div className="flex flex-col gap-2 md:hidden">
+            {/* Row 1: Brand + Right controls */}
+            <div className="flex items-center justify-between">
+              <Link href="/" className="text-lg font-extrabold tracking-wide">
+                Student LMS
+              </Link>
+
+              {/* Right: theme + profile */}
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+
+                {checkingSession ? (
+                  <div style={{
+                    width: '2.25rem', height: '2.25rem', borderRadius: '50%',
+                    background: 'var(--bg-soft)', opacity: 0.55,
+                    animation: 'lb-pulse 1.4s ease-in-out infinite',
+                  }} />
+                ) : userInfo ? (
+                  <div ref={profileMenuRef} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                      className="flex items-center gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--card)] px-2 py-1.5 shadow-[0_8px_16px_rgba(19,58,96,0.1)] transition hover:border-[var(--primary)]"
+                      aria-haspopup="menu"
+                      aria-expanded={isProfileMenuOpen}
+                      aria-label="Open profile menu"
+                    >
+                      <span className="flex h-7 w-7 overflow-hidden rounded-full border border-[var(--border)] bg-[var(--bg-soft)]">
+                        <Image
+                          src="/dummy-profile.svg"
+                          alt="Student profile"
+                          className="h-full w-full object-cover"
+                          width={28}
+                          height={28}
+                        />
+                      </span>
+                      <svg
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                        className={`h-3.5 w-3.5 text-[var(--muted)] transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''}`}
+                      >
+                        <path
+                          d="M5.5 7.5L10 12l4.5-4.5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    {isProfileMenuOpen && (
+                      <div
+                        role="menu"
+                        className="absolute right-0 top-full z-50 mt-2 w-[min(19rem,calc(100vw-2rem))] rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-[0_14px_30px_rgba(13,34,58,0.16)]"
+                      >
+                        <p className="text-sm font-bold">{userInfo.name}</p>
+                        <p className="mt-1 break-all text-xs muted-text">{userInfo.email}</p>
+                        <p className="mt-1 text-[11px] muted-text">ID: {userInfo.studentId}</p>
+                        {!isAdminView && (
+                          <Link
+                            href="/change-password"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                            className="mt-3 block w-full rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] px-3 py-2 text-center text-sm font-semibold text-[var(--text)] transition hover:border-[var(--primary)] hover:text-[var(--primary)]"
+                          >
+                            Change Password
+                          </Link>
+                        )}
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className={`w-full rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] px-3 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] ${isAdminView ? 'mt-3' : 'mt-2'}`}
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Row 2: Nav buttons */}
+            <nav className="flex items-center gap-2 flex-wrap">
+              <Link
+                href="/dashboard"
+                className={`nav-btn ${pathname === '/dashboard' ? 'active' : ''}`}
+              >
+                All Days
+              </Link>
+              <Link
+                href="/dashboard/leaderboard"
+                className={`nav-btn ${pathname === '/dashboard/leaderboard' ? 'active' : ''}`}
+              >
+                🏆 Leaderboard
+              </Link>
+              {isAdminView && (
+                <Link href="/admin" className="nav-btn">
+                  Admin Panel
+                </Link>
+              )}
+            </nav>
+          </div>
+
+          {/* ── Desktop layout: single row (md and above) ── */}
+          <div className="hidden md:flex md:items-center md:justify-between md:gap-3">
             {/* Left: logo + nav */}
             <div className="flex items-center gap-5">
               <Link href="/" className="text-lg font-extrabold tracking-wide">
@@ -183,7 +291,7 @@ export default function DashboardLayout({
             </div>
 
             {/* Right: theme + profile dropdown */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-3">
               <ThemeToggle />
 
               {checkingSession ? (
@@ -217,8 +325,7 @@ export default function DashboardLayout({
                     <svg
                       viewBox="0 0 20 20"
                       aria-hidden="true"
-                      className={`h-4 w-4 text-[var(--muted)] transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''
-                        }`}
+                      className={`h-4 w-4 text-[var(--muted)] transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''}`}
                     >
                       <path
                         d="M5.5 7.5L10 12l4.5-4.5"
@@ -251,8 +358,7 @@ export default function DashboardLayout({
                       <button
                         type="button"
                         onClick={handleLogout}
-                        className={`w-full rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] px-3 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] ${isAdminView ? 'mt-3' : 'mt-2'
-                          }`}
+                        className={`w-full rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] px-3 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] ${isAdminView ? 'mt-3' : 'mt-2'}`}
                       >
                         Logout
                       </button>

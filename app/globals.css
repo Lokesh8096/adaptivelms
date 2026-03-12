@@ -211,6 +211,14 @@ tbody tr:hover {
   background: color-mix(in oklab, var(--primary) 11%, var(--card));
 }
 
+/* Compact nav-btn on very small screens */
+@media (max-width: 480px) {
+  .nav-btn {
+    padding: 0.42rem 0.72rem;
+    font-size: 0.82rem;
+  }
+}
+
 .theme-toggle {
   position: relative;
   display: inline-flex;
