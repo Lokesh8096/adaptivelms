@@ -166,12 +166,12 @@ function buildPdfHtml(data: ReportData): string {
       <td style="text-align:center">${s.totalAttempts}</td>
       <td>
         ${hasData
-          ? `<div style="display:flex;align-items:center;gap:6px">
+        ? `<div style="display:flex;align-items:center;gap:6px">
                <div class="bar-wrap" style="flex:1"><div class="bar sprint-bar" style="width:${barWidth}%"></div></div>
                <span style="font-size:10px;font-weight:700;color:#7c3aed;min-width:30px;text-align:right">${pct}%</span>
              </div>
              <span class="badge ${badgeClass}">${badgeLabel}</span>`
-          : '<span class="na">-</span>'}
+        : '<span class="na">-</span>'}
       </td>
     </tr>`
   }).join('')
@@ -442,6 +442,7 @@ function ColFilterDropdown({
   isNumericInput?: boolean
 }) {
   const [open, setOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -450,6 +451,15 @@ function ColFilterDropdown({
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    const syncTheme = () => setIsDarkMode(root.classList.contains('dark'))
+    syncTheme()
+    const observer = new MutationObserver(syncTheme)
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
   }, [])
 
   const isActive = value !== ''
@@ -461,9 +471,15 @@ function ColFilterDropdown({
         onClick={() => setOpen((o) => !o)}
         title="Filter this column"
         style={{
-          background: isActive ? 'rgba(79,70,229,0.18)' : 'rgba(255,255,255,0.12)',
-          border: isActive ? '1px solid rgba(79,70,229,0.5)' : '1px solid rgba(255,255,255,0.25)',
-          color: isActive ? '#c7d2fe' : 'rgba(255,255,255,0.75)',
+          background: isDarkMode
+            ? (isActive ? 'rgba(79,70,229,0.18)' : 'rgba(255,255,255,0.12)')
+            : (isActive ? 'rgba(124,58,237,0.12)' : 'rgba(255,255,255,0.92)'),
+          border: isDarkMode
+            ? (isActive ? '1px solid rgba(79,70,229,0.5)' : '1px solid rgba(255,255,255,0.25)')
+            : (isActive ? '1px solid rgba(124,58,237,0.45)' : '1px solid #cbd5e1'),
+          color: isDarkMode
+            ? (isActive ? '#c7d2fe' : 'rgba(255,255,255,0.75)')
+            : (isActive ? '#4f46e5' : '#3f5f7f'),
           borderRadius: '4px',
           padding: '1px 4px',
           cursor: 'pointer',
@@ -482,10 +498,11 @@ function ColFilterDropdown({
           left: '50%',
           transform: 'translateX(-50%)',
           marginTop: '4px',
-          background: 'var(--surface, #1e1e2e)',
-          border: '1.5px solid var(--border, #e5e7eb)',
+          background: isDarkMode ? 'var(--surface, #1e1e2e)' : '#ffffff',
+          border: isDarkMode ? '1.5px solid var(--border, #e5e7eb)' : '1.5px solid #cbd5e1',
           borderRadius: '8px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+          boxShadow: isDarkMode ? '0 8px 24px rgba(0,0,0,0.25)' : '0 10px 30px rgba(15,47,79,0.16)',
+          color: isDarkMode ? 'inherit' : '#1f3b5b',
           zIndex: 999,
           minWidth: '150px',
           overflow: 'hidden',
@@ -503,9 +520,9 @@ function ColFilterDropdown({
                   padding: '6px 8px',
                   fontSize: '12px',
                   borderRadius: '5px',
-                  border: '1.5px solid var(--border, #e5e7eb)',
-                  background: 'var(--bg-soft, #f9fafb)',
-                  color: 'inherit',
+                  border: isDarkMode ? '1.5px solid var(--border, #e5e7eb)' : '1.5px solid #dbe2ea',
+                  background: isDarkMode ? 'var(--bg-soft, #f9fafb)' : '#f8fafc',
+                  color: isDarkMode ? 'inherit' : '#1f3b5b',
                   outline: 'none',
                 }}
               />
@@ -541,12 +558,24 @@ function ColFilterDropdown({
                     textAlign: 'left',
                     padding: '8px 12px',
                     fontSize: '12px',
-                    background: value === opt ? 'rgba(79,70,229,0.15)' : 'transparent',
-                    color: value === opt ? '#818cf8' : 'inherit',
+                    background: value === opt
+                      ? (isDarkMode ? 'rgba(79,70,229,0.15)' : 'rgba(124,58,237,0.12)')
+                      : 'transparent',
+                    color: value === opt ? (isDarkMode ? '#818cf8' : '#4f46e5') : (isDarkMode ? 'inherit' : '#1f3b5b'),
                     fontWeight: value === opt ? 700 : 400,
                     border: 'none',
                     cursor: 'pointer',
                     transition: 'background 0.1s',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isDarkMode && value !== opt) {
+                      (e.currentTarget as HTMLButtonElement).style.background = 'rgba(124,58,237,0.08)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isDarkMode && value !== opt) {
+                      (e.currentTarget as HTMLButtonElement).style.background = 'transparent'
+                    }
                   }}
                 >
                   {opt === '' ? 'All' : `${opt}%`}
